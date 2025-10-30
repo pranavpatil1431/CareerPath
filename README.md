@@ -34,7 +34,7 @@ CareerPath_Full/
 
 ### Prerequisites
 - Node.js (LTS version)
-- MySQL server
+- MongoDB (local installation or MongoDB Atlas account)
 - Git (optional)
 
 ### Installation
@@ -52,9 +52,9 @@ CareerPath_Full/
    ```
 
 3. **Set up the database**:
-   - Start your MySQL server
-   - Run the SQL script: `database/db.sql`
-   - Update database credentials in `src/server.js` if needed
+   - For **Local MongoDB**: Install and start MongoDB locally
+   - For **MongoDB Atlas**: Create a cluster and get your connection string
+   - Update the `.env` file with your MongoDB URI
 
 4. **Start the application**:
    ```bash
@@ -62,8 +62,8 @@ CareerPath_Full/
    ```
 
 5. **Access the application**:
-   - Frontend: `http://localhost:5000/public/index.html`
-   - API: `http://localhost:5000`
+   - Frontend: `http://localhost:5000`
+   - API: `http://localhost:5000/api`
 
 ## 🔧 Configuration
 
