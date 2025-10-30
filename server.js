@@ -107,6 +107,98 @@ app.get("/merit", async (req, res) => {
   }
 });
 
+// ✅ Admin Routes
+const ADMIN_CREDENTIALS = {
+  username: "admin",
+  password: "admin123"
+};
+
+// Simple token storage (in production, use proper JWT with database)
+const adminTokens = new Set();
+
+// Generate simple token
+function generateToken() {
+  return Math.random().toString(36).substring(2) + Date.now().toString(36);
+}
+
+// Admin login
+app.post("/admin/login", (req, res) => {
+  const { username, password } = req.body;
+  
+  if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+    const token = generateToken();
+    adminTokens.add(token);
+    
+    // Remove token after 24 hours
+    setTimeout(() => {
+      adminTokens.delete(token);
+    }, 24 * 60 * 60 * 1000);
+    
+    res.json({ ok: true, token, message: "Login successful" });
+  } else {
+    res.status(401).json({ ok: false, error: "Invalid credentials" });
+  }
+});
+
+// Middleware to verify admin token
+function verifyAdminToken(req, res, next) {
+  const token = req.headers['x-admin-token'];
+  
+  if (!token || !adminTokens.has(token)) {
+    return res.status(401).json({ ok: false, error: "Unauthorized" });
+  }
+  
+  next();
+}
+
+// Get all applicants (admin only)
+app.get("/admin/applicants", verifyAdminToken, async (req, res) => {
+  try {
+    const students = await Student.find().sort({ marks: -1 });
+    
+    // Format the data for admin view
+    const formattedStudents = students.map(student => ({
+      _id: student._id,
+      name: student.name,
+      email: student.email,
+      marks: student.marks,
+      stream: student.stream,
+      course: student.course,
+      applied_at: student.createdAt.toLocaleString()
+    }));
+    
+    res.json(formattedStudents);
+  } catch (error) {
+    console.error("Error fetching applicants:", error);
+    res.status(500).json({ error: "Failed to fetch applicants" });
+  }
+});
+
+// Download CSV (admin only)
+app.get("/admin/download/csv", verifyAdminToken, async (req, res) => {
+  try {
+    const students = await Student.find().sort({ marks: -1 });
+    
+    // Create CSV content
+    let csvContent = "Rank,Name,Email,Marks,Stream,Course,Applied At\n";
+    
+    students.forEach((student, index) => {
+      const rank = index + 1;
+      const appliedAt = student.createdAt.toLocaleString();
+      csvContent += `${rank},"${student.name}","${student.email}",${student.marks},"${student.stream}","${student.course}","${appliedAt}"\n`;
+    });
+    
+    // Set headers for file download
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename="applicants.csv"');
+    
+    res.send(csvContent);
+  } catch (error) {
+    console.error("Error generating CSV:", error);
+    res.status(500).json({ error: "Failed to generate CSV" });
+  }
+});
+
 // ✅ Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

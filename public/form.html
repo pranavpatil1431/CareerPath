@@ -19,23 +19,64 @@
   </nav>
 
   <main class="container main">
-    <h1>Admission Form</h1>
-    <form id="admissionForm" class="form">
-      <label>Full Name <input type="text" id="fullName" required></label>
-      <label>Email ID <input type="email" id="email" required></label>
-      <label>Marks (out of 100) <input type="number" id="marks" required></label>
-      <label>Stream
-        <select id="stream">
-          <option>Science</option>
-          <option>Commerce</option>
-          <option>Arts</option>
+    <div class="hero text-center mb-xl">
+      <h1>Admission Application</h1>
+      <p>Take the first step towards your bright future. Fill out the form below to apply for your desired course.</p>
+    </div>
+
+    <form id="admissionForm" class="form fade-in">
+      <div class="form-header text-center mb-lg">
+        <h2>📋 Application Form</h2>
+        <p>Please fill all the required information accurately</p>
+      </div>
+
+      <label>
+        Full Name *
+        <input type="text" id="fullName" placeholder="Enter your full name" required>
+      </label>
+      
+      <label>
+        Email Address *
+        <input type="email" id="email" placeholder="your.email@example.com" required>
+      </label>
+      
+      <label>
+        Marks (out of 100) *
+        <input type="number" id="marks" placeholder="Enter your marks" min="0" max="100" required>
+      </label>
+      
+      <label>
+        Stream *
+        <select id="stream" required>
+          <option value="">Select your stream</option>
+          <option value="Science">Science</option>
+          <option value="Commerce">Commerce</option>
+          <option value="Arts">Arts</option>
         </select>
       </label>
-      <label>Preferred Course <input type="text" id="coursePref" placeholder="e.g. BCA, BE (Civil)" required></label>
-      <button type="submit" class="btn">Submit Application</button>
+      
+      <label>
+        Preferred Course *
+        <input type="text" id="coursePref" placeholder="e.g. Bachelor of Computer Applications, B.E. Civil Engineering" required>
+      </label>
+      
+      <button type="submit" class="btn btn-success">
+        <span id="submitText">📤 Submit Application</span>
+        <span id="submitLoader" class="loading hidden"></span>
+      </button>
     </form>
 
-    <div id="formMessage" class="note"></div>
+    <div id="formMessage" class="message hidden"></div>
+    
+    <div class="card mt-xl">
+      <h3>📞 Need Help?</h3>
+      <p>If you have any questions about the application process, feel free to contact us:</p>
+      <ul style="margin: var(--space-md) 0; padding-left: var(--space-lg);">
+        <li>📧 Email: admissions@careerpath.edu</li>
+        <li>📱 Phone: +1 (555) 123-4567</li>
+        <li>🕒 Office Hours: Monday - Friday, 9:00 AM - 5:00 PM</li>
+      </ul>
+    </div>
   </main>
 
   <footer class="footer">

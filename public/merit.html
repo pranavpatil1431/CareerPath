@@ -19,12 +19,57 @@
   </nav>
 
   <main class="container main">
-    <h1>Merit List (Live)</h1>
-    <p>Sorted by marks (high → low).</p>
-    <table id="meritTable" class="doc-table">
-      <thead><tr><th>Rank</th><th>Name</th><th>Marks</th><th>Stream</th><th>Course</th></tr></thead>
-      <tbody></tbody>
-    </table>
+    <div class="hero text-center mb-xl">
+      <h1>🏆 Merit List</h1>
+      <p>Live rankings based on academic performance. Results are updated in real-time as new applications are processed.</p>
+    </div>
+
+    <div class="card mb-lg">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-lg);">
+        <div>
+          <h3>📊 Current Rankings</h3>
+          <p style="margin: 0; color: var(--text-secondary);">Sorted by marks (highest to lowest)</p>
+        </div>
+        <button id="refreshList" class="btn btn-outline">
+          🔄 Refresh List
+        </button>
+      </div>
+      
+      <div id="loadingIndicator" class="text-center" style="padding: var(--space-xl);">
+        <div class="loading" style="margin: 0 auto var(--space-md);"></div>
+        <p>Loading merit list...</p>
+      </div>
+      
+      <table id="meritTable" class="doc-table hidden">
+        <thead>
+          <tr>
+            <th>🥇 Rank</th>
+            <th>👤 Name</th>
+            <th>📊 Marks</th>
+            <th>📚 Stream</th>
+            <th>🎯 Preferred Course</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      
+      <div id="emptyState" class="text-center hidden" style="padding: var(--space-2xl);">
+        <div style="font-size: 4rem; margin-bottom: var(--space-md);">📋</div>
+        <h3>No Applications Yet</h3>
+        <p>Be the first to apply and secure your spot on the merit list!</p>
+        <a href="form.html" class="btn mt-md">Apply Now</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>ℹ️ Important Information</h3>
+      <ul style="margin: var(--space-md) 0; padding-left: var(--space-lg); color: var(--text-secondary);">
+        <li>Merit list is updated automatically when new applications are submitted</li>
+        <li>Rankings are based on marks obtained in qualifying examinations</li>
+        <li>In case of tie, applications submitted earlier will get preference</li>
+        <li>Final admission is subject to document verification</li>
+      </ul>
+    </div>
   </main>
 
   <footer class="footer">

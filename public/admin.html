@@ -19,23 +19,94 @@
   </nav>
 
   <main class="container main">
-    <h1>Admin Login</h1>
-    <form id="loginForm" class="form">
-      <label>Username <input type="text" id="adminUser" required></label>
-      <label>Password <input type="password" id="adminPass" required></label>
-      <button type="submit" class="btn">Login</button>
-    </form>
-
-    <div id="adminPanel" style="display:none">
-      <h2>Applicants (Merit Order)</h2>
-      <button id="downloadCsv" class="btn btn-outline">Download CSV</button>
-      <table id="adminTable" class="doc-table">
-        <thead><tr><th>Rank</th><th>Name</th><th>Marks</th><th>Email</th><th>Stream</th><th>Course</th><th>Applied At</th></tr></thead>
-        <tbody></tbody>
-      </table>
+    <div class="hero text-center mb-xl">
+      <h1>🔐 Admin Portal</h1>
+      <p>Secure access to manage applications and view detailed reports.</p>
     </div>
 
-    <div id="loginMessage" class="note"></div>
+    <form id="loginForm" class="form fade-in">
+      <div class="form-header text-center mb-lg">
+        <h2>🔑 Administrator Login</h2>
+        <p>Please enter your credentials to access the admin panel</p>
+      </div>
+
+      <label>
+        Username *
+        <input type="text" id="adminUser" placeholder="Enter admin username" required>
+      </label>
+      
+      <label>
+        Password *
+        <input type="password" id="adminPass" placeholder="Enter admin password" required>
+      </label>
+      
+      <button type="submit" class="btn">
+        <span id="loginText">🔓 Login to Dashboard</span>
+        <span id="loginLoader" class="loading hidden"></span>
+      </button>
+    </form>
+
+    <div id="adminPanel" class="hidden">
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-lg);">
+          <div>
+            <h2>👥 Application Management</h2>
+            <p style="margin: 0; color: var(--text-secondary);">View and manage all student applications</p>
+          </div>
+          <div style="display: flex; gap: var(--space-md);">
+            <button id="refreshData" class="btn btn-outline">
+              🔄 Refresh Data
+            </button>
+            <button id="downloadCsv" class="btn btn-success">
+              📊 Export CSV
+            </button>
+          </div>
+        </div>
+        
+        <div id="adminStats" class="stats mb-lg">
+          <div class="stat">
+            <div class="stat-number" id="totalApplicants">0</div>
+            <div class="stat-label">Total Applicants</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number" id="avgMarks">0</div>
+            <div class="stat-label">Average Marks</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number" id="topMarks">0</div>
+            <div class="stat-label">Highest Marks</div>
+          </div>
+        </div>
+        
+        <div id="adminLoadingIndicator" class="text-center" style="padding: var(--space-xl);">
+          <div class="loading" style="margin: 0 auto var(--space-md);"></div>
+          <p>Loading applications...</p>
+        </div>
+        
+        <table id="adminTable" class="doc-table hidden">
+          <thead>
+            <tr>
+              <th>🥇 Rank</th>
+              <th>👤 Name</th>
+              <th>📊 Marks</th>
+              <th>📧 Email</th>
+              <th>📚 Stream</th>
+              <th>🎯 Course</th>
+              <th>📅 Applied At</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        
+        <div id="adminEmptyState" class="text-center hidden" style="padding: var(--space-2xl);">
+          <div style="font-size: 4rem; margin-bottom: var(--space-md);">📂</div>
+          <h3>No Applications Found</h3>
+          <p>No student applications have been submitted yet.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="loginMessage" class="message hidden"></div>
   </main>
 
   <footer class="footer">
