@@ -31,10 +31,12 @@ mongoose.connect(mongoURI)
 
 // ✅ Define Schema
 const studentSchema = new mongoose.Schema({
-  name: String,
-  branch: String,
-  marks: Number
-});
+  name: { type: String, required: true },
+  email: { type: String, required: true },
+  marks: { type: Number, required: true },
+  stream: { type: String },
+  course: { type: String }
+}, { timestamps: true });
 
 // ✅ Model
 const Student = mongoose.model("Student", studentSchema);
@@ -48,19 +50,61 @@ app.get("/api", (req, res) => {
   res.send("Career Path API running with MongoDB!");
 });
 
-app.post("/add-student", async (req, res) => {
+app.post("/apply", async (req, res) => {
   try {
-    const newStudent = new Student(req.body);
-    await newStudent.save();
-    res.status(201).send({ message: "Student added successfully!" });
+    const { name, email, marks, stream, course } = req.body;
+    
+    // Validation
+    if (!name || !email || !marks) {
+      return res.status(400).json({ 
+        ok: false, 
+        error: "Name, email, and marks are required." 
+      });
+    }
+
+    const newStudent = new Student({
+      name: name.trim(),
+      email: email.trim(),
+      marks: Number(marks),
+      stream: stream || '',
+      course: course || ''
+    });
+    
+    const savedStudent = await newStudent.save();
+    
+    res.status(201).json({ 
+      ok: true, 
+      id: savedStudent._id,
+      message: "Application submitted successfully!" 
+    });
   } catch (error) {
-    res.status(500).send({ error: "Error adding student", details: error });
+    console.error("Error saving student:", error);
+    res.status(500).json({ 
+      ok: false, 
+      error: "Failed to submit application. Please try again." 
+    });
   }
 });
 
 app.get("/students", async (req, res) => {
-  const students = await Student.find();
-  res.json(students);
+  try {
+    const students = await Student.find();
+    res.json(students);
+  } catch (error) {
+    console.error("Error fetching students:", error);
+    res.status(500).json({ error: "Failed to fetch students" });
+  }
+});
+
+app.get("/merit", async (req, res) => {
+  try {
+    // Get students sorted by marks (highest first)
+    const students = await Student.find().sort({ marks: -1 });
+    res.json(students);
+  } catch (error) {
+    console.error("Error fetching merit list:", error);
+    res.status(500).json({ error: "Failed to fetch merit list" });
+  }
 });
 
 // ✅ Start Server
