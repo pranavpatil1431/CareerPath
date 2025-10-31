@@ -19,27 +19,36 @@ app.use(bodyParser.json());
 // ✅ Serve static files from public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+// ✅ In-memory storage (fallback if MongoDB is not available)
+let students = [];
+let Student = null;
+let mongoConnected = false;
+
 // ✅ MongoDB Connection with fallback
 const mongoURI = process.env.MONGODB_URI || "mongodb://localhost:27017/careerpath";
 
 mongoose.connect(mongoURI)
-.then(() => console.log("✅ MongoDB Connected"))
+.then(() => {
+  console.log("✅ MongoDB Connected");
+  mongoConnected = true;
+  
+  // ✅ Define Schema
+  const studentSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    marks: { type: Number, required: true },
+    stream: { type: String },
+    course: { type: String }
+  }, { timestamps: true });
+
+  // ✅ Model
+  Student = mongoose.model("Student", studentSchema);
+})
 .catch(err => {
   console.error("❌ MongoDB Connection Error:", err.message);
-  console.log("💡 Tip: Make sure MongoDB is running locally or check your MONGODB_URI environment variable");
+  console.log("💡 Using in-memory storage as fallback");
+  mongoConnected = false;
 });
-
-// ✅ Define Schema
-const studentSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true },
-  marks: { type: Number, required: true },
-  stream: { type: String },
-  course: { type: String }
-}, { timestamps: true });
-
-// ✅ Model
-const Student = mongoose.model("Student", studentSchema);
 
 // ✅ Routes
 app.get("/", (req, res) => {
@@ -62,21 +71,36 @@ app.post("/apply", async (req, res) => {
       });
     }
 
-    const newStudent = new Student({
+    const studentData = {
       name: name.trim(),
       email: email.trim(),
       marks: Number(marks),
       stream: stream || '',
-      course: course || ''
-    });
-    
-    const savedStudent = await newStudent.save();
-    
-    res.status(201).json({ 
-      ok: true, 
-      id: savedStudent._id,
-      message: "Application submitted successfully!" 
-    });
+      course: course || '',
+      createdAt: new Date()
+    };
+
+    if (mongoConnected && Student) {
+      // Use MongoDB
+      const newStudent = new Student(studentData);
+      const savedStudent = await newStudent.save();
+      
+      res.status(201).json({ 
+        ok: true, 
+        id: savedStudent._id,
+        message: "Application submitted successfully!" 
+      });
+    } else {
+      // Use in-memory storage
+      studentData._id = Date.now().toString();
+      students.push(studentData);
+      
+      res.status(201).json({ 
+        ok: true, 
+        id: studentData._id,
+        message: "Application submitted successfully!" 
+      });
+    }
   } catch (error) {
     console.error("Error saving student:", error);
     res.status(500).json({ 
@@ -88,8 +112,12 @@ app.post("/apply", async (req, res) => {
 
 app.get("/students", async (req, res) => {
   try {
-    const students = await Student.find();
-    res.json(students);
+    if (mongoConnected && Student) {
+      const allStudents = await Student.find();
+      res.json(allStudents);
+    } else {
+      res.json(students);
+    }
   } catch (error) {
     console.error("Error fetching students:", error);
     res.status(500).json({ error: "Failed to fetch students" });
@@ -98,9 +126,15 @@ app.get("/students", async (req, res) => {
 
 app.get("/merit", async (req, res) => {
   try {
-    // Get students sorted by marks (highest first)
-    const students = await Student.find().sort({ marks: -1 });
-    res.json(students);
+    if (mongoConnected && Student) {
+      // Get students sorted by marks (highest first)
+      const allStudents = await Student.find().sort({ marks: -1 });
+      res.json(allStudents);
+    } else {
+      // Sort in-memory students by marks (highest first)
+      const sortedStudents = [...students].sort((a, b) => b.marks - a.marks);
+      res.json(sortedStudents);
+    }
   } catch (error) {
     console.error("Error fetching merit list:", error);
     res.status(500).json({ error: "Failed to fetch merit list" });
@@ -154,17 +188,23 @@ function verifyAdminToken(req, res, next) {
 // Get all applicants (admin only)
 app.get("/admin/applicants", verifyAdminToken, async (req, res) => {
   try {
-    const students = await Student.find().sort({ marks: -1 });
+    let allStudents;
+    
+    if (mongoConnected && Student) {
+      allStudents = await Student.find().sort({ marks: -1 });
+    } else {
+      allStudents = [...students].sort((a, b) => b.marks - a.marks);
+    }
     
     // Format the data for admin view
-    const formattedStudents = students.map(student => ({
+    const formattedStudents = allStudents.map(student => ({
       _id: student._id,
       name: student.name,
       email: student.email,
       marks: student.marks,
       stream: student.stream,
       course: student.course,
-      applied_at: student.createdAt.toLocaleString()
+      applied_at: student.createdAt ? new Date(student.createdAt).toLocaleString() : 'N/A'
     }));
     
     res.json(formattedStudents);
@@ -177,14 +217,20 @@ app.get("/admin/applicants", verifyAdminToken, async (req, res) => {
 // Download CSV (admin only)
 app.get("/admin/download/csv", verifyAdminToken, async (req, res) => {
   try {
-    const students = await Student.find().sort({ marks: -1 });
+    let allStudents;
+    
+    if (mongoConnected && Student) {
+      allStudents = await Student.find().sort({ marks: -1 });
+    } else {
+      allStudents = [...students].sort((a, b) => b.marks - a.marks);
+    }
     
     // Create CSV content
     let csvContent = "Rank,Name,Email,Marks,Stream,Course,Applied At\n";
     
-    students.forEach((student, index) => {
+    allStudents.forEach((student, index) => {
       const rank = index + 1;
-      const appliedAt = student.createdAt.toLocaleString();
+      const appliedAt = student.createdAt ? new Date(student.createdAt).toLocaleString() : 'N/A';
       csvContent += `${rank},"${student.name}","${student.email}",${student.marks},"${student.stream}","${student.course}","${appliedAt}"\n`;
     });
     
@@ -201,4 +247,33 @@ app.get("/admin/download/csv", verifyAdminToken, async (req, res) => {
 
 // ✅ Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
+const server = app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`📱 Access your app at: http://localhost:${PORT}`);
+});
+
+server.on('error', (err) => {
+  console.error('❌ Server error:', err);
+  if (err.code === 'EADDRINUSE') {
+    console.log('💡 Port is already in use. Trying to kill existing processes...');
+    process.exit(1);
+  }
+});
+
+// Handle graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('👋 Received SIGTERM, shutting down gracefully');
+  server.close(() => {
+    mongoose.connection.close();
+    process.exit(0);
+  });
+});
+
+process.on('SIGINT', () => {
+  console.log('👋 Received SIGINT, shutting down gracefully');
+  server.close(() => {
+    mongoose.connection.close();
+    process.exit(0);
+  });
+});
