@@ -1,7 +1,7 @@
 {
   "name": "careerpath-full",
   "version": "1.0.0",
-  "type": "module",
+
   "description": "CareerPath — Student Admission Portal (Node + Express + MongoDB)",
   "main": "server.js",
   "scripts": {
