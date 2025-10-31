@@ -484,6 +484,7 @@ p {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  /* Navigation */
   .nav-inner {
     flex-direction: column;
     gap: var(--space-md);
@@ -492,34 +493,194 @@ p {
   .nav-links {
     flex-wrap: wrap;
     justify-content: center;
+    gap: var(--space-sm);
   }
   
+  .nav-links a {
+    padding: var(--space-sm) var(--space-md);
+    min-height: 44px; /* Better touch targets */
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Typography */
   .hero h1 {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
   }
   
+  .hero p {
+    font-size: 1rem;
+    padding: 0 var(--space-md);
+  }
+  
+  /* Forms */
   .form {
-    margin: 0 var(--space-md);
+    margin: 0 var(--space-sm);
     padding: var(--space-lg);
   }
   
+  .form input,
+  .form select,
+  .form textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+    min-height: 48px; /* Better touch targets */
+  }
+  
+  /* Cards */
+  .card {
+    margin: 0 var(--space-sm) var(--space-lg);
+    padding: var(--space-md);
+  }
+  
+  /* Container */
+  .container {
+    padding: 0 var(--space-sm);
+  }
+  
+  /* Main content */
+  .main {
+    padding: var(--space-lg) 0;
+  }
+  
+  /* Stream Tabs - Mobile Optimized */
+  .stream-tabs {
+    display: flex;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-lg);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: var(--space-xs);
+  }
+  
+  .stream-tab {
+    padding: var(--space-md) var(--space-lg);
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-height: 48px; /* Better touch targets */
+    scroll-snap-align: start;
+    font-size: 0.9rem;
+  }
+  
+  /* Tables - Mobile Optimized */
+  .doc-table {
+    font-size: 0.8rem;
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+    white-space: nowrap;
+  }
+  
+  .doc-table thead,
+  .doc-table tbody,
+  .doc-table tr {
+    display: block;
+  }
+  
+  .doc-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  
+  .doc-table tr {
+    border: 1px solid var(--border-light);
+    margin-bottom: var(--space-md);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    background: var(--bg-primary);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  
+  .doc-table td {
+    border: none;
+    position: relative;
+    padding: var(--space-sm) 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .doc-table td:before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+    min-width: 80px;
+  }
+  
+  /* Merit List Mobile Card Style */
+  .merit-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    margin-bottom: var(--space-md);
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .merit-rank {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-sm);
+  }
+  
+  .merit-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+  
+  .merit-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+  }
+  
+  .merit-marks {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--primary);
+  }
+  
+  .merit-course {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+  
+  /* Footer */
   .footer-inner {
     flex-direction: column;
     gap: var(--space-md);
     text-align: center;
   }
   
+  /* Stats */
   .stats {
     gap: var(--space-lg);
+    flex-direction: column;
   }
   
-  .doc-table {
-    font-size: 0.85rem;
+  /* Buttons */
+  .btn {
+    min-height: 48px; /* Better touch targets */
+    padding: var(--space-md) var(--space-lg);
   }
   
-  .doc-table th,
-  .doc-table td {
-    padding: var(--space-sm);
+  /* Header controls */
+  .card > div[style*="display: flex"] {
+    flex-direction: column !important;
+    gap: var(--space-md) !important;
+    align-items: stretch !important;
+  }
+  
+  #refreshList {
+    width: 100%;
+    justify-content: center;
   }
 }
 
