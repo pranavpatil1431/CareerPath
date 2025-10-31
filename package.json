@@ -2,19 +2,23 @@
   "name": "careerpath-full",
   "version": "1.0.0",
   "type": "module",
-  "description": "CareerPath — Student Admission Portal (Node + Express + MySQL)",
+  "description": "CareerPath — Student Admission Portal (Node + Express + MongoDB)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
+    "build": "echo 'Build complete'",
+    "vercel-build": "echo 'Vercel build complete'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "nodejs",
     "express",
-    "mysql",
+    "mongodb",
+    "mongoose",
     "education",
-    "portal"
+    "portal",
+    "vercel"
   ],
   "author": "Pranav Maruti Patil",
   "license": "ISC",

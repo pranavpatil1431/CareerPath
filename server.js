@@ -248,32 +248,41 @@ app.get("/admin/download/csv", verifyAdminToken, async (req, res) => {
 // ✅ Start Server
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📱 Access your app at: http://localhost:${PORT}`);
-});
+// Check if running on Vercel (serverless)
+const isVercel = process.env.NODE_ENV === 'production' && process.env.VERCEL;
 
-server.on('error', (err) => {
-  console.error('❌ Server error:', err);
-  if (err.code === 'EADDRINUSE') {
-    console.log('💡 Port is already in use. Trying to kill existing processes...');
-    process.exit(1);
-  }
-});
-
-// Handle graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('👋 Received SIGTERM, shutting down gracefully');
-  server.close(() => {
-    mongoose.connection.close();
-    process.exit(0);
+if (!isVercel) {
+  // Local development environment
+  const server = app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`📱 Access your app at: http://localhost:${PORT}`);
   });
-});
 
-process.on('SIGINT', () => {
-  console.log('👋 Received SIGINT, shutting down gracefully');
-  server.close(() => {
-    mongoose.connection.close();
-    process.exit(0);
+  server.on('error', (err) => {
+    console.error('❌ Server error:', err);
+    if (err.code === 'EADDRINUSE') {
+      console.log('💡 Port is already in use. Trying to kill existing processes...');
+      process.exit(1);
+    }
   });
-});
+
+  // Handle graceful shutdown
+  process.on('SIGTERM', () => {
+    console.log('👋 Received SIGTERM, shutting down gracefully');
+    server.close(() => {
+      mongoose.connection.close();
+      process.exit(0);
+    });
+  });
+
+  process.on('SIGINT', () => {
+    console.log('👋 Received SIGINT, shutting down gracefully');
+    server.close(() => {
+      mongoose.connection.close();
+      process.exit(0);
+    });
+  });
+}
+
+// Export for Vercel serverless deployment
+export default app;
