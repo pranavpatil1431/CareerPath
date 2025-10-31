@@ -11,6 +11,9 @@
     "vercel-build": "echo 'Vercel build complete'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "engines": {
+    "node": "18.x"
+  },
   "keywords": [
     "nodejs",
     "express",
