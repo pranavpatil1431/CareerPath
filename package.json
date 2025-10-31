@@ -1,7 +1,6 @@
 {
   "name": "careerpath-full",
   "version": "1.0.0",
-
   "description": "CareerPath — Student Admission Portal (Node + Express + MongoDB)",
   "main": "server.js",
   "scripts": {
@@ -26,6 +25,7 @@
   "author": "Pranav Maruti Patil",
   "license": "ISC",
   "dependencies": {
+    "@vercel/speed-insights": "^1.2.0",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
