@@ -1,72 +1,104 @@
-// merit.js — Enhanced merit list with better UX
+// merit.js — Enhanced stream-wise merit list
 document.addEventListener('DOMContentLoaded', () => {
-  const tbody = document.querySelector('#meritTable tbody');
-  const table = document.getElementById('meritTable');
   const loadingIndicator = document.getElementById('loadingIndicator');
   const emptyState = document.getElementById('emptyState');
   const refreshBtn = document.getElementById('refreshList');
+  
+  // Stream elements
+  const streamTabs = document.querySelectorAll('.stream-tab');
+  const streamContents = document.querySelectorAll('.stream-content');
+  const scienceBody = document.getElementById('scienceBody');
+  const artsBody = document.getElementById('artsBody');
+  const commerceBody = document.getElementById('commerceBody');
+  
+  let currentStream = 'Science';
+  let meritData = {};
 
   async function loadMeritList(showLoader = true) {
     try {
-      if (showLoader) {
-        showLoadingState();
+      if (showLoader) showLoadingState();
+      
+      const response = await fetch('/merit');
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       
-      const res = await fetch('http://localhost:5000/merit');
+      meritData = await response.json();
       
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
+      // Check if any stream has data
+      const hasData = Object.values(meritData).some(streamData => streamData.length > 0);
       
-      const rows = await res.json();
-      
-      hideLoadingState();
-      
-      if (!rows || rows.length === 0) {
+      if (!hasData) {
         showEmptyState();
-        return;
+      } else {
+        renderAllStreams();
+        showCurrentStream();
       }
-      
-      renderMeritList(rows);
       
     } catch (err) {
       console.error('Error loading merit list:', err);
-      hideLoadingState();
       showErrorState();
+    } finally {
+      hideLoadingState();
     }
   }
 
-  function renderMeritList(rows) {
+  function renderAllStreams() {
+    renderStreamList('Science', scienceBody);
+    renderStreamList('Arts', artsBody);
+    renderStreamList('Commerce', commerceBody);
+  }
+
+  function renderStreamList(stream, tbody) {
     tbody.innerHTML = '';
     
-    rows.forEach((student, index) => {
-      const tr = document.createElement('tr');
-      tr.className = 'fade-in';
-      tr.style.animationDelay = `${index * 0.05}s`;
+    const students = meritData[stream] || [];
+    
+    if (students.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="4" style="text-align: center; padding: var(--space-xl); color: var(--text-secondary);">
+            📝 No applications in ${stream} stream yet
+            <br><br>
+            <a href="form.html" class="btn btn-outline">Be the First to Apply</a>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+    
+    students.forEach((student, index) => {
+      const row = document.createElement('tr');
       
-      // Add medal icons for top 3
-      let rankDisplay = index + 1;
-      if (index === 0) rankDisplay = '🥇 1';
-      else if (index === 1) rankDisplay = '🥈 2';
-      else if (index === 2) rankDisplay = '🥉 3';
+      // Add special styling for top 3 ranks
+      if (index < 3) {
+        row.classList.add(`rank-${index + 1}`);
+      }
       
-      tr.innerHTML = `
-        <td><strong>${rankDisplay}</strong></td>
+      // Create rank badge
+      let rankDisplay = student.rank;
+      if (student.rank === 1) rankDisplay = '🥇 1st';
+      else if (student.rank === 2) rankDisplay = '🥈 2nd';
+      else if (student.rank === 3) rankDisplay = '🥉 3rd';
+      else rankDisplay = `${student.rank}th`;
+      
+      row.innerHTML = `
+        <td>
+          <span class="rank-badge ${student.rank <= 3 ? `rank-${student.rank}` : ''}">${rankDisplay}</span>
+        </td>
         <td>${escapeHtml(student.name)}</td>
-        <td><strong>${student.marks}%</strong></td>
-        <td>${escapeHtml(student.stream)}</td>
+        <td style="font-weight: 600; color: var(--primary);">${student.marks}%</td>
         <td>${escapeHtml(student.course)}</td>
       `;
       
-      tbody.appendChild(tr);
+      tbody.appendChild(row);
     });
-    
-    showTable();
   }
 
   function showLoadingState() {
     loadingIndicator.classList.remove('hidden');
-    table.classList.add('hidden');
+    streamContents.forEach(content => content.classList.add('hidden'));
     emptyState.classList.add('hidden');
   }
 
@@ -74,27 +106,35 @@ document.addEventListener('DOMContentLoaded', () => {
     loadingIndicator.classList.add('hidden');
   }
 
-  function showTable() {
-    table.classList.remove('hidden');
+  function showCurrentStream() {
+    // Hide all stream contents
+    streamContents.forEach(content => content.classList.remove('active'));
+    
+    // Show current stream
+    const currentContent = document.getElementById(`${currentStream.toLowerCase()}Table`);
+    if (currentContent) {
+      currentContent.classList.add('active');
+    }
+    
     emptyState.classList.add('hidden');
   }
 
   function showEmptyState() {
-    table.classList.add('hidden');
+    streamContents.forEach(content => content.classList.remove('active'));
     emptyState.classList.remove('hidden');
   }
 
   function showErrorState() {
-    tbody.innerHTML = `
+    scienceBody.innerHTML = commerceBody.innerHTML = artsBody.innerHTML = `
       <tr>
-        <td colspan="5" style="text-align: center; padding: var(--space-xl); color: var(--danger);">
+        <td colspan="4" style="text-align: center; padding: var(--space-xl); color: var(--danger);">
           ❌ Could not load merit list. Please check your connection and try again.
           <br><br>
           <button onclick="location.reload()" class="btn btn-outline">🔄 Retry</button>
         </td>
       </tr>
     `;
-    showTable();
+    showCurrentStream();
   }
 
   function escapeHtml(text) {
@@ -105,27 +145,42 @@ document.addEventListener('DOMContentLoaded', () => {
       '"': '&quot;',
       "'": '&#039;'
     };
-    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    return text.toString().replace(/[&<>"']/g, m => map[m]);
   }
+
+  // Tab switching functionality
+  streamTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const stream = tab.getAttribute('data-stream');
+      
+      // Update active tab
+      streamTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      
+      // Update current stream and show content
+      currentStream = stream;
+      showCurrentStream();
+    });
+  });
 
   // Refresh button handler
   refreshBtn.addEventListener('click', () => {
-    refreshBtn.disabled = true;
-    refreshBtn.innerHTML = '⏳ Refreshing...';
+    loadMeritList(true);
     
-    loadMeritList().finally(() => {
-      refreshBtn.disabled = false;
+    // Provide user feedback
+    refreshBtn.innerHTML = '⏳ Refreshing...';
+    setTimeout(() => {
       refreshBtn.innerHTML = '🔄 Refresh List';
-    });
+    }, 1000);
   });
 
   // Initial load
   loadMeritList();
   
-  // Auto-refresh every 30 seconds (increased from 15 for better performance)
+  // Auto-refresh every 30 seconds
   setInterval(() => loadMeritList(false), 30000);
   
-  // Refresh when page becomes visible (user switches back to tab)
+  // Refresh when page becomes visible
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) {
       loadMeritList(false);

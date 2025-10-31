@@ -82,11 +82,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateStats(rows) {
     const totalApplicants = rows.length;
-    const avgMarks = rows.length > 0 ? Math.round(rows.reduce((sum, r) => sum + r.marks, 0) / rows.length) : 0;
     const topMarks = rows.length > 0 ? Math.max(...rows.map(r => r.marks)) : 0;
     
+    // Count by stream
+    const scienceCount = rows.filter(r => r.stream === 'Science').length;
+    const artsCount = rows.filter(r => r.stream === 'Arts').length;
+    const commerceCount = rows.filter(r => r.stream === 'Commerce').length;
+    
     document.getElementById('totalApplicants').textContent = totalApplicants;
-    document.getElementById('avgMarks').textContent = avgMarks + '%';
+    document.getElementById('scienceCount').textContent = scienceCount;
+    document.getElementById('artsCount').textContent = artsCount;
+    document.getElementById('commerceCount').textContent = commerceCount;
     document.getElementById('topMarks').textContent = topMarks + '%';
   }
 

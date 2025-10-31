@@ -126,15 +126,43 @@ app.get("/students", async (req, res) => {
 
 app.get("/merit", async (req, res) => {
   try {
+    let allStudents;
+    
     if (mongoConnected && Student) {
-      // Get students sorted by marks (highest first)
-      const allStudents = await Student.find().sort({ marks: -1 });
-      res.json(allStudents);
+      // Get all students from MongoDB
+      allStudents = await Student.find().sort({ marks: -1 });
     } else {
-      // Sort in-memory students by marks (highest first)
-      const sortedStudents = [...students].sort((a, b) => b.marks - a.marks);
-      res.json(sortedStudents);
+      // Use in-memory students
+      allStudents = [...students];
     }
+
+    // Group students by stream and sort by marks
+    const meritByStream = {
+      Science: [],
+      Arts: [],
+      Commerce: []
+    };
+
+    // Group students by their stream
+    allStudents.forEach(student => {
+      const stream = student.stream;
+      if (meritByStream[stream]) {
+        meritByStream[stream].push(student);
+      }
+    });
+
+    // Sort each stream by marks (highest first) and add rank
+    Object.keys(meritByStream).forEach(stream => {
+      meritByStream[stream] = meritByStream[stream]
+        .sort((a, b) => b.marks - a.marks)
+        .map((student, index) => ({
+          ...student.toObject ? student.toObject() : student,
+          rank: index + 1,
+          stream: stream
+        }));
+    });
+
+    res.json(meritByStream);
   } catch (error) {
     console.error("Error fetching merit list:", error);
     res.status(500).json({ error: "Failed to fetch merit list" });

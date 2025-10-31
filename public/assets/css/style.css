@@ -743,3 +743,76 @@ button:focus,
 
 .w-full { width: 100%; }
 .h-full { height: 100%; }
+
+/* Stream Tabs */
+.stream-tabs {
+  display: flex;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-lg);
+  border-bottom: 2px solid var(--border);
+}
+
+.stream-tab {
+  padding: var(--space-md) var(--space-lg);
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.stream-tab:hover {
+  background: var(--bg-secondary);
+  color: var(--text);
+}
+
+.stream-tab.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  background: var(--bg-secondary);
+}
+
+/* Stream Content */
+.stream-content {
+  display: none;
+}
+
+.stream-content.active {
+  display: block;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.stream-header {
+  margin-bottom: var(--space-lg);
+  padding: var(--space-md);
+  background: linear-gradient(135deg, rgba(30, 64, 175, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--primary);
+}
+
+.stream-header h4 {
+  margin: 0 0 var(--space-xs) 0;
+  color: var(--text);
+  font-size: 1.2rem;
+}
+
+.stream-header p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Rank styling */
+.rank-1 { background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); color: #000; }
+.rank-2 { background: linear-gradient(135deg, #c0c0c0 0%, #e5e5e5 100%); color: #000; }
+.rank-3 { background: linear-gradient(135deg, #cd7f32 0%, #daa520 100%); color: #fff; }
+
+.rank-badge {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
