@@ -146,8 +146,10 @@ app.get("/merit", async (req, res) => {
     // Group students by their stream
     allStudents.forEach(student => {
       const stream = student.stream;
-      if (meritByStream[stream]) {
+      if (meritByStream.hasOwnProperty(stream)) {
         meritByStream[stream].push(student);
+      } else {
+        console.log(`Unknown stream found: ${stream}`);
       }
     });
 
@@ -155,13 +157,22 @@ app.get("/merit", async (req, res) => {
     Object.keys(meritByStream).forEach(stream => {
       meritByStream[stream] = meritByStream[stream]
         .sort((a, b) => b.marks - a.marks)
-        .map((student, index) => ({
-          ...student.toObject ? student.toObject() : student,
-          rank: index + 1,
-          stream: stream
-        }));
+        .map((student, index) => {
+          const studentData = student.toObject ? student.toObject() : student;
+          return {
+            ...studentData,
+            rank: index + 1,
+            stream: stream
+          };
+        });
     });
 
+    console.log('Merit data being sent:', {
+      Science: meritByStream.Science.length,
+      Arts: meritByStream.Arts.length,
+      Commerce: meritByStream.Commerce.length
+    });
+    
     res.json(meritByStream);
   } catch (error) {
     console.error("Error fetching merit list:", error);

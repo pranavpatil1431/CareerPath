@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merit List Debug</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Merit List Debug</h1>
+        
+        <!-- Stream Tabs -->
+        <div class="stream-tabs">
+            <button class="stream-tab active" data-stream="Science">🔬 Science</button>
+            <button class="stream-tab" data-stream="Arts">🎨 Arts</button>
+            <button class="stream-tab" data-stream="Commerce">💼 Commerce</button>
+        </div>
+        
+        <div id="loadingIndicator">
+            <p>Loading merit lists...</p>
+        </div>
+        
+        <!-- Science Stream Table -->
+        <div id="scienceTable" class="stream-content active">
+            <h4>🔬 Science Stream Merit List</h4>
+            <table class="doc-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Marks</th>
+                        <th>Course</th>
+                    </tr>
+                </thead>
+                <tbody id="scienceBody">
+                    <tr>
+                        <td>1st</td>
+                        <td>Test Student</td>
+                        <td>95%</td>
+                        <td>Computer Science</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Arts Stream Table -->
+        <div id="artsTable" class="stream-content">
+            <h4>🎨 Arts Stream Merit List</h4>
+            <table class="doc-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Marks</th>
+                        <th>Course</th>
+                    </tr>
+                </thead>
+                <tbody id="artsBody">
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Commerce Stream Table -->
+        <div id="commerceTable" class="stream-content">
+            <h4>💼 Commerce Stream Merit List</h4>
+            <table class="doc-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Marks</th>
+                        <th>Course</th>
+                    </tr>
+                </thead>
+                <tbody id="commerceBody">
+                </tbody>
+            </table>
+        </div>
+        
+        <div id="emptyState" class="hidden">
+            <p>No applications yet</p>
+        </div>
+        
+        <button onclick="testAPI()">Test API</button>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        console.log('Debug page loaded');
+        
+        // Test tab switching
+        document.querySelectorAll('.stream-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const stream = tab.getAttribute('data-stream');
+                console.log('Tab clicked:', stream);
+                
+                // Update active tab
+                document.querySelectorAll('.stream-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Update active content
+                document.querySelectorAll('.stream-content').forEach(c => c.classList.remove('active'));
+                const content = document.getElementById(`${stream.toLowerCase()}Table`);
+                if (content) {
+                    content.classList.add('active');
+                    console.log('Showing content for:', stream);
+                } else {
+                    console.error('Content not found for:', stream);
+                }
+            });
+        });
+        
+        async function testAPI() {
+            try {
+                const response = await fetch('/merit');
+                const data = await response.json();
+                console.log('API Response:', data);
+                document.getElementById('results').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                console.error('API Error:', error);
+                document.getElementById('results').innerHTML = 'API Error: ' + error.message;
+            }
+        }
+        
+        // Test on load
+        testAPI();
+    </script>
+</body>
+</html>
