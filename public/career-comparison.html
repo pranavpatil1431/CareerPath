@@ -9,26 +9,100 @@
   <title>Career Comparison — CareerPath</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
+    body {
+      display: flex;
+      min-height: 100vh;
+      margin: 0;
+    }
+    
+    .sidebar-nav {
+      width: 300px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 1rem;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      left: 0;
+      top: 0;
+      z-index: 1000;
+    }
+    
+    .brand-sidebar {
+      font-size: 1.8rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid rgba(255,255,255,0.2);
+    }
+    
+    .nav-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+    
+    .nav-item {
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-item:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateX(5px);
+    }
+    
+    .nav-item a {
+      color: white;
+      text-decoration: none;
+      display: block;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .nav-item.active {
+      background: rgba(255,255,255,0.3);
+      border-left: 4px solid white;
+    }
+    
+    .nav-item.btn-link {
+      background: linear-gradient(135deg, #74b9ff, #0984e3);
+      margin-top: 1rem;
+    }
+    
+    .main-content {
+      margin-left: 300px;
+      flex: 1;
+      padding: 0;
+    }
+    
+    .nav {
+      display: none;
+    }
+    
     .comparison-hero {
       background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%);
       color: white;
       padding: 3rem 2rem;
       border-radius: 15px;
       text-align: center;
-      margin: 2rem 0;
+      margin: 2rem;
     }
     .career-selector {
       background: #f8f9fa;
       padding: 2rem;
       border-radius: 15px;
-      margin: 2rem 0;
+      margin: 2rem;
     }
     .comparison-table {
       background: white;
       border-radius: 15px;
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      margin: 2rem 0;
+      margin: 2rem;
     }
     .comparison-header {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -98,25 +172,79 @@
   </style>
 </head>
 <body>
-  <nav class="nav">
-    <div class="container nav-inner">
-      <div class="brand">CareerPath</div>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="admission.html">Admission Process</a></li>
-        <li><a href="courses.html">Courses & Syllabus</a></li>
-        <li><a href="exams.html">Entrance Exams</a></li>
-        <li><a href="colleges.html">Colleges</a></li>
-        <li><a href="allotment.html">Allotment</a></li>
-        <li><a href="ai-features.html">AI Tools</a></li>
-        <li><a href="scholarships.html">Scholarships</a></li>
-        <li><a href="mentor.html">Mentor</a></li>
-        <li><a href="career-comparison.html" class="active">Career Compare</a></li>
-        <li><a href="form.html" class="btn-link">Apply</a></li>
-        <li><a href="merit.html">Merit List</a></li>
-      </ul>
+  <!-- Sidebar Navigation -->
+  <nav class="sidebar-nav">
+    <div class="brand-sidebar">CareerPath</div>
+    <div class="nav-grid">
+      <div class="nav-item">
+        <a href="index.html">🏠 Home</a>
+      </div>
+      <div class="nav-item">
+        <a href="admission.html">📝 Admission Process</a>
+      </div>
+      <div class="nav-item">
+        <a href="courses.html">📚 Courses</a>
+      </div>
+      <div class="nav-item">
+        <a href="syllabus-guidance.html">📖 Syllabus & Guidance</a>
+      </div>
+      <div class="nav-item">
+        <a href="exams.html">🎯 Entrance Exams</a>
+      </div>
+      <div class="nav-item">
+        <a href="colleges.html">🏫 Colleges</a>
+      </div>
+      <div class="nav-item">
+        <a href="allotment.html">🎲 Allotment</a>
+      </div>
+      <div class="nav-item">
+        <a href="ai-features.html">🤖 AI Tools</a>
+      </div>
+      <div class="nav-item">
+        <a href="scholarships.html">🎓 Scholarships</a>
+      </div>
+      <div class="nav-item">
+        <a href="mentor.html">👨‍🏫 Mentor</a>
+      </div>
+      <div class="nav-item active">
+        <a href="career-comparison.html">⚖️ Career Compare</a>
+      </div>
+      <div class="nav-item">
+        <a href="important-dates.html">📅 Important Dates</a>
+      </div>
+      <div class="nav-item">
+        <a href="contact.html">📞 Contact</a>
+      </div>
+      <div class="nav-item">
+        <a href="merit.html">📊 Merit List</a>
+      </div>
+      <div class="nav-item btn-link">
+        <a href="form.html">🚀 Apply Now</a>
+      </div>
     </div>
   </nav>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <nav class="nav">
+      <div class="container nav-inner">
+        <div class="brand">CareerPath</div>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="admission.html">Admission Process</a></li>
+          <li><a href="courses.html">Courses & Syllabus</a></li>
+          <li><a href="exams.html">Entrance Exams</a></li>
+          <li><a href="colleges.html">Colleges</a></li>
+          <li><a href="allotment.html">Allotment</a></li>
+          <li><a href="ai-features.html">AI Tools</a></li>
+          <li><a href="scholarships.html">Scholarships</a></li>
+          <li><a href="mentor.html">Mentor</a></li>
+          <li><a href="career-comparison.html" class="active">Career Compare</a></li>
+          <li><a href="form.html" class="btn-link">Apply</a></li>
+          <li><a href="merit.html">Merit List</a></li>
+        </ul>
+      </div>
+    </nav>
 
   <main class="container main">
     <section class="comparison-hero">
@@ -232,7 +360,7 @@
     </section>
 
     <!-- Career Categories -->
-    <section style="margin: 3rem 0;">
+    <section style="margin: 3rem 2rem;">
       <h2>🎓 Popular Career Categories</h2>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0;">
         <div style="background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; padding: 2rem; border-radius: 15px;">
@@ -280,10 +408,10 @@
         </div>
       </div>
     </section>
-  </main>
+  </div>
 
   <footer class="footer">
-    <div class="container footer-inner">
+    <div class="container footer-inner" style="margin-left: 300px;">
       <div>© 2025 CareerPath</div>
       <div>Contact: careerpath@example.com</div>
     </div>
