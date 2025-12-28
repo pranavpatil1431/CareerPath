@@ -13,6 +13,12 @@
     }
   ],
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "MONGODB_URI": "@mongodb_uri"
+  },
+  "functions": {
+    "server-vercel.js": {
+      "maxDuration": 30
+    }
   }
 }

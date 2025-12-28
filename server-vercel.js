@@ -1,8 +1,16 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const path = require("path");
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import bodyParser from "body-parser";
+import path from "path";
+import { fileURLToPath } from "url";
+import dotenv from "dotenv";
+
+// Load environment variables
+dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
@@ -12,7 +20,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ✅ MongoDB Configuration
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://teju_db_user:patil%400409@cluster0.f54cehb.mongodb.net/careerpath";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/careerpath";
 
 // Student Schema
 const studentSchema = new mongoose.Schema({
@@ -280,24 +288,8 @@ app.get("/admin/applicants", verifyAdminToken, async (req, res) => {
   }
 });
 
-// ✅ Start Server
-const PORT = process.env.PORT || 5000;
-
-// For Vercel, don't start the server
-if (process.env.VERCEL !== "1") {
-  const server = app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`📱 Access your app at: http://localhost:${PORT}`);
-  });
-
-  server.on('error', (err) => {
-    console.error('❌ Server error:', err);
-    if (err.code === 'EADDRINUSE') {
-      console.log('💡 Port is already in use.');
-      process.exit(1);
-    }
-  });
-}
+// ✅ Start Server - Initialize MongoDB connection
+connectToMongoDB();
 
 // Export for Vercel
-module.exports = app;
+export default app;
