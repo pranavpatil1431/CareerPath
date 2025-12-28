@@ -431,13 +431,13 @@
           </div>
           
           <div class="form-group">
-            <label for="phone">Phone Number *</label>
-            <input type="tel" id="phone" placeholder="+1 (555) 123-4567" required>
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="+1 (555) 123-4567">
           </div>
           
           <div class="form-group">
-            <label for="dateOfBirth">Date of Birth *</label>
-            <input type="date" id="dateOfBirth" required>
+            <label for="dateOfBirth">Date of Birth</label>
+            <input type="date" id="dateOfBirth">
           </div>
           
           <div class="form-group">
@@ -494,8 +494,8 @@
           </div>
           
           <div class="form-group full-width">
-            <label for="address">Complete Address *</label>
-            <textarea id="address" rows="3" placeholder="Enter your complete address with city, state, and postal code" required></textarea>
+            <label for="address">Complete Address</label>
+            <textarea id="address" rows="3" placeholder="Enter your complete address with city, state, and postal code (optional)"></textarea>
           </div>
           
           <div class="form-group full-width">
@@ -604,32 +604,49 @@
         };
         
         // Validate required fields
-        const requiredFields = ['fullName', 'email', 'phone', 'dateOfBirth', 'marks', 'stream', 'preferredCourse', 'address'];
+        const requiredFields = ['fullName', 'email', 'marks', 'stream', 'preferredCourse'];
         let isValid = true;
+        let firstInvalidField = null;
         
+        // Reset all field borders first
+        const allFields = ['fullName', 'email', 'phone', 'dateOfBirth', 'marks', 'stream', 'preferredCourse', 'address'];
+        allFields.forEach(fieldId => {
+          const element = document.getElementById(fieldId);
+          if (element) {
+            element.style.borderColor = '#e0e0e0';
+          }
+        });
+        
+        // Check required fields
         for (let field of requiredFields) {
           const element = document.getElementById(field);
-          if (!element.value.trim()) {
-            element.style.borderColor = '#e74c3c';
-            element.focus();
+          if (!element || !element.value.trim()) {
+            if (element) {
+              element.style.borderColor = '#e74c3c';
+              if (!firstInvalidField) firstInvalidField = element;
+            }
             isValid = false;
-            break;
-          } else {
-            element.style.borderColor = '#e0e0e0';
           }
         }
         
-        // Validate email format
+        // Validate email format only if email is provided
+        const emailElement = document.getElementById('email');
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (isValid && !emailRegex.test(formData.email)) {
-          document.getElementById('email').style.borderColor = '#e74c3c';
+        if (emailElement && emailElement.value && !emailRegex.test(emailElement.value)) {
+          emailElement.style.borderColor = '#e74c3c';
+          if (!firstInvalidField) firstInvalidField = emailElement;
           isValid = false;
         }
         
-        // Validate marks range
-        if (isValid && (formData.marks < 0 || formData.marks > 100)) {
-          document.getElementById('marks').style.borderColor = '#e74c3c';
-          isValid = false;
+        // Validate marks range only if marks are provided
+        const marksElement = document.getElementById('marks');
+        if (marksElement && marksElement.value) {
+          const marksValue = parseFloat(marksElement.value);
+          if (isNaN(marksValue) || marksValue < 0 || marksValue > 100) {
+            marksElement.style.borderColor = '#e74c3c';
+            if (!firstInvalidField) firstInvalidField = marksElement;
+            isValid = false;
+          }
         }
         
         if (!isValid) {
@@ -637,50 +654,66 @@
           submitText.style.display = 'inline';
           submitLoader.style.display = 'none';
           submitBtn.disabled = false;
-          errorMessage.style.display = 'block';
+          
+          // Show error message with specific details
+          const errorMsg = document.getElementById('errorMessage');
+          errorMsg.innerHTML = `
+            <h3>❌ Please Complete Required Fields</h3>
+            <p>Please fill in all required fields marked with * and ensure your email and marks are valid.</p>
+          `;
+          errorMsg.style.display = 'block';
+          errorMsg.scrollIntoView({ behavior: 'smooth' });
+          
+          // Focus on first invalid field
+          if (firstInvalidField) {
+            setTimeout(() => firstInvalidField.focus(), 500);
+          }
           return;
         }
         
         try {
-          // Simulate API call
-          await new Promise(resolve => setTimeout(resolve, 2000));
+          // Simulate processing time
+          await new Promise(resolve => setTimeout(resolve, 1500));
           
-          // Simulate server response
-          const response = await fetch('/api/submit-application', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData)
-          }).catch(() => {
-            // Simulate successful submission for demo
-            return { ok: true, json: () => ({ success: true, applicationId: 'APP' + Math.random().toString(36).substr(2, 9).toUpperCase() }) };
-          });
+          // For demo purposes, always show success
+          // In production, this would be a real API call
+          const applicationId = 'APP' + Math.random().toString(36).substr(2, 9).toUpperCase();
           
-          const result = await response.json();
+          // Success response
+          const successMsg = document.getElementById('successMessage');
+          successMsg.innerHTML = `
+            <h3>🎉 Application Submitted Successfully!</h3>
+            <p><strong>Application ID:</strong> ${applicationId}</p>
+            <p>Thank you, <strong>${formData.fullName}</strong>! Your application for <strong>${formData.preferredCourse}</strong> has been received.</p>
+            <p>📧 A confirmation email will be sent to <strong>${formData.email}</strong> within the next few minutes.</p>
+            <p>💡 Keep your Application ID for future reference.</p>
+          `;
+          successMsg.style.display = 'block';
+          successMsg.scrollIntoView({ behavior: 'smooth' });
           
-          if (response.ok && result.success) {
-            // Success
-            successMessage.style.display = 'block';
-            successMessage.scrollIntoView({ behavior: 'smooth' });
-            form.reset();
-            
-            // Store application data in localStorage for reference
-            localStorage.setItem('lastApplication', JSON.stringify({
-              ...formData,
-              applicationId: result.applicationId || 'APP' + Math.random().toString(36).substr(2, 9).toUpperCase(),
-              submissionDate: new Date().toISOString()
-            }));
-            
-          } else {
-            // Error
-            errorMessage.style.display = 'block';
-            errorMessage.scrollIntoView({ behavior: 'smooth' });
-          }
+          // Clear form
+          form.reset();
+          
+          // Store application data in localStorage for reference
+          localStorage.setItem('lastApplication', JSON.stringify({
+            ...formData,
+            applicationId: applicationId,
+            submissionDate: new Date().toISOString()
+          }));
+          
+          // Clear draft data
+          localStorage.removeItem('draftApplication');
+          
         } catch (error) {
           console.error('Submission error:', error);
-          errorMessage.style.display = 'block';
-          errorMessage.scrollIntoView({ behavior: 'smooth' });
+          const errorMsg = document.getElementById('errorMessage');
+          errorMsg.innerHTML = `
+            <h3>❌ Submission Failed</h3>
+            <p>There was a technical error processing your application. Please try again in a few moments.</p>
+            <p>If the problem persists, please contact our support team.</p>
+          `;
+          errorMsg.style.display = 'block';
+          errorMsg.scrollIntoView({ behavior: 'smooth' });
         } finally {
           // Reset button state
           submitText.style.display = 'inline';
