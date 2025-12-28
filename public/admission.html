@@ -5,6 +5,59 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Admission Process — CareerPath</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .admission-hero {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 3rem 2rem;
+      border-radius: 15px;
+      text-align: center;
+      margin: 2rem 0;
+    }
+    .process-step {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      margin: 1rem 0;
+      border-left: 4px solid #667eea;
+    }
+    .exam-card {
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      transition: transform 0.3s ease;
+    }
+    .exam-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .reservation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .reservation-card {
+      text-align: center;
+      padding: 1.5rem;
+      border-radius: 10px;
+      color: white;
+    }
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .tip-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+    }
+  </style>
 </head>
 <body>
   <nav class="nav">
@@ -12,70 +65,259 @@
       <div class="brand">CareerPath</div>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
-        <li><a href="admission.html" class="btn-link">Admission Process</a></li>
+        <li><a href="admission.html" class="active">Admission Process</a></li>
         <li><a href="courses.html">Courses & Syllabus</a></li>
         <li><a href="exams.html">Entrance Exams</a></li>
         <li><a href="colleges.html">Colleges</a></li>
         <li><a href="allotment.html">Allotment</a></li>
-        <li><a href="form.html">Apply</a></li>
+        <li><a href="ai-features.html">AI Tools</a></li>
+        <li><a href="scholarships.html">Scholarships</a></li>
+        <li><a href="mentor.html">Mentor</a></li>
+        <li><a href="form.html" class="btn-link">Apply</a></li>
         <li><a href="merit.html">Merit List</a></li>
       </ul>
     </div>
   </nav>
 
   <main class="container main">
-    <div class="hero text-center mb-xl">
-      <h1>📋 Admission Process</h1>
-      <p>Everything you need to know about our streamlined admission process. Follow these simple steps to secure your future.</p>
-    </div>
+    <section class="admission-hero">
+      <h1>📋 Comprehensive Admission Process</h1>
+      <p>Your complete guide to admissions with online forms, counseling, exam preparation, and everything you need to know for successful admission.</p>
+    </section>
 
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">📝</div>
-        <h3>Step 1: Application</h3>
-        <p>Fill out our online application form with your personal details, academic records, and course preferences.</p>
-        <a href="form.html" class="btn mt-md">Start Application</a>
-      </div>
+    <!-- Online Application Forms -->
+    <section class="card">
+      <h2>🔗 Online Application Forms</h2>
+      <p>Apply directly through our secure online portal. Choose the appropriate form based on your course preference:</p>
       
-      <div class="feature-card">
-        <div class="feature-icon">📊</div>
-        <h3>Step 2: Merit List</h3>
-        <p>Check your ranking on our live merit list based on your academic performance and application submission time.</p>
-        <a href="merit.html" class="btn btn-outline mt-md">View Merit List</a>
-      </div>
-      
-      <div class="feature-card">
-        <div class="feature-icon">🎓</div>
-        <h3>Step 3: Selection</h3>
-        <p>Selected candidates will be notified via email and SMS. Check your application status regularly for updates.</p>
-      </div>
-    </div>
-
-    <div class="card mt-xl">
-      <h2>📋 Required Documents</h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-lg); margin-top: var(--space-lg);">
-        <div>
-          <h4>🎓 Academic Documents</h4>
-          <ul style="margin: var(--space-md) 0; padding-left: var(--space-lg); color: var(--text-secondary);">
-            <li>12th Grade Mark Sheet</li>
-            <li>12th Grade Certificate</li>
-            <li>Transfer Certificate</li>
-            <li>Migration Certificate (if applicable)</li>
-          </ul>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+        <div style="background: #e3f2fd; padding: 1.5rem; border-radius: 10px; text-align: center;">
+          <div style="font-size: 2rem; margin-bottom: 1rem;">💻</div>
+          <h4>Engineering Courses</h4>
+          <p>Apply for B.Tech programs in various specializations</p>
+          <a href="form.html?stream=Science&course=Engineering" class="btn">Apply for Engineering</a>
         </div>
-        <div>
-          <h4>🆔 Identity Documents</h4>
-          <ul style="margin: var(--space-md) 0; padding-left: var(--space-lg); color: var(--text-secondary);">
-            <li>Aadhaar Card</li>
-            <li>PAN Card</li>
-            <li>Passport Size Photographs</li>
-            <li>Signature Specimen</li>
-          </ul>
+        
+        <div style="background: #f3e5f5; padding: 1.5rem; border-radius: 10px; text-align: center;">
+          <div style="font-size: 2rem; margin-bottom: 1rem;">🩺</div>
+          <h4>Medical Courses</h4>
+          <p>Apply for MBBS and other medical programs</p>
+          <a href="form.html?stream=Science&course=Medical" class="btn">Apply for Medical</a>
+        </div>
+        
+        <div style="background: #e8f5e8; padding: 1.5rem; border-radius: 10px; text-align: center;">
+          <div style="font-size: 2rem; margin-bottom: 1rem;">💼</div>
+          <h4>Commerce Courses</h4>
+          <p>Apply for B.Com, BBA, CA and management programs</p>
+          <a href="form.html?stream=Commerce" class="btn">Apply for Commerce</a>
+        </div>
+        
+        <div style="background: #fff3e0; padding: 1.5rem; border-radius: 10px; text-align: center;">
+          <div style="font-size: 2rem; margin-bottom: 1rem;">🎨</div>
+          <h4>Arts & Humanities</h4>
+          <p>Apply for BA, Law, and liberal arts programs</p>
+          <a href="form.html?stream=Arts" class="btn">Apply for Arts</a>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="card mt-xl">
+    <!-- Step-by-Step Process -->
+    <section class="card">
+      <h2>📚 Step-by-Step Admission Process</h2>
+      
+      <div class="process-step">
+        <h3>Step 1: Online Application</h3>
+        <p>Fill out our secure online application form with personal details, academic records, and course preferences.</p>
+        <a href="form.html" class="btn">Start Application</a>
+      </div>
+      
+      <div class="process-step">
+        <h3>Step 2: Document Verification</h3>
+        <p>Upload required documents including academic certificates, identity proofs, and category certificates.</p>
+      </div>
+      
+      <div class="process-step">
+        <h3>Step 3: Merit List Publication</h3>
+        <p>Check your ranking on our live merit list based on academic performance and entrance exam scores.</p>
+        <a href="merit.html" class="btn btn-outline">View Merit List</a>
+      </div>
+      
+      <div class="process-step">
+        <h3>Step 4: Counseling Process</h3>
+        <p>Attend mandatory counseling sessions for course selection and seat allocation.</p>
+        <a href="mentor.html" class="btn btn-outline">Book Counseling</a>
+      </div>
+    </section>
+
+    <!-- Counseling Process -->
+    <section class="card">
+      <h2>🗣️ Counseling Process</h2>
+      <p>Our comprehensive counseling process ensures you get the right course and college based on your merit and preferences.</p>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0;">
+        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; border-left: 4px solid #28a745;">
+          <h4>📅 Round 1 - Online Counseling</h4>
+          <ul style="margin: 1rem 0; padding-left: 2rem; color: #666;">
+            <li>Date: April 10-15, 2026</li>
+            <li>Choice filling and locking</li>
+            <li>Seat allocation based on merit</li>
+            <li>Online document verification</li>
+          </ul>
+        </div>
+        
+        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; border-left: 4px solid #007bff;">
+          <h4>🏢 Round 2 - Physical Counseling</h4>
+          <ul style="margin: 1rem 0; padding-left: 2rem; color: #666;">
+            <li>Date: April 20-25, 2026</li>
+            <li>In-person counseling sessions</li>
+            <li>Final seat confirmation</li>
+            <li>Fee payment and admission</li>
+          </ul>
+        </div>
+        
+        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; border-left: 4px solid #ffc107;">
+          <h4>🔄 Spot Round (if applicable)</h4>
+          <ul style="margin: 1rem 0; padding-left: 2rem; color: #666;">
+            <li>Date: May 1-5, 2026</li>
+            <li>Vacant seat allocation</li>
+            <li>Walk-in counseling</li>
+            <li>Immediate admission process</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin: 1rem 0;">
+        <h4>💰 Counseling Fees:</h4>
+        <ul style="margin: 1rem 0; padding-left: 2rem;">
+          <li>General Category: ₹2,000</li>
+          <li>OBC Category: ₹1,500</li>
+          <li>SC/ST Category: ₹1,000</li>
+          <li>EWS Category: ₹1,200</li>
+        </ul>
+        <p><strong>Note:</strong> Counseling fee is adjustable against the course fee upon admission.</p>
+      </div>
+    </section>
+
+    <!-- Reservation Information -->
+    <section class="card">
+      <h2>🎯 Reservation Information</h2>
+      <p>Seat reservation as per government norms to ensure equal opportunities for all sections of society.</p>
+      
+      <div class="reservation-grid">
+        <div class="reservation-card" style="background: #2196f3;">
+          <h4>General Category</h4>
+          <div style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">40%</div>
+          <p>Open competition seats</p>
+        </div>
+        
+        <div class="reservation-card" style="background: #9c27b0;">
+          <h4>OBC</h4>
+          <div style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">27%</div>
+          <p>Other Backward Class</p>
+        </div>
+        
+        <div class="reservation-card" style="background: #4caf50;">
+          <h4>SC</h4>
+          <div style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">15%</div>
+          <p>Scheduled Caste</p>
+        </div>
+        
+        <div class="reservation-card" style="background: #ff9800;">
+          <h4>ST</h4>
+          <div style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">7.5%</div>
+          <p>Scheduled Tribe</p>
+        </div>
+        
+        <div class="reservation-card" style="background: #e91e63;">
+          <h4>EWS</h4>
+          <div style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">10%</div>
+          <p>Economically Weaker Section</p>
+        </div>
+        
+        <div class="reservation-card" style="background: #00695c;">
+          <h4>PWD</h4>
+          <div style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">5%</div>
+          <p>Persons with Disabilities</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Entrance Exam Information -->
+    <section class="card">
+      <h2>📚 Entrance Exam Information</h2>
+      <p>Important information about entrance exams required for various courses:</p>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin: 2rem 0;">
+        <div class="exam-card" style="border-color: #2196f3;">
+          <h4>🏗️ Engineering Entrance Exams</h4>
+          <div style="margin: 1rem 0;">
+            <strong>JEE Main 2026:</strong>
+            <ul style="margin: 0.5rem 0; padding-left: 2rem;">
+              <li>Application: December 2025 - January 2026</li>
+              <li>Exam Date: April 2026</li>
+              <li>Eligibility: 12th with PCM (75% marks)</li>
+              <li>Pattern: CBT (Computer Based Test)</li>
+            </ul>
+          </div>
+          <div style="margin: 1rem 0;">
+            <strong>JEE Advanced 2026:</strong>
+            <ul style="margin: 0.5rem 0; padding-left: 2rem;">
+              <li>Eligibility: JEE Main qualified (Top 2.5 lakh)</li>
+              <li>Exam Date: May 2026</li>
+              <li>For IITs and top engineering colleges</li>
+            </ul>
+          </div>
+          <a href="exams.html" class="btn btn-outline">View Exam Details</a>
+        </div>
+        
+        <div class="exam-card" style="border-color: #4caf50;">
+          <h4>🩺 Medical Entrance Exams</h4>
+          <div style="margin: 1rem 0;">
+            <strong>NEET 2026:</strong>
+            <ul style="margin: 0.5rem 0; padding-left: 2rem;">
+              <li>Application: February - March 2026</li>
+              <li>Exam Date: May 2026</li>
+              <li>Eligibility: 12th with PCB (50% marks)</li>
+              <li>Pattern: Pen & Paper (OMR based)</li>
+            </ul>
+          </div>
+          <div style="margin: 1rem 0;">
+            <strong>AIIMS MBBS:</strong>
+            <ul style="margin: 0.5rem 0; padding-left: 2rem;">
+              <li>Through NEET scores</li>
+              <li>Centralized counseling</li>
+              <li>For AIIMS and JIPMER</li>
+            </ul>
+          </div>
+          <a href="exams.html" class="btn btn-outline">Medical Exam Info</a>
+        </div>
+        
+        <div class="exam-card" style="border-color: #ff9800;">
+          <h4>⚖️ Law Entrance Exams</h4>
+          <div style="margin: 1rem 0;">
+            <strong>CLAT 2026:</strong>
+            <ul style="margin: 0.5rem 0; padding-left: 2rem;">
+              <li>Application: January - February 2026</li>
+              <li>Exam Date: May 2026</li>
+              <li>For 5-year integrated LLB</li>
+              <li>Pattern: Online MCQ based</li>
+            </ul>
+          </div>
+          <div style="margin: 1rem 0;">
+            <strong>LSAT India:</strong>
+            <ul style="margin: 0.5rem 0; padding-left: 2rem;">
+              <li>Multiple attempts per year</li>
+              <li>For private law colleges</li>
+              <li>Computer-based test</li>
+            </ul>
+          </div>
+          <a href="exams.html" class="btn btn-outline">Law Exam Details</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Important Dates -->
+    <section class="card">
       <h2>📅 Important Dates</h2>
       <table class="doc-table">
         <thead>
@@ -102,34 +344,144 @@
             <td>2:00 PM</td>
           </tr>
           <tr>
+            <td>Counseling Round 1</td>
+            <td>April 10-15, 2026</td>
+            <td>Online</td>
+          </tr>
+          <tr>
+            <td>Counseling Round 2</td>
+            <td>April 20-25, 2026</td>
+            <td>Physical</td>
+          </tr>
+          <tr>
             <td>Admission Confirmation</td>
-            <td>April 5, 2026</td>
+            <td>May 5, 2026</td>
             <td>5:00 PM</td>
           </tr>
         </tbody>
       </table>
-    </div>
+    </section>
 
-    <div class="card mt-xl">
-      <h2>💰 Fee Structure</h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-lg); margin-top: var(--space-lg);">
-        <div class="card" style="text-align: center;">
-          <h4>💎 Premium Package</h4>
-          <div style="font-size: 2rem; font-weight: 800; color: var(--primary); margin: var(--space-md) 0;">₹50,000</div>
-          <p>Complete course with additional benefits and premium support.</p>
+    <!-- Preparation Tips -->
+    <section class="card">
+      <h2>💡 Exam Preparation Tips</h2>
+      <p>Expert tips and strategies to help you succeed in competitive entrance exams:</p>
+      
+      <div class="tips-grid">
+        <div class="tip-card">
+          <h4>📅 Time Management</h4>
+          <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+            <li>Create a realistic study schedule</li>
+            <li>Allocate time for each subject</li>
+            <li>Include breaks and revision time</li>
+            <li>Practice time-bound mock tests</li>
+            <li>Maintain consistency in daily study</li>
+          </ul>
         </div>
-        <div class="card" style="text-align: center;">
-          <h4>⭐ Standard Package</h4>
-          <div style="font-size: 2rem; font-weight: 800; color: var(--primary); margin: var(--space-md) 0;">₹35,000</div>
-          <p>Regular course with standard support and resources.</p>
+        
+        <div class="tip-card">
+          <h4>📚 Study Strategy</h4>
+          <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+            <li>Focus on NCERT books as foundation</li>
+            <li>Understand concepts rather than rote learning</li>
+            <li>Solve previous year question papers</li>
+            <li>Take regular mock tests and analyze</li>
+            <li>Join online forums for doubt clearing</li>
+          </ul>
         </div>
-        <div class="card" style="text-align: center;">
-          <h4>🎯 Basic Package</h4>
-          <div style="font-size: 2rem; font-weight: 800; color: var(--primary); margin: var(--space-md) 0;">₹25,000</div>
-          <p>Essential course content with basic support.</p>
+        
+        <div class="tip-card">
+          <h4>🎯 Exam Strategy</h4>
+          <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+            <li>Read questions carefully</li>
+            <li>Attempt easy questions first</li>
+            <li>Manage negative marking wisely</li>
+            <li>Keep track of time during exam</li>
+            <li>Stay calm and focused</li>
+          </ul>
+        </div>
+        
+        <div class="tip-card">
+          <h4>💪 Health & Wellness</h4>
+          <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+            <li>Maintain proper sleep schedule</li>
+            <li>Exercise regularly for mental fitness</li>
+            <li>Eat healthy and nutritious food</li>
+            <li>Practice meditation for stress relief</li>
+            <li>Take short breaks between studies</li>
+          </ul>
         </div>
       </div>
-    </div>
+      
+      <div style="background: #e8f5e8; padding: 2rem; border-radius: 10px; margin: 2rem 0; border-left: 4px solid #4caf50;">
+        <h4>🚀 Free Preparation Resources:</h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0;">
+          <a href="ai-features.html" class="btn">🤖 AI Study Assistant</a>
+          <a href="mentor.html" class="btn btn-outline">👨‍🏫 Expert Mentorship</a>
+          <a href="scholarships.html" class="btn btn-outline">💰 Financial Support</a>
+        </div>
+        <p style="margin-top: 1rem;"><strong>Pro Tip:</strong> Use our AI-powered career chatbot for instant doubt clearing and personalized study plans!</p>
+      </div>
+    </section>
+
+    <!-- Required Documents -->
+    <section class="card">
+      <h2>📋 Required Documents</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+        <div>
+          <h4>🎓 Academic Documents</h4>
+          <ul style="margin: 1rem 0; padding-left: 2rem; color: #666;">
+            <li>12th Grade Mark Sheet</li>
+            <li>12th Grade Certificate</li>
+            <li>Transfer Certificate</li>
+            <li>Migration Certificate (if applicable)</li>
+            <li>Character Certificate</li>
+          </ul>
+        </div>
+        <div>
+          <h4>🆔 Identity Documents</h4>
+          <ul style="margin: 1rem 0; padding-left: 2rem; color: #666;">
+            <li>Aadhaar Card</li>
+            <li>PAN Card</li>
+            <li>Passport Size Photographs (6 copies)</li>
+            <li>Signature Specimen</li>
+            <li>Voter ID (if applicable)</li>
+          </ul>
+        </div>
+        <div>
+          <h4>📜 Category Documents</h4>
+          <ul style="margin: 1rem 0; padding-left: 2rem; color: #666;">
+            <li>Category Certificate (SC/ST/OBC)</li>
+            <li>Income Certificate (EWS/OBC)</li>
+            <li>Non-creamy layer certificate (OBC)</li>
+            <li>Disability Certificate (PWD)</li>
+            <li>Domicile Certificate</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Information -->
+    <section class="card" style="background: #667eea; color: white;">
+      <h2>📞 Need Help?</h2>
+      <p>Our admission support team is here to assist you throughout the process.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin: 2rem 0;">
+        <div>
+          <h4>📧 Email Support</h4>
+          <p>admissions@careerpath.com</p>
+          <p>Response time: 24 hours</p>
+        </div>
+        <div>
+          <h4>📱 Phone Support</h4>
+          <p>+91-9876543210</p>
+          <p>Mon-Fri: 9 AM - 6 PM</p>
+        </div>
+        <div>
+          <h4>💬 Live Chat</h4>
+          <a href="ai-features.html" class="btn" style="background: white; color: #667eea;">Chat with AI Assistant</a>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">

@@ -27,9 +27,11 @@ let mongoConnected = false;
 // ✅ MongoDB Connection with fallback
 const mongoURI = process.env.MONGODB_URI || "mongodb://localhost:27017/careerpath";
 
+console.log("🔌 Attempting to connect to MongoDB...");
 mongoose.connect(mongoURI)
 .then(() => {
-  console.log("✅ MongoDB Connected");
+  console.log("✅ MongoDB Connected Successfully");
+  console.log(`📍 Connected to: ${mongoURI.replace(/\/\/.*:.*@/, '//***:***@')}`); // Hide password in logs
   mongoConnected = true;
   
   // ✅ Define Schema

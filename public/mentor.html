@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,maximum-scale=1" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Mentor — CareerPath</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .mentor-hero {
+      background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+      color: white;
+      padding: 3rem 2rem;
+      border-radius: 15px;
+      text-align: center;
+      margin: 2rem 0;
+    }
+    .mentor-sections {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    .mentor-card {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border: 1px solid #e9ecef;
+    }
+    .mentor-profile {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1rem 0;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 10px;
+    }
+    .mentor-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .question-form {
+      background: #f8f9fa;
+      padding: 2rem;
+      border-radius: 15px;
+      margin: 2rem 0;
+    }
+    .faq-section {
+      background: #2d3436;
+      color: white;
+      padding: 2rem;
+      border-radius: 15px;
+      margin: 2rem 0;
+    }
+    .faq-item {
+      background: rgba(255,255,255,0.1);
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin: 1rem 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .faq-item:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    .faq-answer {
+      display: none;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,0.3);
+    }
+    .booking-calendar {
+      background: linear-gradient(135deg, #00b894, #00cec9);
+      color: white;
+      padding: 2rem;
+      border-radius: 15px;
+      margin: 2rem 0;
+    }
+    .time-slots {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .time-slot {
+      padding: 1rem;
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .time-slot:hover, .time-slot.selected {
+      background: white;
+      color: #00b894;
+    }
+    .mentor-stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 1.5rem 0;
+    }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #667eea;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="brand">CareerPath</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="admission.html">Admission Process</a></li>
+        <li><a href="courses.html">Courses & Syllabus</a></li>
+        <li><a href="exams.html">Entrance Exams</a></li>
+        <li><a href="colleges.html">Colleges</a></li>
+        <li><a href="allotment.html">Allotment</a></li>
+        <li><a href="ai-features.html">AI Tools</a></li>
+        <li><a href="scholarships.html">Scholarships</a></li>
+        <li><a href="mentor.html" class="active">Mentor</a></li>
+        <li><a href="form.html" class="btn-link">Apply</a></li>
+        <li><a href="merit.html">Merit List</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container main">
+    <section class="mentor-hero">
+      <h1>🎯 Expert Mentorship & Guidance</h1>
+      <p>Connect with experienced mentors, ask questions, book counseling sessions, and get the guidance you need to succeed in your career journey.</p>
+    </section>
+
+    <section class="mentor-sections">
+      <!-- Ask Questions Section -->
+      <div class="mentor-card">
+        <h2>❓ Ask Questions</h2>
+        <p>Get answers to your career and academic questions from our expert mentors.</p>
+        
+        <div class="question-form">
+          <h3>Submit Your Question</h3>
+          <form id="question-form">
+            <div style="margin: 1rem 0;">
+              <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Category:</label>
+              <select style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px;">
+                <option>Career Guidance</option>
+                <option>Course Selection</option>
+                <option>Entrance Exams</option>
+                <option>College Admission</option>
+                <option>Scholarship Help</option>
+                <option>Job Opportunities</option>
+              </select>
+            </div>
+            <div style="margin: 1rem 0;">
+              <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Your Question:</label>
+              <textarea style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; min-height: 100px;" placeholder="Describe your question in detail..."></textarea>
+            </div>
+            <div style="margin: 1rem 0;">
+              <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Your Background:</label>
+              <input type="text" style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px;" placeholder="e.g., 12th Science student, Engineering graduate">
+            </div>
+            <button type="button" class="btn" onclick="submitQuestion()">Submit Question</button>
+          </form>
+        </div>
+
+        <div style="margin: 2rem 0;">
+          <h4>Recent Questions & Answers:</h4>
+          <div style="background: #e3f2fd; padding: 1rem; border-radius: 8px; margin: 0.5rem 0;">
+            <strong>Q:</strong> "Which engineering branch has the best scope in 2025?"<br>
+            <strong>A:</strong> "Computer Science and AI/ML fields are showing strong growth. However, choose based on your interests..."
+          </div>
+          <div style="background: #e8f5e8; padding: 1rem; border-radius: 8px; margin: 0.5rem 0;">
+            <strong>Q:</strong> "How to prepare for NEET with limited resources?"<br>
+            <strong>A:</strong> "Focus on NCERT books first, use free online resources like Khan Academy..."
+          </div>
+        </div>
+      </div>
+
+      <!-- Book Counselling Section -->
+      <div class="mentor-card">
+        <h2>📅 Book Counselling Session</h2>
+        <p>Schedule one-on-one sessions with our career counselors for personalized guidance.</p>
+
+        <!-- Mentor Profiles -->
+        <div>
+          <h3>Our Mentors</h3>
+          <div class="mentor-profile">
+            <div class="mentor-avatar">DR</div>
+            <div>
+              <strong>Dr. Rajesh Kumar</strong><br>
+              <small>Career Counselor • 15+ years experience</small><br>
+              <small>Engineering & Technical careers</small>
+            </div>
+          </div>
+          <div class="mentor-profile">
+            <div class="mentor-avatar">PS</div>
+            <div>
+              <strong>Prof. Sunita Sharma</strong><br>
+              <small>Education Expert • 12+ years experience</small><br>
+              <small>Medical & Science careers</small>
+            </div>
+          </div>
+          <div class="mentor-profile">
+            <div class="mentor-avatar">AV</div>
+            <div>
+              <strong>Mr. Amit Verma</strong><br>
+              <small>Industry Expert • 10+ years experience</small><br>
+              <small>Commerce & Management careers</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="booking-calendar">
+          <h3>📅 Schedule Your Session</h3>
+          <div style="margin: 1rem 0;">
+            <label style="display: block; margin-bottom: 0.5rem;">Select Mentor:</label>
+            <select id="mentor-select" style="width: 100%; padding: 0.5rem; border: none; border-radius: 5px; color: #333;">
+              <option>Dr. Rajesh Kumar - Engineering</option>
+              <option>Prof. Sunita Sharma - Medical</option>
+              <option>Mr. Amit Verma - Commerce</option>
+            </select>
+          </div>
+          <div style="margin: 1rem 0;">
+            <label style="display: block; margin-bottom: 0.5rem;">Select Date:</label>
+            <input type="date" id="session-date" style="width: 100%; padding: 0.5rem; border: none; border-radius: 5px; color: #333;">
+          </div>
+          <div style="margin: 1rem 0;">
+            <label style="display: block; margin-bottom: 0.5rem;">Available Time Slots:</label>
+            <div class="time-slots">
+              <div class="time-slot" onclick="selectTimeSlot(this)">10:00 AM</div>
+              <div class="time-slot" onclick="selectTimeSlot(this)">11:00 AM</div>
+              <div class="time-slot" onclick="selectTimeSlot(this)">2:00 PM</div>
+              <div class="time-slot" onclick="selectTimeSlot(this)">3:00 PM</div>
+              <div class="time-slot" onclick="selectTimeSlot(this)">4:00 PM</div>
+              <div class="time-slot" onclick="selectTimeSlot(this)">5:00 PM</div>
+            </div>
+          </div>
+          <button class="btn" style="background: white; color: #00b894;" onclick="bookSession()">Book Session (₹500)</button>
+        </div>
+
+        <div class="mentor-stats">
+          <div class="stat-item">
+            <div class="stat-number">500+</div>
+            <div>Students Guided</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">95%</div>
+            <div>Success Rate</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">4.9★</div>
+            <div>Average Rating</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+      <h2>🙋‍♀️ Frequently Asked Questions</h2>
+      <p>Quick answers to common questions about career guidance and course selection.</p>
+
+      <div class="faq-item" onclick="toggleFAQ(this)">
+        <h4>🎓 Which stream should I choose after 10th?</h4>
+        <div class="faq-answer">
+          <p>The choice depends on your interests and career goals:</p>
+          <ul>
+            <li><strong>Science (PCM):</strong> For Engineering, Technology, Research</li>
+            <li><strong>Science (PCB):</strong> For Medical, Biology, Pharmacy</li>
+            <li><strong>Commerce:</strong> For Business, Finance, Accounting</li>
+            <li><strong>Arts/Humanities:</strong> For Literature, Social Sciences, Law</li>
+          </ul>
+          <p>Consider your interests, strengths, and future career aspirations before deciding.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFAQ(this)">
+        <h4>📚 How to prepare for competitive exams?</h4>
+        <div class="faq-answer">
+          <p>Effective preparation strategies:</p>
+          <ul>
+            <li>Start early and create a study schedule</li>
+            <li>Focus on NCERT books as foundation</li>
+            <li>Practice previous year papers regularly</li>
+            <li>Take mock tests to assess progress</li>
+            <li>Join coaching if needed, but self-study is equally important</li>
+            <li>Stay consistent and maintain good health</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFAQ(this)">
+        <h4>💰 What are the scholarship opportunities available?</h4>
+        <div class="faq-answer">
+          <p>Multiple scholarship options are available:</p>
+          <ul>
+            <li><strong>Government Scholarships:</strong> NSP, state-specific schemes</li>
+            <li><strong>Merit-based:</strong> For academic excellence</li>
+            <li><strong>Need-based:</strong> For economically weaker sections</li>
+            <li><strong>Category-based:</strong> For SC/ST/OBC/Minorities</li>
+            <li><strong>Private Scholarships:</strong> Corporate and foundation schemes</li>
+          </ul>
+          <p>Visit our scholarships section for detailed information and application process.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFAQ(this)">
+        <h4>🏥 What's the scope of medical careers beyond MBBS?</h4>
+        <div class="faq-answer">
+          <p>Medical field offers diverse opportunities:</p>
+          <ul>
+            <li><strong>Alternative Medicine:</strong> BAMS, BHMS, BUMS</li>
+            <li><strong>Allied Health:</strong> Physiotherapy, Nursing, Pharmacy</li>
+            <li><strong>Paramedical:</strong> Medical Lab Technology, Radiology</li>
+            <li><strong>Research:</strong> Biomedical Sciences, Biotechnology</li>
+            <li><strong>Healthcare Management:</strong> Hospital Administration</li>
+          </ul>
+          <p>Each has different entrance requirements and career prospects.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFAQ(this)">
+        <h4>💻 Is coding necessary for all engineering branches?</h4>
+        <div class="faq-answer">
+          <p>Coding requirements vary by branch:</p>
+          <ul>
+            <li><strong>Computer Science:</strong> Essential and extensive</li>
+            <li><strong>Electronics:</strong> Basic to intermediate level</li>
+            <li><strong>Mechanical:</strong> CAD software, some programming</li>
+            <li><strong>Civil:</strong> Design software, basic programming</li>
+            <li><strong>Chemical:</strong> Process simulation software</li>
+          </ul>
+          <p>Learning programming is beneficial for all engineers in today's digital world.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFAQ(this)">
+        <h4>🎯 How to choose between engineering and medical?</h4>
+        <div class="faq-answer">
+          <p>Consider these factors:</p>
+          <ul>
+            <li><strong>Interest:</strong> Technology/Innovation vs Healthcare/Biology</li>
+            <li><strong>Skills:</strong> Problem-solving vs Patient care</li>
+            <li><strong>Career Duration:</strong> 4 years vs 5.5+ years of study</li>
+            <li><strong>Work Environment:</strong> Corporate/Tech vs Hospitals/Clinics</li>
+            <li><strong>Income Potential:</strong> Both offer good prospects</li>
+            <li><strong>Social Impact:</strong> Both serve society differently</li>
+          </ul>
+          <p>Take career assessment tests and consult mentors for personalized advice.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Mentors -->
+    <section style="background: #667eea; color: white; padding: 2rem; border-radius: 15px; margin: 2rem 0; text-align: center;">
+      <h2>🤝 Need Immediate Help?</h2>
+      <p>Our mentors are here to support you. Don't hesitate to reach out for guidance.</p>
+      <div style="margin: 2rem 0;">
+        <a href="tel:+91-9876543210" class="btn" style="background: white; color: #667eea; margin: 0.5rem;">📞 Call: +91-9876543210</a>
+        <a href="mailto:mentors@careerpath.com" class="btn" style="background: white; color: #667eea; margin: 0.5rem;">✉️ Email: mentors@careerpath.com</a>
+      </div>
+      <p><small>Available Monday to Friday, 10 AM to 6 PM</small></p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>© 2025 CareerPath</div>
+      <div>Contact: careerpath@example.com</div>
+    </div>
+  </footer>
+
+  <script>
+    function submitQuestion() {
+      alert('🎉 Your question has been submitted successfully!\n\nOur mentors will review your question and provide an answer within 24-48 hours. You will be notified via email when the answer is ready.\n\nFor urgent queries, please book a counseling session.');
+    }
+
+    function selectTimeSlot(slot) {
+      document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+      slot.classList.add('selected');
+    }
+
+    function bookSession() {
+      const mentor = document.getElementById('mentor-select').value;
+      const date = document.getElementById('session-date').value;
+      const selectedSlot = document.querySelector('.time-slot.selected');
+      
+      if (!date) {
+        alert('Please select a date for your session.');
+        return;
+      }
+      
+      if (!selectedSlot) {
+        alert('Please select a time slot for your session.');
+        return;
+      }
+      
+      alert(`🎉 Counseling session booked successfully!\n\nDetails:\n• Mentor: ${mentor}\n• Date: ${date}\n• Time: ${selectedSlot.textContent}\n• Fee: ₹500\n\nYou will receive a confirmation email with payment instructions and meeting details. The session will be conducted via video call.\n\nPrepare your questions in advance for a productive session!`);
+    }
+
+    function toggleFAQ(faqItem) {
+      const answer = faqItem.querySelector('.faq-answer');
+      const isOpen = answer.style.display === 'block';
+      
+      // Close all other FAQs
+      document.querySelectorAll('.faq-answer').forEach(ans => {
+        ans.style.display = 'none';
+      });
+      
+      // Toggle current FAQ
+      answer.style.display = isOpen ? 'none' : 'block';
+    }
+
+    // Set minimum date to today
+    document.getElementById('session-date').min = new Date().toISOString().split('T')[0];
+  </script>
+</body>
+</html>

@@ -137,22 +137,19 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await response.json();
       console.log('📋 Merit data received:', data);
 
-      if (data.success && data.data) {
-        meritData = data.data;
-        console.log('✅ Merit data processed:', {
-          Science: meritData.Science?.length || 0,
-          Arts: meritData.Arts?.length || 0,
-          Commerce: meritData.Commerce?.length || 0
-        });
+      // Server returns merit data directly (not wrapped in success/data)
+      meritData = data;
+      console.log('✅ Merit data processed:', {
+        Science: meritData.Science?.length || 0,
+        Arts: meritData.Arts?.length || 0,
+        Commerce: meritData.Commerce?.length || 0
+      });
+      
+      renderAllStreams();
+      showCurrentStream();
         
-        renderAllStreams();
-        showCurrentStream();
-        
-        // Show success message
-        showNotification('✅ Merit list loaded successfully!', 'success');
-      } else {
-        throw new Error('Invalid data format received from server');
-      }
+      // Show success message
+      showNotification('✅ Merit list loaded successfully!', 'success');
 
     } catch (error) {
       console.error('❌ Error loading merit list:', error);

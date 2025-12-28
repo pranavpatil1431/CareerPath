@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,maximum-scale=1" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Scholarships — CareerPath</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .scholarship-hero {
+      background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+      color: white;
+      padding: 3rem 2rem;
+      border-radius: 15px;
+      text-align: center;
+      margin: 2rem 0;
+    }
+    .scholarship-tabs {
+      display: flex;
+      gap: 1rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+    .tab-button {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 10px;
+      background: #f8f9fa;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .tab-button.active {
+      background: #667eea;
+      color: white;
+    }
+    .scholarship-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    .scholarship-card {
+      background: white;
+      border: 1px solid #e9ecef;
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    .scholarship-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    .scholarship-amount {
+      background: #28a745;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      display: inline-block;
+      margin: 1rem 0;
+      font-weight: bold;
+    }
+    .eligibility-list {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin: 1rem 0;
+    }
+    .application-status {
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      display: inline-block;
+      margin: 0.5rem 0;
+      font-weight: bold;
+    }
+    .status-open { background: #d4edda; color: #155724; }
+    .status-closing { background: #fff3cd; color: #856404; }
+    .status-closed { background: #f8d7da; color: #721c24; }
+    .filter-section {
+      background: #f8f9fa;
+      padding: 2rem;
+      border-radius: 15px;
+      margin: 2rem 0;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="brand">CareerPath</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="admission.html">Admission Process</a></li>
+        <li><a href="courses.html">Courses & Syllabus</a></li>
+        <li><a href="exams.html">Entrance Exams</a></li>
+        <li><a href="colleges.html">Colleges</a></li>
+        <li><a href="allotment.html">Allotment</a></li>
+        <li><a href="ai-features.html">AI Tools</a></li>
+        <li><a href="scholarships.html" class="active">Scholarships</a></li>
+        <li><a href="mentor.html">Mentor</a></li>
+        <li><a href="form.html" class="btn-link">Apply</a></li>
+        <li><a href="merit.html">Merit List</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container main">
+    <section class="scholarship-hero">
+      <h1>💰 Scholarships & Financial Aid</h1>
+      <p>Discover funding opportunities to support your educational journey. From government schemes to private scholarships, find the perfect financial support for your studies.</p>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+      <h3>Find Scholarships Based On:</h3>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0;">
+        <select id="category-filter" onchange="filterScholarships()" style="padding: 0.5rem; border: 1px solid #ddd; border-radius: 5px;">
+          <option value="all">All Categories</option>
+          <option value="merit">Merit-Based</option>
+          <option value="need">Need-Based</option>
+          <option value="minority">Minority</option>
+          <option value="women">Women</option>
+          <option value="sc-st">SC/ST</option>
+          <option value="obc">OBC</option>
+        </select>
+        <select id="amount-filter" onchange="filterScholarships()" style="padding: 0.5rem; border: 1px solid #ddd; border-radius: 5px;">
+          <option value="all">All Amounts</option>
+          <option value="low">₹10,000 - ₹50,000</option>
+          <option value="medium">₹50,000 - ₹1,00,000</option>
+          <option value="high">Above ₹1,00,000</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Scholarship Tabs -->
+    <section class="scholarship-tabs">
+      <button class="tab-button active" onclick="showTab('government')">🏛️ Government Scholarships</button>
+      <button class="tab-button" onclick="showTab('private')">🏢 Private Scholarships</button>
+      <button class="tab-button" onclick="showTab('application')">📋 Application Process</button>
+    </section>
+
+    <!-- Government Scholarships Tab -->
+    <div id="government-tab" class="tab-content">
+      <section class="scholarship-grid">
+        <div class="scholarship-card" data-category="sc-st" data-amount="medium">
+          <h3>Post Matric Scholarship for SC Students</h3>
+          <div class="scholarship-amount">₹75,000 per year</div>
+          <div class="application-status status-open">Applications Open</div>
+          
+          <div class="eligibility-list">
+            <h4>Eligibility Criteria:</h4>
+            <ul>
+              <li>Must belong to Scheduled Caste (SC) category</li>
+              <li>Family income should not exceed ₹2.5 lakh per annum</li>
+              <li>Should be pursuing post-matriculation course</li>
+              <li>Minimum 50% marks in previous qualifying examination</li>
+            </ul>
+          </div>
+          
+          <p><strong>Benefits:</strong> Tuition fee, maintenance allowance, and other compulsory charges</p>
+          <p><strong>Deadline:</strong> March 31, 2025</p>
+          <button class="btn" onclick="applyScholarship('Post Matric SC')">Apply Now</button>
+        </div>
+
+        <div class="scholarship-card" data-category="sc-st" data-amount="medium">
+          <h3>Post Matric Scholarship for ST Students</h3>
+          <div class="scholarship-amount">₹80,000 per year</div>
+          <div class="application-status status-open">Applications Open</div>
+          
+          <div class="eligibility-list">
+            <h4>Eligibility Criteria:</h4>
+            <ul>
+              <li>Must belong to Scheduled Tribe (ST) category</li>
+              <li>Family income should not exceed ₹2.5 lakh per annum</li>
+              <li>Should be pursuing post-matriculation course</li>
+              <li>Minimum 45% marks in previous qualifying examination</li>
+            </ul>
+          </div>
+          
+          <p><strong>Benefits:</strong> Full tuition fee and maintenance allowance</p>
+          <p><strong>Deadline:</strong> March 31, 2025</p>
+          <button class="btn" onclick="applyScholarship('Post Matric ST')">Apply Now</button>
+        </div>
+
+        <div class="scholarship-card" data-category="obc" data-amount="low">
+          <h3>OBC Post Matric Scholarship</h3>
+          <div class="scholarship-amount">₹35,000 per year</div>
+          <div class="application-status status-open">Applications Open</div>
+          
+          <div class="eligibility-list">
+            <h4>Eligibility Criteria:</h4>
+            <ul>
+              <li>Must belong to Other Backward Class (OBC) category</li>
+              <li>Family income should not exceed ₹1 lakh per annum</li>
+              <li>Should be pursuing higher secondary or graduation</li>
+              <li>Non-creamy layer certificate required</li>
+            </ul>
+          </div>
+          
+          <p><strong>Benefits:</strong> Maintenance allowance and study materials</p>
+          <p><strong>Deadline:</strong> April 15, 2025</p>
+          <button class="btn" onclick="applyScholarship('OBC Post Matric')">Apply Now</button>
+        </div>
+
+        <div class="scholarship-card" data-category="merit" data-amount="high">
+          <h3>Prime Minister's Scholarship Scheme</h3>
+          <div class="scholarship-amount">₹2,50,000 per year</div>
+          <div class="application-status status-closing">Closing Soon</div>
+          
+          <div class="eligibility-list">
+            <h4>Eligibility Criteria:</h4>
+            <ul>
+              <li>Wards of Ex-servicemen/Ex-coast guard personnel</li>
+              <li>Minimum 60% marks in 12th standard</li>
+              <li>Pursuing technical/professional courses</li>
+              <li>Age limit: 18-25 years</li>
+            </ul>
+          </div>
+          
+          <p><strong>Benefits:</strong> Full course fee and monthly stipend</p>
+          <p><strong>Deadline:</strong> January 15, 2025</p>
+          <button class="btn" onclick="applyScholarship('PM Scholarship')">Apply Now</button>
+        </div>
+
+        <div class="scholarship-card" data-category="women" data-amount="medium">
+          <h3>Pragati Scholarship for Girls</h3>
+          <div class="scholarship-amount">₹50,000 per year</div>
+          <div class="application-status status-open">Applications Open</div>
+          
+          <div class="eligibility-list">
+            <h4>Eligibility Criteria:</h4>
+            <ul>
+              <li>Female students pursuing technical education</li>
+              <li>Family income should not exceed ₹8 lakh per annum</li>
+              <li>Top 2 girl students from each state/UT</li>
+              <li>Admission through JEE Main</li>
+            </ul>
+          </div>
+          
+          <p><strong>Benefits:</strong> Tuition fee and incidental charges</p>
+          <p><strong>Deadline:</strong> February 28, 2025</p>
+          <button class="btn" onclick="applyScholarship('Pragati Girls')">Apply Now</button>
+        </div>
+
+        <div class="scholarship-card" data-category="merit" data-amount="high">
+          <h3>National Scholarship Portal (NSP)</h3>
+          <div class="scholarship-amount">Up to ₹12,000 per month</div>
+          <div class="application-status status-open">Applications Open</div>
+          
+          <div class="eligibility-list">
+            <h4>Eligibility Criteria:</h4>
+            <ul>
+              <li>Various categories and income limits</li>
+              <li>Merit and need-based scholarships</li>
+              <li>Pursuing undergraduate/postgraduate courses</li>
+              <li>Indian citizens only</li>
+            </ul>
+          </div>
+          
+          <p><strong>Benefits:</strong> Monthly stipend and one-time assistance</p>
+          <p><strong>Deadline:</strong> Rolling basis</p>
+          <button class="btn" onclick="applyScholarship('NSP')">Apply Now</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Private Scholarships Tab -->
+    <div id="private-tab" class="tab-content" style="display: none;">
+      <section class="scholarship-grid">
+        <div class="scholarship-card" data-category="merit" data-amount="high">
+          <h3>Tata Scholarship for Excellence</h3>
+          <div class="scholarship-amount">₹2,00,000 per year</div>
+          <div class="application-status status-open">Applications Open</div>
+          
+          <div class="eligibility-list">
+            <h4>Eligibility Criteria:</h4>
+            <ul>
+              <li>Students from economically weaker sections</li>
+              <li>Minimum 85% marks in 12th standard</li>
+              <li>Pursuing undergraduate courses in reputed institutions</li>
+              <li>Family income below ₹4 lakh per annum</li>
+            </ul>
+          </div>
+          
+          <p><strong>Benefits:</strong> Full tuition fee and living expenses</p>
+          <p><strong>Deadline:</strong> March 15, 2025</p>
+          <button class="btn" onclick="applyScholarship('Tata Excellence')">Apply Now</button>
+        </div>
+
+        <div class="scholarship-card" data-category="merit" data-amount="medium">
+          <h3>Reliance Foundation Scholarship</h3>
+          <div class="scholarship-amount">₹6,00,000 (total course)</div>
+          <div class="application-status status-open">Applications Open</div>
+          
+          <div class="eligibility-list">
+            <h4>Eligibility Criteria:</h4>
+            <ul>
+              <li>Meritorious students from all backgrounds</li>
+              <li>Pursuing undergraduate programs</li>
+              <li>Family income below ₹6 lakh per annum</li>
+              <li>Strong academic record and leadership potential</li>
+            </ul>
+          </div>
+          
+          <p><strong>Benefits:</strong> Academic fees, hostel charges, and stipend</p>
+          <p><strong>Deadline:</strong> February 20, 2025</p>
+          <button class="btn" onclick="applyScholarship('Reliance Foundation')">Apply Now</button>
+        </div>
+
+        <div class="scholarship-card" data-category="minority" data-amount="medium">
+          <h3>Azim Premji Foundation Scholarship</h3>
+          <div class="scholarship-amount">₹75,000 per year</div>
+          <div class="application-status status-open">Applications Open</div>
+          
+          <div class="eligibility-list">
+            <h4>Eligibility Criteria:</h4>
+            <ul>
+              <li>Students from rural and underserved areas</li>
+              <li>Strong academic performance</li>
+              <li>Commitment to contribute back to society</li>
+              <li>Financial need assessment</li>
+            </ul>
+          </div>
+          
+          <p><strong>Benefits:</strong> Course fee and monthly stipend</p>
+          <p><strong>Deadline:</strong> April 30, 2025</p>
+          <button class="btn" onclick="applyScholarship('Azim Premji')">Apply Now</button>
+        </div>
+
+        <div class="scholarship-card" data-category="women" data-amount="low">
+          <h3>HDFC Educational Crisis Scholarship</h3>
+          <div class="scholarship-amount">₹25,000 per year</div>
+          <div class="application-status status-open">Applications Open</div>
+          
+          <div class="eligibility-list">
+            <h4>Eligibility Criteria:</h4>
+            <ul>
+              <li>Students facing financial crisis</li>
+              <li>Good academic record (minimum 60%)</li>
+              <li>Pursuing higher secondary or undergraduate courses</li>
+              <li>Proof of financial hardship required</li>
+            </ul>
+          </div>
+          
+          <p><strong>Benefits:</strong> Financial support for continuing education</p>
+          <p><strong>Deadline:</strong> Rolling applications</p>
+          <button class="btn" onclick="applyScholarship('HDFC Crisis')">Apply Now</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Application Process Tab -->
+    <div id="application-tab" class="tab-content" style="display: none;">
+      <section style="padding: 2rem; background: #f8f9fa; border-radius: 15px;">
+        <h2>📋 How to Apply for Scholarships</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0;">
+          <div style="background: white; padding: 2rem; border-radius: 10px;">
+            <h3>Step 1: Research & Eligibility</h3>
+            <ul>
+              <li>Check eligibility criteria carefully</li>
+              <li>Verify income and category requirements</li>
+              <li>Note application deadlines</li>
+              <li>Gather required documents</li>
+            </ul>
+          </div>
+          
+          <div style="background: white; padding: 2rem; border-radius: 10px;">
+            <h3>Step 2: Documentation</h3>
+            <ul>
+              <li>Academic certificates and mark sheets</li>
+              <li>Income certificate (recent)</li>
+              <li>Caste/category certificate (if applicable)</li>
+              <li>Bank account details</li>
+              <li>Passport size photographs</li>
+            </ul>
+          </div>
+          
+          <div style="background: white; padding: 2rem; border-radius: 10px;">
+            <h3>Step 3: Online Application</h3>
+            <ul>
+              <li>Register on the scholarship portal</li>
+              <li>Fill application form accurately</li>
+              <li>Upload required documents</li>
+              <li>Review and submit</li>
+            </ul>
+          </div>
+          
+          <div style="background: white; padding: 2rem; border-radius: 10px;">
+            <h3>Step 4: Follow Up</h3>
+            <ul>
+              <li>Keep application reference number safe</li>
+              <li>Track application status online</li>
+              <li>Respond to verification calls</li>
+              <li>Complete additional requirements if asked</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div style="background: #667eea; color: white; padding: 2rem; border-radius: 15px; margin: 2rem 0;">
+          <h3>💡 Pro Tips for Scholarship Success</h3>
+          <ul style="list-style: none; padding: 0;">
+            <li style="margin: 1rem 0;">✅ Apply early - don't wait for the deadline</li>
+            <li style="margin: 1rem 0;">✅ Double-check all information before submitting</li>
+            <li style="margin: 1rem 0;">✅ Keep copies of all documents and receipts</li>
+            <li style="margin: 1rem 0;">✅ Apply for multiple scholarships to increase chances</li>
+            <li style="margin: 1rem 0;">✅ Write compelling personal statements when required</li>
+            <li style="margin: 1rem 0;">✅ Get help from school counselors or our mentors</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>© 2025 CareerPath</div>
+      <div>Contact: careerpath@example.com</div>
+    </div>
+  </footer>
+
+  <script>
+    function showTab(tabName) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.style.display = 'none';
+      });
+      
+      // Remove active class from all buttons
+      document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      // Show selected tab
+      document.getElementById(tabName + '-tab').style.display = 'block';
+      
+      // Add active class to clicked button
+      event.target.classList.add('active');
+    }
+    
+    function filterScholarships() {
+      const categoryFilter = document.getElementById('category-filter').value;
+      const amountFilter = document.getElementById('amount-filter').value;
+      const scholarshipCards = document.querySelectorAll('.scholarship-card');
+      
+      scholarshipCards.forEach(card => {
+        const cardCategory = card.getAttribute('data-category');
+        const cardAmount = card.getAttribute('data-amount');
+        
+        let showCard = true;
+        
+        if (categoryFilter !== 'all' && cardCategory !== categoryFilter) {
+          showCard = false;
+        }
+        
+        if (amountFilter !== 'all' && cardAmount !== amountFilter) {
+          showCard = false;
+        }
+        
+        card.style.display = showCard ? 'block' : 'none';
+      });
+    }
+    
+    function applyScholarship(scholarshipName) {
+      alert(`🎉 Application process initiated for ${scholarshipName}!\n\nIn the full version, this would:\n1. Redirect to the official application portal\n2. Pre-fill your profile information\n3. Guide you through the application process\n4. Send reminders for deadlines\n\nFor now, please visit the official government portals or contact our mentors for assistance.`);
+    }
+  </script>
+</body>
+</html>

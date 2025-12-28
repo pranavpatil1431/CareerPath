@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,maximum-scale=1" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>AI Tools — CareerPath</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .ai-section {
+      margin: 2rem 0;
+      padding: 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 15px;
+      color: white;
+    }
+    .ai-tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    .ai-tool-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      color: #333;
+    }
+    .ai-tool-card:hover {
+      transform: translateY(-5px);
+    }
+    .ai-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .chatbot-container {
+      background: #f8f9fa;
+      border-radius: 15px;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+    .chat-input {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+    }
+    .resume-builder {
+      background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+      color: white;
+      padding: 2rem;
+      border-radius: 15px;
+      margin: 2rem 0;
+    }
+    .roadmap-section {
+      background: #2d3436;
+      color: white;
+      padding: 2rem;
+      border-radius: 15px;
+      margin: 2rem 0;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="brand">CareerPath</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="admission.html">Admission Process</a></li>
+        <li><a href="courses.html">Courses & Syllabus</a></li>
+        <li><a href="exams.html">Entrance Exams</a></li>
+        <li><a href="colleges.html">Colleges</a></li>
+        <li><a href="allotment.html">Allotment</a></li>
+        <li><a href="ai-features.html" class="active">AI Tools</a></li>
+        <li><a href="scholarships.html">Scholarships</a></li>
+        <li><a href="mentor.html">Mentor</a></li>
+        <li><a href="form.html" class="btn-link">Apply</a></li>
+        <li><a href="merit.html">Merit List</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container main">
+    <section class="ai-section">
+      <h1>🤖 AI-Powered Career Tools</h1>
+      <p>Leverage cutting-edge AI technology to accelerate your career journey with personalized guidance, smart resume building, and intelligent roadmaps.</p>
+    </section>
+
+    <section class="ai-tools-grid">
+      <!-- Chatbot Section -->
+      <div class="ai-tool-card">
+        <span class="ai-icon">💬</span>
+        <h3>Career Query Chatbot</h3>
+        <p>Get instant answers to your career questions with our AI-powered chatbot. Ask about courses, career paths, eligibility criteria, and more!</p>
+        
+        <div class="chatbot-container">
+          <div id="chat-messages" style="height: 200px; overflow-y: auto; border: 1px solid #ddd; padding: 1rem; border-radius: 10px; background: white;">
+            <div style="color: #666; font-style: italic;">CareerBot: Hi! I'm here to help you with your career queries. Ask me anything about courses, eligibility, career paths, or job opportunities!</div>
+          </div>
+          <div class="chat-input">
+            <input type="text" id="chat-input" placeholder="Ask me about your career..." onkeypress="if(event.key==='Enter') sendMessage()">
+            <button class="btn" onclick="sendMessage()">Send</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resume Builder Section -->
+      <div class="ai-tool-card">
+        <span class="ai-icon">📄</span>
+        <h3>AI Resume Builder</h3>
+        <p>Create professional resumes tailored for students and fresh graduates with AI-powered suggestions and industry-specific templates.</p>
+        
+        <div class="resume-builder">
+          <h4>Build Your Resume</h4>
+          <form id="resume-form">
+            <div style="margin: 1rem 0;">
+              <label style="display: block; margin-bottom: 0.5rem;">Full Name:</label>
+              <input type="text" style="width: 100%; padding: 0.5rem; border: none; border-radius: 5px;" placeholder="Enter your full name">
+            </div>
+            <div style="margin: 1rem 0;">
+              <label style="display: block; margin-bottom: 0.5rem;">Education Level:</label>
+              <select style="width: 100%; padding: 0.5rem; border: none; border-radius: 5px;">
+                <option>12th Pass</option>
+                <option>Graduate</option>
+                <option>Post Graduate</option>
+              </select>
+            </div>
+            <div style="margin: 1rem 0;">
+              <label style="display: block; margin-bottom: 0.5rem;">Field of Interest:</label>
+              <select style="width: 100%; padding: 0.5rem; border: none; border-radius: 5px;">
+                <option>Engineering</option>
+                <option>Medical</option>
+                <option>Commerce</option>
+                <option>Arts</option>
+                <option>Science</option>
+              </select>
+            </div>
+            <button type="button" class="btn" style="background: white; color: #0984e3;" onclick="generateResume()">Generate AI Resume</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Job Role Roadmap Section -->
+      <div class="ai-tool-card">
+        <span class="ai-icon">🗺️</span>
+        <h3>Job Role Roadmap</h3>
+        <p>Get personalized career roadmaps with step-by-step guidance to reach your dream job role.</p>
+        
+        <div class="roadmap-section">
+          <h4>Career Roadmap Generator</h4>
+          <div style="margin: 1rem 0;">
+            <label style="display: block; margin-bottom: 0.5rem;">Target Job Role:</label>
+            <select id="job-role" style="width: 100%; padding: 0.5rem; border: none; border-radius: 5px; color: #333;">
+              <option>Software Engineer</option>
+              <option>Data Scientist</option>
+              <option>Doctor</option>
+              <option>Chartered Accountant</option>
+              <option>Civil Engineer</option>
+              <option>Mechanical Engineer</option>
+              <option>Digital Marketing Specialist</option>
+              <option>Graphic Designer</option>
+            </select>
+          </div>
+          <button class="btn" style="background: #74b9ff;" onclick="generateRoadmap()">Generate Roadmap</button>
+          
+          <div id="roadmap-result" style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 10px; display: none;">
+            <h5>Your Career Roadmap:</h5>
+            <div id="roadmap-steps"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI Features Overview -->
+    <section style="margin: 3rem 0; padding: 2rem; background: #f8f9fa; border-radius: 15px;">
+      <h2>Why Use AI Tools?</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin: 2rem 0;">
+        <div>
+          <h4>🎯 Personalized Guidance</h4>
+          <p>Get recommendations tailored to your interests, skills, and career goals.</p>
+        </div>
+        <div>
+          <h4>⚡ Instant Support</h4>
+          <p>24/7 availability for career queries and guidance whenever you need it.</p>
+        </div>
+        <div>
+          <h4>📊 Data-Driven Insights</h4>
+          <p>Leverage industry data and trends for informed career decisions.</p>
+        </div>
+        <div>
+          <h4>🚀 Future-Ready</h4>
+          <p>Stay ahead with AI-powered tools that adapt to changing job markets.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>© 2025 CareerPath</div>
+      <div>Contact: careerpath@example.com</div>
+    </div>
+  </footer>
+
+  <script>
+    // Chatbot functionality
+    function sendMessage() {
+      const input = document.getElementById('chat-input');
+      const messages = document.getElementById('chat-messages');
+      const userMessage = input.value.trim();
+      
+      if (!userMessage) return;
+      
+      // Add user message
+      messages.innerHTML += `<div style="margin: 0.5rem 0; text-align: right; background: #667eea; color: white; padding: 0.5rem; border-radius: 10px; display: inline-block; float: right; clear: both; max-width: 80%;">You: ${userMessage}</div><div style="clear: both;"></div>`;
+      
+      // Simulate AI response
+      setTimeout(() => {
+        const responses = [
+          "For engineering, you'll need to clear JEE Main/Advanced. I can help you find the best preparation strategy!",
+          "Medical field requires NEET qualification. The cut-off varies by category and state. Would you like specific details?",
+          "Commerce students can pursue CA, CS, CMA, or MBA. Each has different eligibility criteria and career prospects.",
+          "Based on your query, I'd recommend exploring our courses section for detailed information about duration, fees, and eligibility.",
+          "That's a great career choice! Let me suggest some relevant courses and preparation tips.",
+          "For better guidance, you can also book a counseling session with our mentors. They provide personalized advice!"
+        ];
+        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+        messages.innerHTML += `<div style="margin: 0.5rem 0; background: #e9ecef; padding: 0.5rem; border-radius: 10px; display: inline-block; max-width: 80%;">CareerBot: ${randomResponse}</div><div style="clear: both;"></div>`;
+        messages.scrollTop = messages.scrollHeight;
+      }, 1000);
+      
+      input.value = '';
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    // Resume Generator
+    function generateResume() {
+      alert('🎉 Your AI-powered resume has been generated! This feature will create a professional resume based on your inputs. In the full version, this would generate a downloadable PDF with AI-optimized content.');
+    }
+
+    // Roadmap Generator
+    function generateRoadmap() {
+      const jobRole = document.getElementById('job-role').value;
+      const resultDiv = document.getElementById('roadmap-result');
+      const stepsDiv = document.getElementById('roadmap-steps');
+      
+      const roadmaps = {
+        "Software Engineer": [
+          "1. Complete 12th with PCM",
+          "2. Pursue B.Tech in Computer Science or related field",
+          "3. Learn programming languages (Python, Java, C++)",
+          "4. Build projects and portfolio",
+          "5. Gain internship experience",
+          "6. Apply for software engineer positions"
+        ],
+        "Data Scientist": [
+          "1. Complete 12th with PCM",
+          "2. Pursue B.Tech/B.Sc in Computer Science, Statistics, or Mathematics",
+          "3. Learn Python, R, SQL, and machine learning",
+          "4. Work on data science projects",
+          "5. Gain experience through internships",
+          "6. Pursue advanced certifications or M.Sc in Data Science"
+        ],
+        "Doctor": [
+          "1. Complete 12th with PCB (Physics, Chemistry, Biology)",
+          "2. Clear NEET examination",
+          "3. Pursue MBBS (5.5 years including internship)",
+          "4. Complete medical internship",
+          "5. Choose specialization (MD/MS) if desired",
+          "6. Start medical practice or join hospital"
+        ]
+      };
+      
+      const steps = roadmaps[jobRole] || [
+        "1. Complete 12th in relevant stream",
+        "2. Research specific requirements for this role",
+        "3. Pursue appropriate undergraduate degree",
+        "4. Gain relevant skills and experience",
+        "5. Build professional network",
+        "6. Apply for positions in your chosen field"
+      ];
+      
+      stepsDiv.innerHTML = steps.map(step => `<div style="margin: 0.5rem 0; padding: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 5px;">${step}</div>`).join('');
+      resultDiv.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
