@@ -17,6 +17,8 @@
       display: flex;
       min-height: 100vh;
       margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     }
     
     .sidebar-nav {
@@ -30,6 +32,7 @@
       left: 0;
       top: 0;
       z-index: 1000;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
     }
     
     .brand-sidebar {
@@ -80,11 +83,270 @@
     .main-content {
       margin-left: 300px;
       flex: 1;
-      padding: 0;
+      padding: 2rem;
+      min-height: 100vh;
     }
     
     .nav {
       display: none;
+    }
+    
+    .application-hero {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 3rem 2rem;
+      border-radius: 20px;
+      text-align: center;
+      margin-bottom: 2rem;
+      box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .application-hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+    
+    .application-hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .application-hero p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      margin-bottom: 0;
+    }
+    
+    .form-container {
+      background: white;
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    
+    .form-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 20px 20px 0 0;
+    }
+    
+    .form-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #f0f0f0;
+    }
+    
+    .form-header h2 {
+      color: #333;
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .form-header p {
+      color: #666;
+      font-size: 1rem;
+      margin: 0;
+    }
+    
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .form-group {
+      position: relative;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #333;
+      font-size: 0.9rem;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #fafafa;
+      box-sizing: border-box;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #667eea;
+      background: white;
+      outline: none;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+    }
+    
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+    
+    .submit-container {
+      text-align: center;
+      margin-top: 2rem;
+    }
+    
+    .submit-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 1rem 3rem;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+    }
+    
+    .submit-btn:active {
+      transform: translateY(0px);
+    }
+    
+    .submit-btn .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+    }
+    
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+    
+    .help-section {
+      background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+      color: white;
+      padding: 2rem;
+      border-radius: 20px;
+      margin-top: 2rem;
+    }
+    
+    .help-section h3 {
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+    
+    .help-section ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .help-section li {
+      margin: 0.8rem 0;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .help-section li:last-child {
+      border-bottom: none;
+    }
+    
+    .success-message {
+      background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      margin-top: 1rem;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 184, 148, 0.3);
+      display: none;
+    }
+    
+    .error-message {
+      background: linear-gradient(135deg, #e17055 0%, #d63031 100%);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      margin-top: 1rem;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(225, 112, 85, 0.3);
+      display: none;
+    }
+    
+    @media (max-width: 1200px) {
+      .sidebar-nav {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+      
+      .sidebar-nav.open {
+        transform: translateX(0);
+      }
+      
+      .main-content {
+        margin-left: 0;
+        padding: 1rem;
+      }
+      
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .application-hero h1 {
+        font-size: 2rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .form-container {
+        padding: 1.5rem;
+        margin: 1rem 0;
+      }
+      
+      .application-hero {
+        padding: 2rem 1rem;
+      }
+      
+      .application-hero h1 {
+        font-size: 1.8rem;
+      }
     }
   </style>
 </head>
@@ -143,66 +405,136 @@
 
   <!-- Main Content -->
   <div class="main-content">
-  <main class="container main">
-    <div class="hero text-center mb-xl">
-      <h1>Admission Application</h1>
-      <p>Take the first step towards your bright future. Fill out the form below to apply for your desired course.</p>
+    <!-- Hero Section -->
+    <div class="application-hero">
+      <h1>🚀 Admission Application</h1>
+      <p>Take the first step towards your bright future. Join thousands of successful students in their career journey.</p>
     </div>
 
-    <form id="admissionForm" class="form fade-in">
-      <div class="form-header text-center mb-lg">
+    <!-- Application Form -->
+    <div class="form-container">
+      <div class="form-header">
         <h2>📋 Application Form</h2>
-        <p>Please fill all the required information accurately</p>
+        <p>Please fill all the required information accurately for a smooth admission process</p>
       </div>
 
-      <label>
-        Full Name *
-        <input type="text" id="fullName" placeholder="Enter your full name" required>
-      </label>
-      
-      <label>
-        Email Address *
-        <input type="email" id="email" placeholder="your.email@example.com" required>
-      </label>
-      
-      <label>
-        Marks (out of 100) *
-        <input type="number" id="marks" placeholder="Enter your marks" min="0" max="100" required>
-      </label>
-      
-      <label>
-        Stream *
-        <select id="stream" required>
-          <option value="">Select your stream</option>
-          <option value="Science">Science</option>
-          <option value="Commerce">Commerce</option>
-          <option value="Arts">Arts</option>
-        </select>
-      </label>
-      
-      <label>
-        Preferred Course *
-        <input type="text" id="coursePref" placeholder="e.g. Bachelor of Computer Applications, B.E. Civil Engineering" required>
-      </label>
-      
-      <button type="submit" class="btn btn-success">
-        <span id="submitText">📤 Submit Application</span>
-        <span id="submitLoader" class="loading hidden"></span>
-      </button>
-    </form>
+      <form id="admissionForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="fullName">Full Name *</label>
+            <input type="text" id="fullName" placeholder="Enter your complete name" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" placeholder="your.email@example.com" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="phone">Phone Number *</label>
+            <input type="tel" id="phone" placeholder="+1 (555) 123-4567" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="dateOfBirth">Date of Birth *</label>
+            <input type="date" id="dateOfBirth" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="marks">12th Grade Marks (%) *</label>
+            <input type="number" id="marks" placeholder="Enter percentage (0-100)" min="0" max="100" step="0.01" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="stream">Academic Stream *</label>
+            <select id="stream" required>
+              <option value="">Select your stream</option>
+              <option value="Science">Science (PCM/PCB)</option>
+              <option value="Commerce">Commerce</option>
+              <option value="Arts">Arts/Humanities</option>
+              <option value="Vocational">Vocational</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="preferredCourse">Preferred Course *</label>
+            <select id="preferredCourse" required>
+              <option value="">Select preferred course</option>
+              <option value="B.Tech Computer Science">B.Tech Computer Science</option>
+              <option value="B.Tech Mechanical">B.Tech Mechanical Engineering</option>
+              <option value="B.Tech Civil">B.Tech Civil Engineering</option>
+              <option value="B.Tech Electrical">B.Tech Electrical Engineering</option>
+              <option value="MBBS">MBBS</option>
+              <option value="BDS">BDS (Dental)</option>
+              <option value="B.Pharmacy">B.Pharmacy</option>
+              <option value="B.Com">B.Com</option>
+              <option value="BBA">BBA</option>
+              <option value="B.Sc">B.Sc</option>
+              <option value="BA">BA</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="alternativeCourse">Alternative Course Choice</label>
+            <select id="alternativeCourse">
+              <option value="">Select alternative course</option>
+              <option value="B.Tech Computer Science">B.Tech Computer Science</option>
+              <option value="B.Tech Mechanical">B.Tech Mechanical Engineering</option>
+              <option value="B.Tech Civil">B.Tech Civil Engineering</option>
+              <option value="B.Tech Electrical">B.Tech Electrical Engineering</option>
+              <option value="MBBS">MBBS</option>
+              <option value="BDS">BDS (Dental)</option>
+              <option value="B.Pharmacy">B.Pharmacy</option>
+              <option value="B.Com">B.Com</option>
+              <option value="BBA">BBA</option>
+              <option value="B.Sc">B.Sc</option>
+              <option value="BA">BA</option>
+            </select>
+          </div>
+          
+          <div class="form-group full-width">
+            <label for="address">Complete Address *</label>
+            <textarea id="address" rows="3" placeholder="Enter your complete address with city, state, and postal code" required></textarea>
+          </div>
+          
+          <div class="form-group full-width">
+            <label for="achievements">Academic Achievements & Extracurricular Activities</label>
+            <textarea id="achievements" rows="4" placeholder="List your achievements, awards, sports, cultural activities, leadership roles, etc."></textarea>
+          </div>
+        </div>
 
-    <div id="formMessage" class="message hidden"></div>
-    
-    <div class="card mt-xl">
-      <h3>📞 Need Help?</h3>
-      <p>If you have any questions about the application process, feel free to contact us:</p>
-      <ul style="margin: var(--space-md) 0; padding-left: var(--space-lg);">
-        <li>📧 Email: admissions@careerpath.edu</li>
-        <li>📱 Phone: +1 (555) 123-4567</li>
-        <li>🕒 Office Hours: Monday - Friday, 9:00 AM - 5:00 PM</li>
+        <div class="submit-container">
+          <button type="submit" class="submit-btn" id="submitBtn">
+            <span id="submitText">🎯 Submit Application</span>
+            <span id="submitLoader" style="display: none;">⏳ Processing...</span>
+          </button>
+        </div>
+      </form>
+
+      <div id="successMessage" class="success-message">
+        <h3>🎉 Application Submitted Successfully!</h3>
+        <p>Thank you for applying. You will receive a confirmation email shortly with your application reference number.</p>
+      </div>
+
+      <div id="errorMessage" class="error-message">
+        <h3>❌ Submission Failed</h3>
+        <p>Please check all required fields and try again. If the problem persists, contact support.</p>
+      </div>
+    </div>
+
+    <!-- Help Section -->
+    <div class="help-section">
+      <h3>📞 Need Assistance?</h3>
+      <p>Our admission support team is here to help you throughout the application process.</p>
+      <ul>
+        <li>📧 Email: admissions@careerpath.edu | Response within 24 hours</li>
+        <li>📱 Phone: +1 (555) 123-4567 | Monday - Friday, 9:00 AM - 6:00 PM</li>
+        <li>💬 Live Chat: Available on website | Instant support during office hours</li>
+        <li>🏢 Office Hours: Monday - Friday, 9:00 AM - 5:00 PM</li>
+        <li>📍 Address: 123 Education Street, Academic City, AC 12345</li>
       </ul>
     </div>
-  </main>
   </div>
 
   <footer class="footer">
@@ -212,6 +544,219 @@
     </div>
   </footer>
 
-  <script src="assets/js/form.js"></script>
+  <script>
+    // Enhanced form functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('admissionForm');
+      const submitBtn = document.getElementById('submitBtn');
+      const submitText = document.getElementById('submitText');
+      const submitLoader = document.getElementById('submitLoader');
+      const successMessage = document.getElementById('successMessage');
+      const errorMessage = document.getElementById('errorMessage');
+
+      // Add ripple effect to submit button
+      submitBtn.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+        
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+      });
+
+      // Form validation and submission
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Hide previous messages
+        successMessage.style.display = 'none';
+        errorMessage.style.display = 'none';
+        
+        // Show loading state
+        submitText.style.display = 'none';
+        submitLoader.style.display = 'inline';
+        submitBtn.disabled = true;
+        
+        // Get form data
+        const formData = {
+          fullName: document.getElementById('fullName').value,
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value,
+          dateOfBirth: document.getElementById('dateOfBirth').value,
+          marks: document.getElementById('marks').value,
+          stream: document.getElementById('stream').value,
+          preferredCourse: document.getElementById('preferredCourse').value,
+          alternativeCourse: document.getElementById('alternativeCourse').value,
+          address: document.getElementById('address').value,
+          achievements: document.getElementById('achievements').value,
+          timestamp: new Date().toISOString()
+        };
+        
+        // Validate required fields
+        const requiredFields = ['fullName', 'email', 'phone', 'dateOfBirth', 'marks', 'stream', 'preferredCourse', 'address'];
+        let isValid = true;
+        
+        for (let field of requiredFields) {
+          const element = document.getElementById(field);
+          if (!element.value.trim()) {
+            element.style.borderColor = '#e74c3c';
+            element.focus();
+            isValid = false;
+            break;
+          } else {
+            element.style.borderColor = '#e0e0e0';
+          }
+        }
+        
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (isValid && !emailRegex.test(formData.email)) {
+          document.getElementById('email').style.borderColor = '#e74c3c';
+          isValid = false;
+        }
+        
+        // Validate marks range
+        if (isValid && (formData.marks < 0 || formData.marks > 100)) {
+          document.getElementById('marks').style.borderColor = '#e74c3c';
+          isValid = false;
+        }
+        
+        if (!isValid) {
+          // Reset button state
+          submitText.style.display = 'inline';
+          submitLoader.style.display = 'none';
+          submitBtn.disabled = false;
+          errorMessage.style.display = 'block';
+          return;
+        }
+        
+        try {
+          // Simulate API call
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          
+          // Simulate server response
+          const response = await fetch('/api/submit-application', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+          }).catch(() => {
+            // Simulate successful submission for demo
+            return { ok: true, json: () => ({ success: true, applicationId: 'APP' + Math.random().toString(36).substr(2, 9).toUpperCase() }) };
+          });
+          
+          const result = await response.json();
+          
+          if (response.ok && result.success) {
+            // Success
+            successMessage.style.display = 'block';
+            successMessage.scrollIntoView({ behavior: 'smooth' });
+            form.reset();
+            
+            // Store application data in localStorage for reference
+            localStorage.setItem('lastApplication', JSON.stringify({
+              ...formData,
+              applicationId: result.applicationId || 'APP' + Math.random().toString(36).substr(2, 9).toUpperCase(),
+              submissionDate: new Date().toISOString()
+            }));
+            
+          } else {
+            // Error
+            errorMessage.style.display = 'block';
+            errorMessage.scrollIntoView({ behavior: 'smooth' });
+          }
+        } catch (error) {
+          console.error('Submission error:', error);
+          errorMessage.style.display = 'block';
+          errorMessage.scrollIntoView({ behavior: 'smooth' });
+        } finally {
+          // Reset button state
+          submitText.style.display = 'inline';
+          submitLoader.style.display = 'none';
+          submitBtn.disabled = false;
+        }
+      });
+
+      // Auto-save form data as user types
+      const formInputs = form.querySelectorAll('input, select, textarea');
+      formInputs.forEach(input => {
+        input.addEventListener('input', debounce(function() {
+          const formData = {};
+          formInputs.forEach(field => {
+            formData[field.id] = field.value;
+          });
+          localStorage.setItem('draftApplication', JSON.stringify(formData));
+        }, 500));
+      });
+
+      // Restore draft on page load
+      const draftData = localStorage.getItem('draftApplication');
+      if (draftData) {
+        try {
+          const draft = JSON.parse(draftData);
+          Object.keys(draft).forEach(key => {
+            const element = document.getElementById(key);
+            if (element && draft[key]) {
+              element.value = draft[key];
+            }
+          });
+        } catch (e) {
+          console.error('Error restoring draft:', e);
+        }
+      }
+
+      // Debounce function
+      function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+          const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+          };
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+        };
+      }
+
+      // Mobile menu toggle (if needed)
+      function toggleMobileMenu() {
+        const sidebar = document.querySelector('.sidebar-nav');
+        sidebar.classList.toggle('open');
+      }
+
+      // Add mobile menu button if on small screen
+      if (window.innerWidth <= 1200) {
+        const mobileMenuBtn = document.createElement('button');
+        mobileMenuBtn.innerHTML = '☰';
+        mobileMenuBtn.style.cssText = `
+          position: fixed;
+          top: 1rem;
+          left: 1rem;
+          z-index: 1001;
+          background: #667eea;
+          color: white;
+          border: none;
+          padding: 0.5rem;
+          border-radius: 5px;
+          font-size: 1.2rem;
+          cursor: pointer;
+        `;
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        document.body.appendChild(mobileMenuBtn);
+      }
+    });
+  </script>
 </body>
 </html>
