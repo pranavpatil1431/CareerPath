@@ -235,11 +235,19 @@
           <form id="resume-form">
             <div style="margin: 1rem 0;">
               <label style="display: block; margin-bottom: 0.5rem;">Full Name:</label>
-              <input type="text" style="width: 100%; padding: 0.5rem; border: none; border-radius: 5px;" placeholder="Enter your full name">
+              <input type="text" id="fullName" style="width: 100%; padding: 0.5rem; border: none; border-radius: 5px;" placeholder="Enter your full name" required>
+            </div>
+            <div style="margin: 1rem 0;">
+              <label style="display: block; margin-bottom: 0.5rem;">Email:</label>
+              <input type="email" id="email" style="width: 100%; padding: 0.5rem; border: none; border-radius: 5px;" placeholder="Enter your email address" required>
+            </div>
+            <div style="margin: 1rem 0;">
+              <label style="display: block; margin-bottom: 0.5rem;">Phone:</label>
+              <input type="tel" id="phone" style="width: 100%; padding: 0.5rem; border: none; border-radius: 5px;" placeholder="Enter your phone number">
             </div>
             <div style="margin: 1rem 0;">
               <label style="display: block; margin-bottom: 0.5rem;">Education Level:</label>
-              <select style="width: 100%; padding: 0.5rem; border: none; border-radius: 5px;">
+              <select id="education" style="width: 100%; padding: 0.5rem; border: none; border-radius: 5px;">
                 <option>12th Pass</option>
                 <option>Graduate</option>
                 <option>Post Graduate</option>
@@ -247,7 +255,7 @@
             </div>
             <div style="margin: 1rem 0;">
               <label style="display: block; margin-bottom: 0.5rem;">Field of Interest:</label>
-              <select style="width: 100%; padding: 0.5rem; border: none; border-radius: 5px;">
+              <select id="field" style="width: 100%; padding: 0.5rem; border: none; border-radius: 5px;">
                 <option>Engineering</option>
                 <option>Medical</option>
                 <option>Commerce</option>
@@ -255,7 +263,11 @@
                 <option>Science</option>
               </select>
             </div>
-            <button type="button" class="btn" style="background: white; color: #0984e3;" onclick="generateResume()">Generate AI Resume</button>
+            <div style="margin: 1rem 0;">
+              <label style="display: block; margin-bottom: 0.5rem;">Skills (comma-separated):</label>
+              <textarea id="skills" style="width: 100%; padding: 0.5rem; border: none; border-radius: 5px; height: 60px;" placeholder="e.g., Programming, Communication, Leadership, Problem Solving"></textarea>
+            </div>
+            <button type="button" class="btn" style="background: white; color: #0984e3;" onclick="generateResume()">🔽 Generate & Download Resume</button>
           </form>
         </div>
       </div>
@@ -356,7 +368,139 @@
 
     // Resume Generator
     function generateResume() {
-      alert('🎉 Your AI-powered resume has been generated! This feature will create a professional resume based on your inputs. In the full version, this would generate a downloadable PDF with AI-optimized content.');
+      // Get form values
+      const fullName = document.getElementById('fullName').value || 'Your Name';
+      const email = document.getElementById('email').value || 'your.email@example.com';
+      const phone = document.getElementById('phone').value || '+1 (555) 123-4567';
+      const education = document.getElementById('education').value;
+      const field = document.getElementById('field').value;
+      const skills = document.getElementById('skills').value || 'Communication, Problem Solving, Teamwork';
+      
+      // Validate required fields
+      if (!document.getElementById('fullName').value) {
+        alert('Please enter your full name to generate resume.');
+        return;
+      }
+      
+      if (!document.getElementById('email').value) {
+        alert('Please enter your email address to generate resume.');
+        return;
+      }
+      
+      // Create professional resume content
+      const resumeContent = `${fullName}
+=========================================
+Email: ${email}
+Phone: ${phone}
+LinkedIn: linkedin.com/in/${fullName.toLowerCase().replace(/\s+/g, '-')}
+Location: City, State, Country
+
+PROFESSIONAL OBJECTIVE
+=========================================
+Motivated ${education} with a strong passion for ${field}. Seeking opportunities 
+to apply academic knowledge and develop practical skills while contributing to 
+organizational growth and innovation. Committed to continuous learning and 
+professional development in the field of ${field}.
+
+EDUCATION
+=========================================
+${education} - ${field}
+Institution Name
+Expected/Completed: 2025
+Relevant Coursework: Core subjects and specializations in ${field}
+Academic Achievements: Dean's List, Relevant Projects
+
+CORE COMPETENCIES
+=========================================
+${skills.split(',').map(skill => '• ' + skill.trim()).join('\n')}
+• Critical thinking and analytical problem-solving
+• Excellent written and verbal communication
+• Time management and organizational skills
+• Adaptability and continuous learning mindset
+• Team collaboration and leadership potential
+
+PROJECTS & ACHIEVEMENTS
+=========================================
+Academic Project: ${field} Research Initiative
+• Conducted comprehensive research in ${field} domain
+• Applied theoretical concepts to real-world scenarios
+• Presented findings to academic panel with positive feedback
+• Collaborated effectively with diverse team members
+
+Extracurricular Leadership:
+• Active participation in college events and competitions
+• Leadership roles in student organizations and clubs
+• Volunteer work in community service initiatives
+• Event planning and coordination experience
+
+TECHNICAL SKILLS
+=========================================
+• Industry-relevant software and tools for ${field}
+• Microsoft Office Suite (Word, Excel, PowerPoint)
+• Research and data analysis capabilities
+• Digital communication and presentation tools
+• Basic programming/technical skills (field-specific)
+
+CERTIFICATIONS & TRAINING
+=========================================
+• Online certifications in ${field} from recognized platforms
+• Professional development workshops and seminars
+• Industry-specific skill enhancement programs
+• Career development and soft skills training
+
+LANGUAGES
+=========================================
+• English: Fluent (Professional working proficiency)
+• [Add other languages as applicable]
+
+INTERESTS & ACTIVITIES
+=========================================
+• Staying updated with latest trends and innovations in ${field}
+• Technology and digital transformation initiatives
+• Community service and social impact projects
+• Professional networking and industry engagement
+• Continuous learning through online courses and workshops
+
+REFERENCES
+=========================================
+Available upon request
+
+=========================================
+Resume generated by CareerPath AI Resume Builder
+Visit: http://localhost:5000 | Date: ${new Date().toLocaleDateString()}
+      `;
+
+      // Create and download the resume
+      const blob = new Blob([resumeContent], { type: 'text/plain;charset=utf-8' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${fullName.replace(/\s+/g, '_')}_Professional_Resume.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      
+      // Show success message
+      alert(`🎉 Success! Your professional resume has been generated and downloaded!
+
+File: ${fullName.replace(/\s+/g, '_')}_Professional_Resume.txt
+
+Your resume includes:
+✅ Professional contact information
+✅ Career objective tailored to ${field}
+✅ Education and academic details
+✅ Core competencies and skills
+✅ Projects and achievements section
+✅ Technical skills relevant to ${field}
+✅ Certifications and training
+✅ Professional references
+
+📝 Next Steps:
+• Customize the resume for specific job applications
+• Add more specific achievements and experiences
+• Update technical skills based on job requirements
+• Save in PDF format for professional submissions`);
     }
 
     // Roadmap Generator
