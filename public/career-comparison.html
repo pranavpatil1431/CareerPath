@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,maximum-scale=1" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Career Comparison — CareerPath</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .comparison-hero {
+      background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%);
+      color: white;
+      padding: 3rem 2rem;
+      border-radius: 15px;
+      text-align: center;
+      margin: 2rem 0;
+    }
+    .career-selector {
+      background: #f8f9fa;
+      padding: 2rem;
+      border-radius: 15px;
+      margin: 2rem 0;
+    }
+    .comparison-table {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      margin: 2rem 0;
+    }
+    .comparison-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+    .comparison-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      border-bottom: 1px solid #e9ecef;
+    }
+    .comparison-cell {
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .comparison-cell:nth-child(2) {
+      border-left: 1px solid #e9ecef;
+      border-right: 1px solid #e9ecef;
+      background: #f8f9fa;
+    }
+    .comparison-label {
+      background: #667eea;
+      color: white;
+      padding: 1.5rem;
+      font-weight: bold;
+      text-align: center;
+    }
+    .career-card {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      margin: 1rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    .career-card:hover {
+      transform: translateY(-5px);
+    }
+    .career-card.selected {
+      border: 2px solid #667eea;
+      background: #f0f4ff;
+    }
+    .salary-bar {
+      background: #e9ecef;
+      height: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 0.5rem 0;
+    }
+    .salary-fill {
+      height: 100%;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #74b9ff, #0984e3);
+    }
+    .growth-indicator {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      color: white;
+      font-weight: bold;
+    }
+    .growth-high { background: #00b894; }
+    .growth-medium { background: #fdcb6e; }
+    .growth-low { background: #e17055; }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="brand">CareerPath</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="admission.html">Admission Process</a></li>
+        <li><a href="courses.html">Courses & Syllabus</a></li>
+        <li><a href="exams.html">Entrance Exams</a></li>
+        <li><a href="colleges.html">Colleges</a></li>
+        <li><a href="allotment.html">Allotment</a></li>
+        <li><a href="ai-features.html">AI Tools</a></li>
+        <li><a href="scholarships.html">Scholarships</a></li>
+        <li><a href="mentor.html">Mentor</a></li>
+        <li><a href="career-comparison.html" class="active">Career Compare</a></li>
+        <li><a href="form.html" class="btn-link">Apply</a></li>
+        <li><a href="merit.html">Merit List</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container main">
+    <section class="comparison-hero">
+      <h1>⚖️ Career Comparison Tool</h1>
+      <p>Compare different career paths based on education requirements, salary, work-life balance, growth prospects, and more to make informed decisions about your future.</p>
+    </section>
+
+    <!-- Career Selector -->
+    <section class="career-selector">
+      <h2>🎯 Select Careers to Compare</h2>
+      <p>Choose up to 3 careers you want to compare:</p>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 2rem 0;">
+        <div class="career-card" onclick="selectCareer('engineering')" id="career-engineering">
+          <h4>👨‍💻 Software Engineering</h4>
+          <p>Technology, Programming, Innovation</p>
+        </div>
+        <div class="career-card" onclick="selectCareer('medicine')" id="career-medicine">
+          <h4>👩‍⚕️ Medicine</h4>
+          <p>Healthcare, Patient Care, Life Sciences</p>
+        </div>
+        <div class="career-card" onclick="selectCareer('business')" id="career-business">
+          <h4>💼 Business Management</h4>
+          <p>Leadership, Strategy, Operations</p>
+        </div>
+        <div class="career-card" onclick="selectCareer('teaching')" id="career-teaching">
+          <h4>👩‍🏫 Teaching</h4>
+          <p>Education, Knowledge Transfer, Impact</p>
+        </div>
+        <div class="career-card" onclick="selectCareer('law')" id="career-law">
+          <h4>⚖️ Law</h4>
+          <p>Justice, Legal Practice, Advocacy</p>
+        </div>
+        <div class="career-card" onclick="selectCareer('civil')" id="career-civil">
+          <h4>🏗️ Civil Engineering</h4>
+          <p>Infrastructure, Construction, Design</p>
+        </div>
+      </div>
+
+      <button class="btn" onclick="compareSelectedCareers()" id="compare-btn" disabled>Compare Selected Careers</button>
+    </section>
+
+    <!-- Comparison Results -->
+    <section id="comparison-results" style="display: none;">
+      <div class="comparison-table">
+        <div class="comparison-header">
+          <h2>📊 Career Comparison Results</h2>
+          <p>Detailed comparison of your selected career paths</p>
+        </div>
+        
+        <div class="comparison-row">
+          <div class="comparison-label">Career Field</div>
+          <div class="comparison-cell" id="career1-name"></div>
+          <div class="comparison-cell" id="career2-name"></div>
+          <div class="comparison-cell" id="career3-name"></div>
+        </div>
+        
+        <div class="comparison-row">
+          <div class="comparison-label">Required Education</div>
+          <div class="comparison-cell" id="career1-education"></div>
+          <div class="comparison-cell" id="career2-education"></div>
+          <div class="comparison-cell" id="career3-education"></div>
+        </div>
+        
+        <div class="comparison-row">
+          <div class="comparison-label">Duration of Study</div>
+          <div class="comparison-cell" id="career1-duration"></div>
+          <div class="comparison-cell" id="career2-duration"></div>
+          <div class="comparison-cell" id="career3-duration"></div>
+        </div>
+        
+        <div class="comparison-row">
+          <div class="comparison-label">Average Starting Salary</div>
+          <div class="comparison-cell" id="career1-salary"></div>
+          <div class="comparison-cell" id="career2-salary"></div>
+          <div class="comparison-cell" id="career3-salary"></div>
+        </div>
+        
+        <div class="comparison-row">
+          <div class="comparison-label">Salary Growth Potential</div>
+          <div class="comparison-cell" id="career1-growth"></div>
+          <div class="comparison-cell" id="career2-growth"></div>
+          <div class="comparison-cell" id="career3-growth"></div>
+        </div>
+        
+        <div class="comparison-row">
+          <div class="comparison-label">Work-Life Balance</div>
+          <div class="comparison-cell" id="career1-balance"></div>
+          <div class="comparison-cell" id="career2-balance"></div>
+          <div class="comparison-cell" id="career3-balance"></div>
+        </div>
+        
+        <div class="comparison-row">
+          <div class="comparison-label">Job Market Demand</div>
+          <div class="comparison-cell" id="career1-demand"></div>
+          <div class="comparison-cell" id="career2-demand"></div>
+          <div class="comparison-cell" id="career3-demand"></div>
+        </div>
+        
+        <div class="comparison-row">
+          <div class="comparison-label">Career Stability</div>
+          <div class="comparison-cell" id="career1-stability"></div>
+          <div class="comparison-cell" id="career2-stability"></div>
+          <div class="comparison-cell" id="career3-stability"></div>
+        </div>
+      </div>
+
+      <!-- Detailed Analysis -->
+      <div style="background: white; border-radius: 15px; padding: 2rem; margin: 2rem 0;">
+        <h3>📈 Detailed Career Analysis</h3>
+        <div id="detailed-analysis"></div>
+      </div>
+    </section>
+
+    <!-- Career Categories -->
+    <section style="margin: 3rem 0;">
+      <h2>🎓 Popular Career Categories</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0;">
+        <div style="background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; padding: 2rem; border-radius: 15px;">
+          <h4>💻 Technology & IT</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li>• Software Development</li>
+            <li>• Data Science</li>
+            <li>• Cybersecurity</li>
+            <li>• AI/ML Engineering</li>
+            <li>• Web Development</li>
+          </ul>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #00b894, #00cec9); color: white; padding: 2rem; border-radius: 15px;">
+          <h4>🏥 Healthcare</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li>• Medicine (MBBS)</li>
+            <li>• Nursing</li>
+            <li>• Pharmacy</li>
+            <li>• Physiotherapy</li>
+            <li>• Medical Research</li>
+          </ul>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #fdcb6e, #e17055); color: white; padding: 2rem; border-radius: 15px;">
+          <h4>🏗️ Engineering</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li>• Civil Engineering</li>
+            <li>• Mechanical Engineering</li>
+            <li>• Electrical Engineering</li>
+            <li>• Chemical Engineering</li>
+            <li>• Aerospace Engineering</li>
+          </ul>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #a29bfe, #6c5ce7); color: white; padding: 2rem; border-radius: 15px;">
+          <h4>💼 Business & Finance</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li>• Business Management</li>
+            <li>• Chartered Accountancy</li>
+            <li>• Banking & Finance</li>
+            <li>• Marketing</li>
+            <li>• Entrepreneurship</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>© 2025 CareerPath</div>
+      <div>Contact: careerpath@example.com</div>
+    </div>
+  </footer>
+
+  <script>
+    let selectedCareers = [];
+    
+    const careerData = {
+      engineering: {
+        name: "Software Engineering",
+        education: "B.Tech Computer Science + Coding Skills",
+        duration: "4 years",
+        salary: "₹4-15 LPA",
+        growth: "Very High",
+        balance: "Good",
+        demand: "Very High",
+        stability: "High"
+      },
+      medicine: {
+        name: "Medicine",
+        education: "MBBS + Specialization",
+        duration: "5.5-11 years",
+        salary: "₹5-15 LPA",
+        growth: "High",
+        balance: "Challenging",
+        demand: "High",
+        stability: "Very High"
+      },
+      business: {
+        name: "Business Management",
+        education: "BBA/MBA",
+        duration: "3-5 years",
+        salary: "₹3-12 LPA",
+        growth: "High",
+        balance: "Moderate",
+        demand: "High",
+        stability: "High"
+      },
+      teaching: {
+        name: "Teaching",
+        education: "B.Ed + Subject Expertise",
+        duration: "4-5 years",
+        salary: "₹2-8 LPA",
+        growth: "Moderate",
+        balance: "Excellent",
+        demand: "High",
+        stability: "Very High"
+      },
+      law: {
+        name: "Law",
+        education: "LLB/LLM",
+        duration: "3-5 years",
+        salary: "₹3-20 LPA",
+        growth: "High",
+        balance: "Challenging",
+        demand: "High",
+        stability: "High"
+      },
+      civil: {
+        name: "Civil Engineering",
+        education: "B.Tech Civil Engineering",
+        duration: "4 years",
+        salary: "₹3-10 LPA",
+        growth: "Moderate",
+        balance: "Good",
+        demand: "Moderate",
+        stability: "High"
+      }
+    };
+    
+    function selectCareer(careerType) {
+      const card = document.getElementById(`career-${careerType}`);
+      
+      if (selectedCareers.includes(careerType)) {
+        // Deselect
+        selectedCareers = selectedCareers.filter(c => c !== careerType);
+        card.classList.remove('selected');
+      } else if (selectedCareers.length < 3) {
+        // Select
+        selectedCareers.push(careerType);
+        card.classList.add('selected');
+      } else {
+        alert('You can compare maximum 3 careers at a time.');
+        return;
+      }
+      
+      document.getElementById('compare-btn').disabled = selectedCareers.length < 2;
+    }
+    
+    function compareSelectedCareers() {
+      if (selectedCareers.length < 2) {
+        alert('Please select at least 2 careers to compare.');
+        return;
+      }
+      
+      const resultsSection = document.getElementById('comparison-results');
+      resultsSection.style.display = 'block';
+      resultsSection.scrollIntoView({ behavior: 'smooth' });
+      
+      // Fill comparison table
+      for (let i = 0; i < 3; i++) {
+        const career = selectedCareers[i];
+        const cellSuffix = i === 0 ? '1' : i === 1 ? '2' : '3';
+        
+        if (career) {
+          const data = careerData[career];
+          document.getElementById(`career${cellSuffix}-name`).textContent = data.name;
+          document.getElementById(`career${cellSuffix}-education`).textContent = data.education;
+          document.getElementById(`career${cellSuffix}-duration`).textContent = data.duration;
+          document.getElementById(`career${cellSuffix}-salary`).textContent = data.salary;
+          document.getElementById(`career${cellSuffix}-growth`).innerHTML = getGrowthBadge(data.growth);
+          document.getElementById(`career${cellSuffix}-balance`).textContent = data.balance;
+          document.getElementById(`career${cellSuffix}-demand`).textContent = data.demand;
+          document.getElementById(`career${cellSuffix}-stability`).textContent = data.stability;
+        } else {
+          // Hide empty column
+          document.getElementById(`career${cellSuffix}-name`).textContent = '-';
+          document.getElementById(`career${cellSuffix}-education`).textContent = '-';
+          document.getElementById(`career${cellSuffix}-duration`).textContent = '-';
+          document.getElementById(`career${cellSuffix}-salary`).textContent = '-';
+          document.getElementById(`career${cellSuffix}-growth`).textContent = '-';
+          document.getElementById(`career${cellSuffix}-balance`).textContent = '-';
+          document.getElementById(`career${cellSuffix}-demand`).textContent = '-';
+          document.getElementById(`career${cellSuffix}-stability`).textContent = '-';
+        }
+      }
+      
+      // Generate detailed analysis
+      generateDetailedAnalysis();
+    }
+    
+    function getGrowthBadge(growth) {
+      const className = growth === 'Very High' ? 'growth-high' : 
+                       growth === 'High' ? 'growth-high' : 
+                       growth === 'Moderate' ? 'growth-medium' : 'growth-low';
+      return `<span class="growth-indicator ${className}">${growth}</span>`;
+    }
+    
+    function generateDetailedAnalysis() {
+      const analysisDiv = document.getElementById('detailed-analysis');
+      let analysis = '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">';
+      
+      selectedCareers.forEach(career => {
+        const data = careerData[career];
+        analysis += `
+          <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px;">
+            <h4>${data.name}</h4>
+            <p><strong>Best For:</strong> ${getBestFor(career)}</p>
+            <p><strong>Challenges:</strong> ${getChallenges(career)}</p>
+            <p><strong>Future Scope:</strong> ${getFutureScope(career)}</p>
+          </div>
+        `;
+      });
+      
+      analysis += '</div>';
+      analysisDiv.innerHTML = analysis;
+    }
+    
+    function getBestFor(career) {
+      const descriptions = {
+        engineering: "Problem-solvers who enjoy technology and innovation",
+        medicine: "Those passionate about helping others and saving lives",
+        business: "Natural leaders with entrepreneurial mindset",
+        teaching: "Those who love sharing knowledge and shaping future generations",
+        law: "Justice-seekers with strong analytical and communication skills",
+        civil: "Those interested in building infrastructure and creating lasting impact"
+      };
+      return descriptions[career] || "Career enthusiasts";
+    }
+    
+    function getChallenges(career) {
+      const challenges = {
+        engineering: "Continuous learning required, high competition",
+        medicine: "Long study duration, high responsibility, emotional stress",
+        business: "Market uncertainties, leadership pressure",
+        teaching: "Lower starting salary, societal pressure",
+        law: "Intense competition, long working hours",
+        civil: "Project deadlines, outdoor work conditions"
+      };
+      return challenges[career] || "Standard career challenges";
+    }
+    
+    function getFutureScope(career) {
+      const scope = {
+        engineering: "AI, IoT, blockchain technologies creating new opportunities",
+        medicine: "Telemedicine, personalized medicine expanding horizons",
+        business: "Digital transformation opening global markets",
+        teaching: "Online education and EdTech revolutionizing field",
+        law: "Cyber law and international regulations growing rapidly",
+        civil: "Smart cities and sustainable infrastructure in high demand"
+      };
+      return scope[career] || "Positive growth expected";
+    }
+  </script>
+</body>
+</html>

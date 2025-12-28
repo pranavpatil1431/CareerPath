@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,maximum-scale=1" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Contact & Help — CareerPath</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .contact-hero {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 3rem 2rem;
+      border-radius: 15px;
+      text-align: center;
+      margin: 2rem 0;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    .contact-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .contact-form {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    .office-hours {
+      background: linear-gradient(135deg, #74b9ff, #0984e3);
+      color: white;
+      padding: 2rem;
+      border-radius: 15px;
+      margin: 2rem 0;
+    }
+    .faq-section {
+      background: #f8f9fa;
+      padding: 2rem;
+      border-radius: 15px;
+      margin: 2rem 0;
+    }
+    .faq-item {
+      background: white;
+      margin: 1rem 0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .faq-question {
+      background: #667eea;
+      color: white;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .faq-answer {
+      padding: 1.5rem;
+      display: none;
+    }
+    .faq-answer.active {
+      display: block;
+    }
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .social-link {
+      display: inline-block;
+      padding: 1rem;
+      background: #667eea;
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+    .social-link:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="brand">CareerPath</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="admission.html">Admission Process</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="syllabus-guidance.html">Syllabus & Guidance</a></li>
+        <li><a href="exams.html">Entrance Exams</a></li>
+        <li><a href="colleges.html">Colleges</a></li>
+        <li><a href="allotment.html">Allotment</a></li>
+        <li><a href="ai-features.html">AI Tools</a></li>
+        <li><a href="scholarships.html">Scholarships</a></li>
+        <li><a href="mentor.html">Mentor</a></li>
+        <li><a href="career-comparison.html">Career Compare</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+        <li><a href="form.html" class="btn-link">Apply</a></li>
+        <li><a href="merit.html">Merit List</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container main">
+    <section class="contact-hero">
+      <h1>📞 Contact & Help Center</h1>
+      <p>Get in touch with our team for admission guidance, technical support, or any queries about your career journey.</p>
+    </section>
+
+    <!-- Contact Methods -->
+    <section>
+      <h2>💬 Get in Touch</h2>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div style="font-size: 3rem; margin-bottom: 1rem; color: #667eea;">📧</div>
+          <h3>Email Support</h3>
+          <p><strong>General Queries:</strong><br>info@careerpath.edu</p>
+          <p><strong>Admission Support:</strong><br>admissions@careerpath.edu</p>
+          <p><strong>Technical Support:</strong><br>support@careerpath.edu</p>
+          <p><em>Response time: 24 hours</em></p>
+        </div>
+
+        <div class="contact-card">
+          <div style="font-size: 3rem; margin-bottom: 1rem; color: #74b9ff;">📱</div>
+          <h3>Phone Support</h3>
+          <p><strong>Admission Helpline:</strong><br>+91-123-456-7890</p>
+          <p><strong>Career Counseling:</strong><br>+91-123-456-7891</p>
+          <p><strong>Technical Help:</strong><br>+91-123-456-7892</p>
+          <p><em>Available: 9 AM - 6 PM</em></p>
+        </div>
+
+        <div class="contact-card">
+          <div style="font-size: 3rem; margin-bottom: 1rem; color: #00b894;">📍</div>
+          <h3>Visit Our Office</h3>
+          <p><strong>Address:</strong><br>
+          CareerPath Education Center<br>
+          123, Knowledge Street<br>
+          Education Hub, Mumbai - 400001<br>
+          Maharashtra, India</p>
+          <p><em>Open: Monday to Saturday</em></p>
+        </div>
+
+        <div class="contact-card">
+          <div style="font-size: 3rem; margin-bottom: 1rem; color: #fdcb6e;">💬</div>
+          <h3>Live Chat</h3>
+          <p>Get instant answers to your questions with our AI-powered chatbot and live support.</p>
+          <button class="btn" onclick="startLiveChat()" style="margin-top: 1rem;">Start Live Chat</button>
+          <p><em>Available 24/7</em></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section>
+      <h2>✍️ Send Us a Message</h2>
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 3rem; margin: 2rem 0;">
+        <div class="contact-form">
+          <form id="contactForm">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div class="form-group">
+                <label for="firstName">First Name *</label>
+                <input type="text" id="firstName" name="firstName" required>
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name *</label>
+                <input type="text" id="lastName" name="lastName" required>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone">
+            </div>
+            
+            <div class="form-group">
+              <label for="category">Query Category *</label>
+              <select id="category" name="category" required>
+                <option value="">Select Category</option>
+                <option value="admission">Admission Process</option>
+                <option value="courses">Course Information</option>
+                <option value="scholarships">Scholarships</option>
+                <option value="technical">Technical Support</option>
+                <option value="career">Career Guidance</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="subject">Subject *</label>
+              <input type="text" id="subject" name="subject" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="message">Message *</label>
+              <textarea id="message" name="message" required placeholder="Please describe your query in detail..."></textarea>
+            </div>
+            
+            <button type="submit" class="btn" style="width: 100%;">Send Message</button>
+          </form>
+        </div>
+
+        <!-- Office Hours -->
+        <div class="office-hours">
+          <h3>🕒 Office Hours</h3>
+          <div style="margin: 1.5rem 0;">
+            <div style="display: flex; justify-content: space-between; margin: 0.5rem 0;">
+              <span>Monday - Friday</span>
+              <span>9:00 AM - 6:00 PM</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin: 0.5rem 0;">
+              <span>Saturday</span>
+              <span>10:00 AM - 4:00 PM</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin: 0.5rem 0;">
+              <span>Sunday</span>
+              <span>Closed</span>
+            </div>
+          </div>
+          
+          <h4 style="margin-top: 2rem;">🎯 Quick Links</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li><a href="admission.html" style="color: white;">📝 Admission Process</a></li>
+            <li><a href="scholarships.html" style="color: white;">🎓 Scholarship Portal</a></li>
+            <li><a href="mentor.html" style="color: white;">👨‍🏫 Book Counseling</a></li>
+            <li><a href="ai-features.html" style="color: white;">🤖 AI Career Tools</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+      <h2>❓ Frequently Asked Questions</h2>
+      
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(1)">
+          <span>How do I apply for admission?</span>
+          <span>+</span>
+        </div>
+        <div class="faq-answer" id="faq-1">
+          <p>You can apply online through our admission portal. Visit the <a href="form.html">Application Form</a> page, fill in your details, upload required documents, and submit your application. You'll receive a confirmation email with your application ID.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(2)">
+          <span>What documents are required for application?</span>
+          <span>+</span>
+        </div>
+        <div class="faq-answer" id="faq-2">
+          <p>Required documents include: 10th & 12th mark sheets, transfer certificate, passport-size photographs, caste certificate (if applicable), and entrance exam scorecard (if applicable).</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(3)">
+          <span>How can I check my merit list status?</span>
+          <span>+</span>
+        </div>
+        <div class="faq-answer" id="faq-3">
+          <p>Visit our <a href="merit.html">Merit List</a> page and enter your application ID or search by name to check your current status and ranking.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(4)">
+          <span>Are scholarships available?</span>
+          <span>+</span>
+        </div>
+        <div class="faq-answer" id="faq-4">
+          <p>Yes! We offer various government and private scholarships. Check our <a href="scholarships.html">Scholarship Portal</a> for eligibility criteria and application processes.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(5)">
+          <span>How does the AI career guidance work?</span>
+          <span>+</span>
+        </div>
+        <div class="faq-answer" id="faq-5">
+          <p>Our AI tools in the <a href="ai-features.html">AI Features</a> section provide personalized career recommendations, resume building assistance, and job roadmaps based on your interests and academic performance.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Social Media -->
+    <section style="text-align: center; margin: 3rem 0;">
+      <h2>🌐 Follow Us</h2>
+      <div class="social-links">
+        <a href="#" class="social-link">📘</a>
+        <a href="#" class="social-link">🐦</a>
+        <a href="#" class="social-link">📷</a>
+        <a href="#" class="social-link">💼</a>
+        <a href="#" class="social-link">📺</a>
+      </div>
+      <p style="margin-top: 1rem; color: #666;">Stay updated with the latest education news and opportunities</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>© 2025 CareerPath Education Center</div>
+      <div>Email: info@careerpath.edu | Phone: +91-123-456-7890</div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleFAQ(id) {
+      const answer = document.getElementById(`faq-${id}`);
+      const question = answer.previousElementSibling;
+      const icon = question.querySelector('span:last-child');
+      
+      // Close all other FAQs
+      document.querySelectorAll('.faq-answer').forEach(faq => {
+        if (faq !== answer) {
+          faq.classList.remove('active');
+          faq.previousElementSibling.querySelector('span:last-child').textContent = '+';
+        }
+      });
+      
+      // Toggle current FAQ
+      answer.classList.toggle('active');
+      icon.textContent = answer.classList.contains('active') ? '−' : '+';
+    }
+
+    function startLiveChat() {
+      alert('Live chat feature coming soon! For immediate assistance, please call our helpline at +91-123-456-7890 or use the contact form below.');
+    }
+
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Collect form data
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData);
+      
+      // Simulate form submission
+      alert('Thank you for your message! We have received your query and will respond within 24 hours. A confirmation has been sent to your email address.');
+      
+      // Reset form
+      this.reset();
+    });
+  </script>
+</body>
+</html>

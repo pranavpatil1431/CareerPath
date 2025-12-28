@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,maximum-scale=1" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Important Dates & Academic Calendar — CareerPath</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .dates-hero {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 3rem 2rem;
+      border-radius: 15px;
+      text-align: center;
+      margin: 2rem 0;
+    }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    .calendar-card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .calendar-header {
+      padding: 1.5rem;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+    }
+    .calendar-header.engineering {
+      background: linear-gradient(135deg, #74b9ff, #0984e3);
+    }
+    .calendar-header.medical {
+      background: linear-gradient(135deg, #00b894, #00cec9);
+    }
+    .calendar-header.commerce {
+      background: linear-gradient(135deg, #fdcb6e, #e17055);
+    }
+    .calendar-header.arts {
+      background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+    }
+    .calendar-header.general {
+      background: linear-gradient(135deg, #ff7675, #e84393);
+    }
+    .date-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #f8f9fa;
+    }
+    .date-item:last-child {
+      border-bottom: none;
+    }
+    .date-info {
+      flex: 1;
+    }
+    .date-title {
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+    .date-description {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .date-value {
+      background: #f8f9fa;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      font-weight: bold;
+      color: #333;
+      text-align: center;
+      min-width: 120px;
+    }
+    .date-value.upcoming {
+      background: linear-gradient(135deg, #74b9ff, #0984e3);
+      color: white;
+    }
+    .date-value.ongoing {
+      background: linear-gradient(135deg, #00b894, #00cec9);
+      color: white;
+    }
+    .date-value.closed {
+      background: #ddd;
+      color: #666;
+    }
+    .quick-alerts {
+      background: linear-gradient(135deg, #fdcb6e, #e17055);
+      color: white;
+      padding: 2rem;
+      border-radius: 15px;
+      margin: 2rem 0;
+    }
+    .alert-item {
+      background: rgba(255,255,255,0.1);
+      padding: 1rem;
+      border-radius: 10px;
+      margin: 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .countdown {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 2rem;
+      border-radius: 15px;
+      text-align: center;
+      margin: 2rem 0;
+    }
+    .countdown-item {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      padding: 1rem;
+      border-radius: 10px;
+      margin: 0.5rem;
+      min-width: 80px;
+    }
+    .countdown-number {
+      font-size: 2rem;
+      font-weight: bold;
+      display: block;
+    }
+    .filter-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 2rem 0;
+      justify-content: center;
+    }
+    .filter-btn {
+      background: #f8f9fa;
+      border: 1px solid #ddd;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .filter-btn.active {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="brand">CareerPath</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="admission.html">Admission Process</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="syllabus-guidance.html">Syllabus & Guidance</a></li>
+        <li><a href="exams.html">Entrance Exams</a></li>
+        <li><a href="colleges.html">Colleges</a></li>
+        <li><a href="allotment.html">Allotment</a></li>
+        <li><a href="ai-features.html">AI Tools</a></li>
+        <li><a href="scholarships.html">Scholarships</a></li>
+        <li><a href="mentor.html">Mentor</a></li>
+        <li><a href="career-comparison.html">Career Compare</a></li>
+        <li><a href="important-dates.html" class="active">Important Dates</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="form.html" class="btn-link">Apply</a></li>
+        <li><a href="merit.html">Merit List</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container main">
+    <section class="dates-hero">
+      <h1>📅 Important Dates & Academic Calendar 2025</h1>
+      <p>Stay updated with all crucial dates for entrance exams, application deadlines, results, and admission processes. Never miss an important deadline again!</p>
+    </section>
+
+    <!-- Quick Alerts -->
+    <section class="quick-alerts">
+      <h2>🚨 Urgent Alerts & Reminders</h2>
+      <div class="alert-item">
+        <div style="font-size: 2rem;">⏰</div>
+        <div>
+          <strong>JEE Main Session 1 Applications</strong><br>
+          Last date to apply: January 12, 2025 (5 days left!)
+        </div>
+      </div>
+      <div class="alert-item">
+        <div style="font-size: 2rem;">📝</div>
+        <div>
+          <strong>NEET UG 2025 Registration</strong><br>
+          Registration starts: March 6, 2025
+        </div>
+      </div>
+      <div class="alert-item">
+        <div style="font-size: 2rem;">🎓</div>
+        <div>
+          <strong>Scholarship Applications</strong><br>
+          Multiple government scholarships open - Apply now!
+        </div>
+      </div>
+    </section>
+
+    <!-- Countdown Timer -->
+    <section class="countdown">
+      <h2>⏱️ Next Important Event</h2>
+      <h3>JEE Main Session 1 - January 24, 2025</h3>
+      <div id="countdown-timer">
+        <div class="countdown-item">
+          <span class="countdown-number" id="days">27</span>
+          <span>Days</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-number" id="hours">14</span>
+          <span>Hours</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-number" id="minutes">32</span>
+          <span>Minutes</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-number" id="seconds">45</span>
+          <span>Seconds</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filter Buttons -->
+    <section>
+      <h2>📋 Academic Calendar by Category</h2>
+      <div class="filter-buttons">
+        <button class="filter-btn active" onclick="filterDates('all')">All Events</button>
+        <button class="filter-btn" onclick="filterDates('engineering')">Engineering</button>
+        <button class="filter-btn" onclick="filterDates('medical')">Medical</button>
+        <button class="filter-btn" onclick="filterDates('commerce')">Commerce & Management</button>
+        <button class="filter-btn" onclick="filterDates('arts')">Arts & Humanities</button>
+        <button class="filter-btn" onclick="filterDates('general')">General Admissions</button>
+      </div>
+    </section>
+
+    <!-- Academic Calendar -->
+    <section class="calendar-grid">
+      <!-- Engineering Exams -->
+      <div class="calendar-card" data-category="engineering">
+        <div class="calendar-header engineering">
+          <h3>🔧 Engineering Entrance Exams</h3>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">JEE Main Application</div>
+            <div class="date-description">Online application form submission</div>
+          </div>
+          <div class="date-value upcoming">Dec 1 - Jan 12</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">JEE Main Session 1</div>
+            <div class="date-description">Computer-based exam</div>
+          </div>
+          <div class="date-value upcoming">Jan 24-31, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">JEE Main Session 2</div>
+            <div class="date-description">Computer-based exam</div>
+          </div>
+          <div class="date-value">Apr 1-8, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">JEE Advanced</div>
+            <div class="date-description">IIT entrance exam</div>
+          </div>
+          <div class="date-value">May 18, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">State CET Exams</div>
+            <div class="date-description">Various state entrance exams</div>
+          </div>
+          <div class="date-value">Apr-May 2025</div>
+        </div>
+      </div>
+
+      <!-- Medical Exams -->
+      <div class="calendar-card" data-category="medical">
+        <div class="calendar-header medical">
+          <h3>🏥 Medical Entrance Exams</h3>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">NEET UG Registration</div>
+            <div class="date-description">Online application opens</div>
+          </div>
+          <div class="date-value">Mar 6-Apr 5, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">NEET UG Exam</div>
+            <div class="date-description">National eligibility entrance test</div>
+          </div>
+          <div class="date-value">May 4, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">NEET UG Results</div>
+            <div class="date-description">Score announcement</div>
+          </div>
+          <div class="date-value">Jun 15, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">NEET PG Exam</div>
+            <div class="date-description">Post-graduation entrance</div>
+          </div>
+          <div class="date-value">Jun 8, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">AIIMS Nursing</div>
+            <div class="date-description">Nursing entrance exam</div>
+          </div>
+          <div class="date-value">May 25, 2025</div>
+        </div>
+      </div>
+
+      <!-- Law & Humanities -->
+      <div class="calendar-card" data-category="arts">
+        <div class="calendar-header arts">
+          <h3>⚖️ Law & Humanities Exams</h3>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">CLAT Registration</div>
+            <div class="date-description">Law entrance exam application</div>
+          </div>
+          <div class="date-value">Jan 1-Mar 15, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">CLAT Exam</div>
+            <div class="date-description">Common law admission test</div>
+          </div>
+          <div class="date-value">May 11, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">CUET Registration</div>
+            <div class="date-description">Central university entrance</div>
+          </div>
+          <div class="date-value">Mar 15-Apr 15, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">CUET Exam</div>
+            <div class="date-description">Central university entrance test</div>
+          </div>
+          <div class="date-value">May 15-31, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">JNU Entrance</div>
+            <div class="date-description">Jawaharlal Nehru University</div>
+          </div>
+          <div class="date-value">Jun 20, 2025</div>
+        </div>
+      </div>
+
+      <!-- Commerce & Management -->
+      <div class="calendar-card" data-category="commerce">
+        <div class="calendar-header commerce">
+          <h3>💼 Commerce & Management Exams</h3>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">CAT Registration</div>
+            <div class="date-description">MBA entrance exam application</div>
+          </div>
+          <div class="date-value">Aug 1-Sep 15, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">CAT Exam</div>
+            <div class="date-description">Common admission test</div>
+          </div>
+          <div class="date-value">Nov 24, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">MAT Exam</div>
+            <div class="date-description">Management aptitude test</div>
+          </div>
+          <div class="date-value">Feb 16, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">XAT Exam</div>
+            <div class="date-description">Xavier admission test</div>
+          </div>
+          <div class="date-value">Jan 5, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">SNAP Exam</div>
+            <div class="date-description">Symbiosis admission test</div>
+          </div>
+          <div class="date-value">Dec 15, 2024</div>
+        </div>
+      </div>
+
+      <!-- General Admissions -->
+      <div class="calendar-card" data-category="general">
+        <div class="calendar-header general">
+          <h3>🎓 General Admission Deadlines</h3>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">UG Application Deadline</div>
+            <div class="date-description">Most university applications close</div>
+          </div>
+          <div class="date-value ongoing">Dec 31, 2024</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">Merit List Release</div>
+            <div class="date-description">First merit list publication</div>
+          </div>
+          <div class="date-value">Jul 15, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">Document Verification</div>
+            <div class="date-description">Original document verification</div>
+          </div>
+          <div class="date-value">Jul 20-Aug 10, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">Fee Payment Deadline</div>
+            <div class="date-description">Final fee submission</div>
+          </div>
+          <div class="date-value">Aug 15, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">Classes Begin</div>
+            <div class="date-description">Academic session starts</div>
+          </div>
+          <div class="date-value">Aug 20, 2025</div>
+        </div>
+      </div>
+
+      <!-- Scholarship Deadlines -->
+      <div class="calendar-card" data-category="general">
+        <div class="calendar-header general">
+          <h3>💰 Scholarship Deadlines</h3>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">Pre-Matric Scholarship</div>
+            <div class="date-description">Government pre-matric scholarship</div>
+          </div>
+          <div class="date-value ongoing">Jan 31, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">Post-Matric Scholarship</div>
+            <div class="date-description">Government post-matric scholarship</div>
+          </div>
+          <div class="date-value">Mar 31, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">Merit-based Scholarships</div>
+            <div class="date-description">Private merit scholarships</div>
+          </div>
+          <div class="date-value">Apr 15, 2025</div>
+        </div>
+        <div class="date-item">
+          <div class="date-info">
+            <div class="date-title">NSP Renewal</div>
+            <div class="date-description">National scholarship portal renewal</div>
+          </div>
+          <div class="date-value">Oct 31, 2025</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Study Tips Timeline -->
+    <section style="background: #f8f9fa; padding: 2rem; border-radius: 15px; margin: 3rem 0;">
+      <h2>📚 Exam Preparation Timeline</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0;">
+        <div style="background: white; padding: 1.5rem; border-radius: 10px; border-left: 4px solid #667eea;">
+          <h4>6 Months Before Exam</h4>
+          <ul>
+            <li>Complete syllabus coverage</li>
+            <li>Start practice tests</li>
+            <li>Join coaching if needed</li>
+            <li>Create study schedule</li>
+          </ul>
+        </div>
+        <div style="background: white; padding: 1.5rem; border-radius: 10px; border-left: 4px solid #74b9ff;">
+          <h4>3 Months Before Exam</h4>
+          <ul>
+            <li>Intensive revision</li>
+            <li>Mock test series</li>
+            <li>Weak areas focus</li>
+            <li>Time management practice</li>
+          </ul>
+        </div>
+        <div style="background: white; padding: 1.5rem; border-radius: 10px; border-left: 4px solid #00b894;">
+          <h4>1 Month Before Exam</h4>
+          <ul>
+            <li>Final revision</li>
+            <li>Previous year papers</li>
+            <li>Admit card download</li>
+            <li>Exam center visit</li>
+          </ul>
+        </div>
+        <div style="background: white; padding: 1.5rem; border-radius: 10px; border-left: 4px solid #fdcb6e;">
+          <h4>1 Week Before Exam</h4>
+          <ul>
+            <li>Light revision only</li>
+            <li>Relax and stay calm</li>
+            <li>Check exam essentials</li>
+            <li>Proper sleep schedule</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>© 2025 CareerPath</div>
+      <div>Stay updated with important dates | Never miss a deadline</div>
+    </div>
+  </footer>
+
+  <script>
+    // Countdown Timer
+    function updateCountdown() {
+      const targetDate = new Date('2025-01-24T09:00:00').getTime();
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById('days').textContent = days;
+      document.getElementById('hours').textContent = hours;
+      document.getElementById('minutes').textContent = minutes;
+      document.getElementById('seconds').textContent = seconds;
+
+      if (distance < 0) {
+        document.getElementById('countdown-timer').innerHTML = '<h3>Exam has started!</h3>';
+      }
+    }
+
+    // Update countdown every second
+    setInterval(updateCountdown, 1000);
+    updateCountdown(); // Initial call
+
+    // Filter functionality
+    function filterDates(category) {
+      const cards = document.querySelectorAll('.calendar-card');
+      const buttons = document.querySelectorAll('.filter-btn');
+      
+      // Update button states
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      // Show/hide cards
+      cards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-category') === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Add notification functionality
+    function addNotification(examName, date) {
+      if ('Notification' in window) {
+        Notification.requestPermission().then(function(permission) {
+          if (permission === 'granted') {
+            new Notification(`Reminder: ${examName}`, {
+              body: `Exam scheduled for ${date}`,
+              icon: '/favicon.ico'
+            });
+          }
+        });
+      }
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set upcoming/ongoing status based on current date
+      const today = new Date();
+      const dateItems = document.querySelectorAll('.date-value');
+      
+      dateItems.forEach(item => {
+        const dateText = item.textContent;
+        // Add logic to compare dates and set appropriate classes
+        // This is a simplified version - you'd want more robust date parsing
+      });
+    });
+  </script>
+</body>
+</html>

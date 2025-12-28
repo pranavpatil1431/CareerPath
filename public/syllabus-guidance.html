@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,maximum-scale=1" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Syllabus & Career Guidance — CareerPath</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .guidance-hero {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 3rem 2rem;
+      border-radius: 15px;
+      text-align: center;
+      margin: 2rem 0;
+    }
+    .stream-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .stream-card {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    .stream-card:hover {
+      transform: translateY(-5px);
+      border-color: #667eea;
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+    }
+    .stream-card.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    .syllabus-container {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      margin: 2rem 0;
+      display: none;
+    }
+    .syllabus-container.active {
+      display: block;
+    }
+    .subject-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .subject-card {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 1.5rem;
+      border-left: 4px solid #667eea;
+    }
+    .career-path {
+      background: linear-gradient(135deg, #74b9ff, #0984e3);
+      color: white;
+      padding: 2rem;
+      border-radius: 15px;
+      margin: 1.5rem 0;
+    }
+    .important-dates {
+      background: linear-gradient(135deg, #fdcb6e, #e17055);
+      color: white;
+      padding: 2rem;
+      border-radius: 15px;
+      margin: 2rem 0;
+    }
+    .placement-stats {
+      background: linear-gradient(135deg, #00b894, #00cec9);
+      color: white;
+      padding: 2rem;
+      border-radius: 15px;
+      margin: 2rem 0;
+    }
+    .tab-container {
+      display: flex;
+      background: #f8f9fa;
+      border-radius: 10px;
+      margin: 1rem 0;
+      overflow: hidden;
+    }
+    .tab {
+      flex: 1;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      background: #f8f9fa;
+      border: none;
+      transition: all 0.3s ease;
+    }
+    .tab.active {
+      background: #667eea;
+      color: white;
+    }
+    .tab-content {
+      display: none;
+      padding: 2rem;
+      background: white;
+      border-radius: 15px;
+      margin: 1rem 0;
+    }
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="brand">CareerPath</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="admission.html">Admission Process</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="syllabus-guidance.html" class="active">Syllabus & Guidance</a></li>
+        <li><a href="exams.html">Entrance Exams</a></li>
+        <li><a href="colleges.html">Colleges</a></li>
+        <li><a href="allotment.html">Allotment</a></li>
+        <li><a href="ai-features.html">AI Tools</a></li>
+        <li><a href="scholarships.html">Scholarships</a></li>
+        <li><a href="mentor.html">Mentor</a></li>
+        <li><a href="career-comparison.html">Career Compare</a></li>
+        <li><a href="form.html" class="btn-link">Apply</a></li>
+        <li><a href="merit.html">Merit List</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container main">
+    <section class="guidance-hero">
+      <h1>📚 Syllabus & Career Guidance</h1>
+      <p>Comprehensive syllabus information and career guidance for all streams. Make informed decisions about your academic journey and future career prospects.</p>
+    </section>
+
+    <!-- Stream Selection -->
+    <section>
+      <h2>🎯 Select Your Stream</h2>
+      <div class="stream-selector">
+        <div class="stream-card" onclick="selectStream('science')" id="stream-science">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🧪</div>
+          <h3>Science (PCM/PCB)</h3>
+          <p>Physics, Chemistry, Mathematics/Biology</p>
+        </div>
+        <div class="stream-card" onclick="selectStream('commerce')" id="stream-commerce">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">💼</div>
+          <h3>Commerce</h3>
+          <p>Accountancy, Business Studies, Economics</p>
+        </div>
+        <div class="stream-card" onclick="selectStream('arts')" id="stream-arts">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🎨</div>
+          <h3>Arts/Humanities</h3>
+          <p>History, Geography, Political Science</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Science Stream Content -->
+    <div class="syllabus-container" id="science-content">
+      <h2>🧪 Science Stream - Syllabus & Career Guidance</h2>
+      
+      <div class="tab-container">
+        <button class="tab active" onclick="showTab('science', 'subjects')">Subjects & Syllabus</button>
+        <button class="tab" onclick="showTab('science', 'careers')">Career Paths</button>
+        <button class="tab" onclick="showTab('science', 'colleges')">Top Colleges</button>
+        <button class="tab" onclick="showTab('science', 'placement')">Placement Stats</button>
+      </div>
+
+      <!-- Subjects Tab -->
+      <div class="tab-content active" id="science-subjects">
+        <h3>📖 Core Subjects</h3>
+        <div class="subject-grid">
+          <div class="subject-card">
+            <h4>Physics</h4>
+            <ul>
+              <li>Mechanics & Properties of Matter</li>
+              <li>Heat & Thermodynamics</li>
+              <li>Oscillations & Waves</li>
+              <li>Electricity & Magnetism</li>
+              <li>Optics</li>
+              <li>Modern Physics</li>
+            </ul>
+          </div>
+          <div class="subject-card">
+            <h4>Chemistry</h4>
+            <ul>
+              <li>Physical Chemistry</li>
+              <li>Inorganic Chemistry</li>
+              <li>Organic Chemistry</li>
+              <li>Atomic Structure</li>
+              <li>Chemical Bonding</li>
+              <li>Thermodynamics</li>
+            </ul>
+          </div>
+          <div class="subject-card">
+            <h4>Mathematics</h4>
+            <ul>
+              <li>Calculus</li>
+              <li>Algebra</li>
+              <li>Geometry</li>
+              <li>Trigonometry</li>
+              <li>Coordinate Geometry</li>
+              <li>Statistics & Probability</li>
+            </ul>
+          </div>
+          <div class="subject-card">
+            <h4>Biology (PCB)</h4>
+            <ul>
+              <li>Cell Biology</li>
+              <li>Genetics</li>
+              <li>Ecology</li>
+              <li>Human Physiology</li>
+              <li>Plant Physiology</li>
+              <li>Biotechnology</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Careers Tab -->
+      <div class="tab-content" id="science-careers">
+        <h3>🚀 Career Opportunities</h3>
+        <div class="career-path">
+          <h4>Engineering Careers (PCM)</h4>
+          <p><strong>Entry:</strong> JEE Main/Advanced, State CET</p>
+          <p><strong>Duration:</strong> 4 years B.Tech</p>
+          <p><strong>Salary Range:</strong> ₹4-15 LPA</p>
+          <p><strong>Specializations:</strong> Computer Science, Mechanical, Civil, Electrical, Chemical</p>
+        </div>
+        <div class="career-path">
+          <h4>Medical Careers (PCB)</h4>
+          <p><strong>Entry:</strong> NEET UG</p>
+          <p><strong>Duration:</strong> 5.5 years MBBS</p>
+          <p><strong>Salary Range:</strong> ₹5-15 LPA</p>
+          <p><strong>Specializations:</strong> Medicine, Surgery, Pediatrics, Cardiology, Neurology</p>
+        </div>
+        <div class="career-path">
+          <h4>Research & Pure Sciences</h4>
+          <p><strong>Entry:</strong> BSc + MSc + PhD</p>
+          <p><strong>Duration:</strong> 3+2+3-5 years</p>
+          <p><strong>Salary Range:</strong> ₹3-10 LPA</p>
+          <p><strong>Fields:</strong> Physics, Chemistry, Biology, Mathematics Research</p>
+        </div>
+      </div>
+
+      <!-- Colleges Tab -->
+      <div class="tab-content" id="science-colleges">
+        <h3>🏫 Top Colleges for Science Students</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+          <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px;">
+            <h4>IITs (Engineering)</h4>
+            <p>Indian Institutes of Technology</p>
+            <p><strong>Entrance:</strong> JEE Advanced</p>
+            <p><strong>Fee:</strong> ₹8-10 LPA</p>
+          </div>
+          <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px;">
+            <h4>AIIMS (Medical)</h4>
+            <p>All India Institute of Medical Sciences</p>
+            <p><strong>Entrance:</strong> NEET UG</p>
+            <p><strong>Fee:</strong> ₹5,000-₹15,000 per year</p>
+          </div>
+          <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px;">
+            <h4>IISc Bangalore</h4>
+            <p>Indian Institute of Science</p>
+            <p><strong>Entrance:</strong> KVPY, JEE Advanced</p>
+            <p><strong>Fee:</strong> ₹50,000 per year</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Placement Tab -->
+      <div class="tab-content" id="science-placement">
+        <div class="placement-stats">
+          <h3>📈 Placement Statistics</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin: 2rem 0;">
+            <div>
+              <h4>Engineering Average</h4>
+              <p style="font-size: 2rem; font-weight: bold;">₹8.5 LPA</p>
+            </div>
+            <div>
+              <h4>Medical Average</h4>
+              <p style="font-size: 2rem; font-weight: bold;">₹7.2 LPA</p>
+            </div>
+            <div>
+              <h4>Research Average</h4>
+              <p style="font-size: 2rem; font-weight: bold;">₹5.8 LPA</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Commerce Stream Content -->
+    <div class="syllabus-container" id="commerce-content">
+      <h2>💼 Commerce Stream - Syllabus & Career Guidance</h2>
+      
+      <div class="tab-container">
+        <button class="tab active" onclick="showTab('commerce', 'subjects')">Subjects & Syllabus</button>
+        <button class="tab" onclick="showTab('commerce', 'careers')">Career Paths</button>
+        <button class="tab" onclick="showTab('commerce', 'colleges')">Top Colleges</button>
+        <button class="tab" onclick="showTab('commerce', 'placement')">Placement Stats</button>
+      </div>
+
+      <!-- Commerce Subjects -->
+      <div class="tab-content active" id="commerce-subjects">
+        <h3>📖 Core Subjects</h3>
+        <div class="subject-grid">
+          <div class="subject-card">
+            <h4>Accountancy</h4>
+            <ul>
+              <li>Financial Accounting</li>
+              <li>Partnership Accounts</li>
+              <li>Company Accounts</li>
+              <li>Analysis of Financial Statements</li>
+              <li>Cash Flow Statement</li>
+            </ul>
+          </div>
+          <div class="subject-card">
+            <h4>Business Studies</h4>
+            <ul>
+              <li>Management Principles</li>
+              <li>Business Environment</li>
+              <li>Planning & Organizing</li>
+              <li>Marketing Management</li>
+              <li>Financial Management</li>
+            </ul>
+          </div>
+          <div class="subject-card">
+            <h4>Economics</h4>
+            <ul>
+              <li>Microeconomics</li>
+              <li>Macroeconomics</li>
+              <li>National Income</li>
+              <li>Money & Banking</li>
+              <li>International Trade</li>
+            </ul>
+          </div>
+          <div class="subject-card">
+            <h4>Mathematics</h4>
+            <ul>
+              <li>Statistics</li>
+              <li>Probability</li>
+              <li>Linear Programming</li>
+              <li>Calculus (Application)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Commerce Careers -->
+      <div class="tab-content" id="commerce-careers">
+        <h3>🚀 Career Opportunities</h3>
+        <div class="career-path">
+          <h4>Chartered Accountancy (CA)</h4>
+          <p><strong>Duration:</strong> 3-5 years</p>
+          <p><strong>Salary Range:</strong> ₹6-25 LPA</p>
+          <p><strong>Roles:</strong> Auditor, Tax Consultant, Financial Advisor</p>
+        </div>
+        <div class="career-path">
+          <h4>Business Management (MBA)</h4>
+          <p><strong>Entry:</strong> CAT, MAT, XAT</p>
+          <p><strong>Duration:</strong> 2 years</p>
+          <p><strong>Salary Range:</strong> ₹8-30 LPA</p>
+          <p><strong>Specializations:</strong> Finance, Marketing, HR, Operations</p>
+        </div>
+        <div class="career-path">
+          <h4>Banking & Finance</h4>
+          <p><strong>Entry:</strong> Bank PO, Clerk exams</p>
+          <p><strong>Duration:</strong> 3-4 years graduation</p>
+          <p><strong>Salary Range:</strong> ₹3-12 LPA</p>
+          <p><strong>Roles:</strong> Bank Officer, Investment Banker, Financial Analyst</p>
+        </div>
+      </div>
+
+      <!-- Commerce Colleges -->
+      <div class="tab-content" id="commerce-colleges">
+        <h3>🏫 Top Colleges for Commerce Students</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+          <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px;">
+            <h4>SRCC, Delhi</h4>
+            <p>Shri Ram College of Commerce</p>
+            <p><strong>Courses:</strong> B.Com (H), B.A. Economics</p>
+            <p><strong>Cutoff:</strong> 98%+</p>
+          </div>
+          <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px;">
+            <h4>LSR, Delhi</h4>
+            <p>Lady Shri Ram College</p>
+            <p><strong>Courses:</strong> B.A. Economics, B.Com</p>
+            <p><strong>Cutoff:</strong> 96%+</p>
+          </div>
+          <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px;">
+            <h4>Christ University</h4>
+            <p>Bangalore</p>
+            <p><strong>Courses:</strong> BBA, B.Com, Economics</p>
+            <p><strong>Entrance:</strong> Christ University Test</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Commerce Placement -->
+      <div class="tab-content" id="commerce-placement">
+        <div class="placement-stats">
+          <h3>📈 Placement Statistics</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin: 2rem 0;">
+            <div>
+              <h4>CA Average</h4>
+              <p style="font-size: 2rem; font-weight: bold;">₹12 LPA</p>
+            </div>
+            <div>
+              <h4>MBA Average</h4>
+              <p style="font-size: 2rem; font-weight: bold;">₹15 LPA</p>
+            </div>
+            <div>
+              <h4>Banking Average</h4>
+              <p style="font-size: 2rem; font-weight: bold;">₹6 LPA</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arts Stream Content -->
+    <div class="syllabus-container" id="arts-content">
+      <h2>🎨 Arts/Humanities Stream - Syllabus & Career Guidance</h2>
+      
+      <div class="tab-container">
+        <button class="tab active" onclick="showTab('arts', 'subjects')">Subjects & Syllabus</button>
+        <button class="tab" onclick="showTab('arts', 'careers')">Career Paths</button>
+        <button class="tab" onclick="showTab('arts', 'colleges')">Top Colleges</button>
+        <button class="tab" onclick="showTab('arts', 'placement')">Placement Stats</button>
+      </div>
+
+      <!-- Arts Subjects -->
+      <div class="tab-content active" id="arts-subjects">
+        <h3>📖 Core Subjects</h3>
+        <div class="subject-grid">
+          <div class="subject-card">
+            <h4>History</h4>
+            <ul>
+              <li>Ancient Indian History</li>
+              <li>Medieval History</li>
+              <li>Modern Indian History</li>
+              <li>World History</li>
+              <li>Art & Culture</li>
+            </ul>
+          </div>
+          <div class="subject-card">
+            <h4>Political Science</h4>
+            <ul>
+              <li>Political Theory</li>
+              <li>Indian Government</li>
+              <li>Comparative Politics</li>
+              <li>International Relations</li>
+              <li>Public Administration</li>
+            </ul>
+          </div>
+          <div class="subject-card">
+            <h4>Geography</h4>
+            <ul>
+              <li>Physical Geography</li>
+              <li>Human Geography</li>
+              <li>Economic Geography</li>
+              <li>Environmental Studies</li>
+              <li>Map Reading</li>
+            </ul>
+          </div>
+          <div class="subject-card">
+            <h4>Sociology</h4>
+            <ul>
+              <li>Social Structure</li>
+              <li>Social Change</li>
+              <li>Indian Society</li>
+              <li>Social Problems</li>
+              <li>Research Methods</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arts Careers -->
+      <div class="tab-content" id="arts-careers">
+        <h3>🚀 Career Opportunities</h3>
+        <div class="career-path">
+          <h4>Civil Services (UPSC)</h4>
+          <p><strong>Duration:</strong> 1-3 years preparation</p>
+          <p><strong>Salary Range:</strong> ₹56,000-₹2.5 LPA</p>
+          <p><strong>Roles:</strong> IAS, IPS, IFS, IRS Officers</p>
+        </div>
+        <div class="career-path">
+          <h4>Law & Legal Services</h4>
+          <p><strong>Entry:</strong> CLAT, LSAT</p>
+          <p><strong>Duration:</strong> 3/5 years LLB</p>
+          <p><strong>Salary Range:</strong> ₹3-20 LPA</p>
+          <p><strong>Roles:</strong> Lawyer, Judge, Legal Advisor</p>
+        </div>
+        <div class="career-path">
+          <h4>Media & Journalism</h4>
+          <p><strong>Duration:</strong> 3 years graduation</p>
+          <p><strong>Salary Range:</strong> ₹2-8 LPA</p>
+          <p><strong>Roles:</strong> Reporter, Editor, News Anchor</p>
+        </div>
+      </div>
+
+      <!-- Arts Colleges -->
+      <div class="tab-content" id="arts-colleges">
+        <h3>🏫 Top Colleges for Arts Students</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+          <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px;">
+            <h4>JNU, Delhi</h4>
+            <p>Jawaharlal Nehru University</p>
+            <p><strong>Courses:</strong> BA, MA in various subjects</p>
+            <p><strong>Entrance:</strong> JNUEE</p>
+          </div>
+          <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px;">
+            <h4>BHU, Varanasi</h4>
+            <p>Banaras Hindu University</p>
+            <p><strong>Courses:</strong> BA, MA, Research</p>
+            <p><strong>Entrance:</strong> BHU UET</p>
+          </div>
+          <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px;">
+            <h4>AMU, Aligarh</h4>
+            <p>Aligarh Muslim University</p>
+            <p><strong>Courses:</strong> BA, MA programs</p>
+            <p><strong>Entrance:</strong> AMU Entrance Test</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arts Placement -->
+      <div class="tab-content" id="arts-placement">
+        <div class="placement-stats">
+          <h3>📈 Placement Statistics</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin: 2rem 0;">
+            <div>
+              <h4>Civil Services</h4>
+              <p style="font-size: 2rem; font-weight: bold;">₹56K/month</p>
+            </div>
+            <div>
+              <h4>Law Average</h4>
+              <p style="font-size: 2rem; font-weight: bold;">₹6 LPA</p>
+            </div>
+            <div>
+              <h4>Media Average</h4>
+              <p style="font-size: 2rem; font-weight: bold;">₹4 LPA</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Important Dates Section -->
+    <section class="important-dates">
+      <h2>📅 Important Academic Dates 2025</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+        <div>
+          <h4>Engineering Entrance Exams</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li>📝 JEE Main Session 1: January 24-31, 2025</li>
+            <li>📝 JEE Main Session 2: April 1-8, 2025</li>
+            <li>📝 JEE Advanced: May 18, 2025</li>
+            <li>📝 State CETs: April-May 2025</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Medical & Other Exams</h4>
+          <ul style="list-style: none; padding: 0;">
+            <li>📝 NEET UG: May 4, 2025</li>
+            <li>📝 CLAT: May 11, 2025</li>
+            <li>📝 CUET: May 15-31, 2025</li>
+            <li>📝 CAT: November 2025</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>© 2025 CareerPath</div>
+      <div>Contact: careerpath@example.com</div>
+    </div>
+  </footer>
+
+  <script>
+    let activeStream = '';
+
+    function selectStream(stream) {
+      // Hide all content
+      const contents = document.querySelectorAll('.syllabus-container');
+      contents.forEach(content => content.classList.remove('active'));
+
+      // Reset all stream cards
+      const cards = document.querySelectorAll('.stream-card');
+      cards.forEach(card => card.classList.remove('active'));
+
+      // Show selected content
+      document.getElementById(`${stream}-content`).classList.add('active');
+      document.getElementById(`stream-${stream}`).classList.add('active');
+
+      activeStream = stream;
+
+      // Scroll to content
+      document.getElementById(`${stream}-content`).scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+
+    function showTab(stream, tabName) {
+      // Hide all tabs for this stream
+      const tabs = document.querySelectorAll(`#${stream}-content .tab`);
+      const contents = document.querySelectorAll(`#${stream}-content .tab-content`);
+      
+      tabs.forEach(tab => tab.classList.remove('active'));
+      contents.forEach(content => content.classList.remove('active'));
+      
+      // Show selected tab
+      event.target.classList.add('active');
+      document.getElementById(`${stream}-${tabName}`).classList.add('active');
+    }
+
+    // Initialize with science stream
+    document.addEventListener('DOMContentLoaded', function() {
+      selectStream('science');
+    });
+  </script>
+</body>
+</html>
