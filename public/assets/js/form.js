@@ -93,10 +93,31 @@ document.addEventListener('DOMContentLoaded', () => {
       const json = await res.json();
       
       if (json.ok) {
-        showMessage(
-          `🎉 Application submitted successfully! Your Application ID: ${json.id}. You can check your rank on the merit list.`, 
-          'success'
-        );
+        // Enhanced success message with merit list link
+        const successMessage = `
+          🎉 Application submitted successfully! <br>
+          <strong>Your Details:</strong><br>
+          • Name: ${json.student.name}<br>
+          • Marks: ${json.student.marks}%<br>
+          • Stream: ${json.student.stream}<br>
+          • Course: ${json.student.course}<br><br>
+          <strong>Application ID: ${json.id}</strong><br><br>
+          <a href="merit.html" target="_blank" class="merit-link" style="
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: bold;
+            transition: transform 0.3s;
+          " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            🏆 Check Your Rank in Merit List
+          </a>
+        `;
+        
+        showMessage(successMessage, 'success', true);
         form.reset();
         inputs.forEach(input => input.classList.remove('success', 'error'));
         
@@ -105,6 +126,14 @@ document.addEventListener('DOMContentLoaded', () => {
           behavior: 'smooth', 
           block: 'center' 
         });
+        
+        // Optional: Auto-redirect to merit list after 3 seconds
+        setTimeout(() => {
+          const meritLink = document.querySelector('.merit-link');
+          if (meritLink && confirm('Would you like to check your rank in the merit list now?')) {
+            window.open('merit.html', '_blank');
+          }
+        }, 3000);
       } else {
         showMessage(json.error || 'Submission failed. Please try again.', 'error');
       }
@@ -122,17 +151,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  function showMessage(text, type) {
+  function showMessage(text, type, isHTML = false) {
     const msg = document.getElementById('formMessage');
     msg.className = `message message-${type}`;
-    msg.textContent = text;
+    
+    if (isHTML) {
+      msg.innerHTML = text;
+    } else {
+      msg.textContent = text;
+    }
+    
     msg.classList.remove('hidden');
     
-    // Auto-hide success messages after 5 seconds
+    // Auto-hide success messages after 10 seconds (longer for merit list link)
     if (type === 'success') {
       setTimeout(() => {
         msg.classList.add('hidden');
-      }, 5000);
+      }, 10000);
     }
   }
 });

@@ -349,6 +349,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3000);
   }
 
+  // Auto-refresh functionality for real-time updates
+  let autoRefreshInterval;
+  let lastUpdateTime = Date.now();
+
+  function startAutoRefresh() {
+    // Refresh every 30 seconds to catch new student applications
+    autoRefreshInterval = setInterval(() => {
+      console.log('🔄 Auto-refreshing merit list for new applications...');
+      loadMeritList();
+    }, 30000); // 30 seconds
+  }
+
+  function stopAutoRefresh() {
+    if (autoRefreshInterval) {
+      clearInterval(autoRefreshInterval);
+      autoRefreshInterval = null;
+    }
+  }
+
+  // Handle page visibility to stop/start auto-refresh
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      console.log('📴 Page hidden, stopping auto-refresh');
+      stopAutoRefresh();
+    } else {
+      console.log('👁️ Page visible, starting auto-refresh');
+      startAutoRefresh();
+      // Immediate refresh when user returns to page
+      loadMeritList();
+    }
+  });
+
   // Event Listeners
   streamTabs.forEach(tab => {
     tab.addEventListener('click', () => {
@@ -363,6 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (refreshBtn) {
     refreshBtn.addEventListener('click', () => {
       console.log('🔄 Manual refresh triggered');
+      showNotification('🔄 Refreshing merit list...', 'info');
       loadMeritList();
     });
   }
@@ -381,7 +414,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial load
   console.log('🚀 Starting initial merit list load...');
-  loadMeritList();
+  loadMeritList().then(() => {
+    // Start auto-refresh after initial load
+    console.log('⏰ Starting auto-refresh for real-time updates...');
+    startAutoRefresh();
+    
+    // Show notification about auto-refresh
+    setTimeout(() => {
+      showNotification('🔄 Merit list will auto-update every 30 seconds for new applications', 'info');
+    }, 2000);
+  });
 });
 
 // Add CSS animation for notifications

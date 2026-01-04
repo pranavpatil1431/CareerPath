@@ -236,46 +236,77 @@ app.post("/apply", async (req, res) => {
   try {
     const { name, email, marks, stream, course } = req.body;
     
-    // Validation
-    if (!name || !email || !marks) {
+    // Enhanced Validation
+    if (!name || !email || marks === undefined || marks === null) {
       return res.status(400).json({ 
         ok: false, 
         error: "Name, email, and marks are required." 
       });
     }
 
+    if (marks < 0 || marks > 100) {
+      return res.status(400).json({ 
+        ok: false, 
+        error: "Marks must be between 0 and 100." 
+      });
+    }
+
+    // Check for duplicate email
+    const existingStudent = students.find(s => s.email.toLowerCase() === email.toLowerCase());
+    if (existingStudent) {
+      return res.status(400).json({ 
+        ok: false, 
+        error: "A student with this email already exists." 
+      });
+    }
+
     const studentData = {
       name: name.trim(),
-      email: email.trim(),
+      email: email.trim().toLowerCase(),
       marks: Number(marks),
       stream: stream || '',
       course: course || '',
       createdAt: new Date()
     };
 
+    let savedStudentId;
+
     if (mongoConnected && Student) {
-      // Use MongoDB
+      // Save to MongoDB
       const newStudent = new Student(studentData);
       const savedStudent = await newStudent.save();
+      savedStudentId = savedStudent._id;
       
-      res.status(201).json({ 
-        ok: true, 
-        id: savedStudent._id,
-        message: "Application submitted successfully!" 
-      });
+      // Also add to in-memory for immediate merit list updates
+      const memoryStudent = {
+        ...studentData,
+        _id: savedStudent._id.toString()
+      };
+      students.push(memoryStudent);
+      
     } else {
-      // Use in-memory storage
-      studentData._id = Date.now().toString();
+      // Use only in-memory storage
+      savedStudentId = Date.now().toString();
+      studentData._id = savedStudentId;
       students.push(studentData);
-      
-      res.status(201).json({ 
-        ok: true, 
-        id: studentData._id,
-        message: "Application submitted successfully!" 
-      });
     }
+
+    console.log(`✅ New student added: ${studentData.name} (${studentData.marks}% - ${studentData.stream})`);
+    console.log(`📊 Total students now: ${students.length}`);
+    
+    res.status(201).json({ 
+      ok: true, 
+      id: savedStudentId,
+      message: "🎉 Application submitted successfully! Check the merit list to see your ranking.",
+      student: {
+        name: studentData.name,
+        marks: studentData.marks,
+        stream: studentData.stream,
+        course: studentData.course
+      }
+    });
   } catch (error) {
-    console.error("Error saving student:", error);
+    console.error("❌ Error saving student:", error);
     res.status(500).json({ 
       ok: false, 
       error: "Failed to submit application. Please try again." 
