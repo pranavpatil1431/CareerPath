@@ -20,17 +20,90 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
 // ✅ MongoDB Configuration
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/careerpath";
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/careerpath";
 
-// Student Schema
+// Database connection function
+const connectDB = async () => {
+  try {
+    await mongoose.connect(MONGO_URI);
+    
+    // Wait for connection to be fully established
+    await mongoose.connection.asPromise();
+    
+    console.log("✅ Connected to MongoDB Atlas");
+    
+    // Check connection details
+    if (mongoose.connection?.name) {
+      console.log("Connected to DB:", mongoose.connection.name);
+    }
+    
+    if (mongoose.connection.db) {
+      console.log(`🎯 Database: ${mongoose.connection.db.databaseName}`);
+      console.log(`🌍 Host: ${mongoose.connection.host}`);
+    } else {
+      console.log("⚠️ Connection established but database info not available yet");
+    }
+    
+    mongoConnected = true;
+    Student = mongoose.model('Student', studentSchema);
+    
+    // Test the connection by counting documents
+    try {
+      const count = await Student.countDocuments();
+      console.log(`📊 Current students in database: ${count}`);
+    } catch (countError) {
+      console.log(`⚠️ Could not count documents: ${countError.message}`);
+    }
+    
+  } catch (error) {
+    console.error("❌ MongoDB connection error:", error.message);
+    console.log('💾 Falling back to in-memory storage');
+    mongoConnected = false;
+  }
+};
+
+// Student Schema with enhanced validation
 const studentSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true },
-  marks: { type: Number, required: true },
-  stream: { type: String, default: '' },
-  course: { type: String, default: '' },
-  createdAt: { type: Date, default: Date.now }
+  name: { 
+    type: String, 
+    required: [true, 'Name is required'],
+    trim: true,
+    maxlength: [100, 'Name cannot exceed 100 characters']
+  },
+  email: { 
+    type: String, 
+    required: [true, 'Email is required'],
+    trim: true,
+    lowercase: true,
+    match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email'],
+    maxlength: [100, 'Email cannot exceed 100 characters']
+  },
+  marks: { 
+    type: Number, 
+    required: [true, 'Marks are required'],
+    min: [0, 'Marks cannot be negative'],
+    max: [100, 'Marks cannot exceed 100']
+  },
+  stream: { 
+    type: String, 
+    default: '',
+    trim: true,
+    maxlength: [50, 'Stream cannot exceed 50 characters']
+  },
+  course: { 
+    type: String, 
+    default: '',
+    trim: true,
+    maxlength: [100, 'Course cannot exceed 100 characters']
+  },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
 });
+
+// Add index for better performance
+studentSchema.index({ email: 1 });
+studentSchema.index({ marks: -1 });
+studentSchema.index({ createdAt: -1 });
 
 let Student;
 let mongoConnected = false;
@@ -51,27 +124,17 @@ let students = [
   { _id: '12', name: 'Isha kadam', email: 'isha@example.com', marks: 64, stream: 'Arts', course: 'BE', createdAt: new Date() }
 ];
 
-// Connect to MongoDB
-async function connectToMongoDB() {
-  try {
-    console.log('📡 Connecting to MongoDB...');
-    await mongoose.connect(MONGODB_URI);
-    console.log('✅ Connected to MongoDB successfully!');
-    
-    Student = mongoose.model('Student', studentSchema);
-    mongoConnected = true;
-  } catch (error) {
-    console.error('❌ MongoDB connection failed:', error.message);
-    console.log('💾 Using in-memory storage as fallback');
-    mongoConnected = false;
-  }
-}
+// Initialize database connection
+const initializeDatabase = async () => {
+  await connectDB();
+};
 
-// Initialize MongoDB connection
-connectToMongoDB();
+// Start the connection process
+initializeDatabase();
 
+// Connection event handlers
 mongoose.connection.on('error', (err) => {
-  console.error('❌ MongoDB connection error:', err);
+  console.error('❌ MongoDB connection error:', err.message);
   mongoConnected = false;
 });
 
@@ -80,17 +143,84 @@ mongoose.connection.on('disconnected', () => {
   mongoConnected = false;
 });
 
-// ✅ Routes
+// Graceful shutdown
+process.on('SIGINT', async () => {
+  try {
+    await mongoose.connection.close();
+    console.log('👋 MongoDB connection closed');
+    process.exit(0);
+  } catch (error) {
+    console.error('❌ Error during shutdown:', error.message);
+    process.exit(1);
+  }
+});
+
+// ✅ Enhanced Routes for Production Monitoring
+
+// Health Check Route
+app.get("/health", async (req, res) => {
+  const healthStatus = {
+    status: "healthy",
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    environment: process.env.NODE_ENV || 'development',
+    mongodb: {
+      connected: mongoConnected,
+      readyState: mongoose.connection.readyState,
+      host: mongoose.connection.host || 'Not connected',
+      database: mongoose.connection.db?.databaseName || 'Not connected'
+    }
+  };
+
+  if (mongoConnected) {
+    try {
+      // Test database connectivity
+      const studentCount = await Student.countDocuments();
+      healthStatus.mongodb.studentCount = studentCount;
+      healthStatus.mongodb.lastCheck = new Date().toISOString();
+    } catch (error) {
+      healthStatus.mongodb.error = error.message;
+      healthStatus.status = "degraded";
+    }
+  }
+
+  res.status(mongoConnected ? 200 : 503).json(healthStatus);
+});
+
+// Root Route
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
-app.get("/api", (req, res) => {
-  res.json({ 
-    message: "CareerPath API is running!",
-    mongodb: mongoConnected ? "Connected" : "Fallback mode",
-    timestamp: new Date().toISOString()
-  });
+// Enhanced API Status Route
+app.get("/api", async (req, res) => {
+  const apiStatus = {
+    message: "🎓 CareerPath API is running!",
+    version: "2.0.0",
+    status: "active",
+    mongodb: {
+      connected: mongoConnected,
+      mode: mongoConnected ? "Database" : "Fallback (In-Memory)",
+      connection: mongoConnected ? "MongoDB Atlas" : "Local Storage"
+    },
+    environment: process.env.NODE_ENV || 'development',
+    timestamp: new Date().toISOString(),
+    uptime: `${Math.floor(process.uptime())} seconds`
+  };
+
+  if (mongoConnected) {
+    try {
+      const studentCount = await Student.countDocuments();
+      apiStatus.mongodb.studentCount = studentCount;
+    } catch (error) {
+      apiStatus.mongodb.error = "Failed to fetch student count";
+    }
+  } else {
+    apiStatus.mongodb.fallbackCount = students.length;
+  }
+
+  res.json(apiStatus);
 });
 
 app.post("/apply", async (req, res) => {
@@ -289,7 +419,8 @@ app.get("/admin/applicants", verifyAdminToken, async (req, res) => {
 });
 
 // ✅ Start Server - Initialize MongoDB connection
-connectToMongoDB();
+// Start the connection
+connectDB();
 
 // Export for Vercel
 export default app;

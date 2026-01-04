@@ -25,7 +25,7 @@ let Student = null;
 let mongoConnected = false;
 
 // ✅ MongoDB Connection with fallback
-const mongoURI = process.env.MONGODB_URI || "mongodb://localhost:27017/careerpath";
+const mongoURI = process.env.MONGO_URI || "mongodb://localhost:27017/careerpath";
 
 console.log("🔌 Attempting to connect to MongoDB...");
 mongoose.connect(mongoURI)
