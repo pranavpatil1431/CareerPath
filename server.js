@@ -90,6 +90,13 @@ app.post("/apply", async (req, res) => {
       res.status(201).json({ 
         ok: true, 
         id: savedStudent._id,
+        student: {
+          name: savedStudent.name,
+          email: savedStudent.email,
+          marks: savedStudent.marks,
+          stream: savedStudent.stream,
+          course: savedStudent.course
+        },
         message: "Application submitted successfully!" 
       });
     } else {
@@ -100,6 +107,13 @@ app.post("/apply", async (req, res) => {
       res.status(201).json({ 
         ok: true, 
         id: studentData._id,
+        student: {
+          name: studentData.name,
+          email: studentData.email,
+          marks: studentData.marks,
+          stream: studentData.stream,
+          course: studentData.course
+        },
         message: "Application submitted successfully!" 
       });
     }
@@ -316,13 +330,14 @@ if (!isVercel) {
     });
   });
 
-  process.on('SIGINT', () => {
-    console.log('👋 Received SIGINT, shutting down gracefully');
-    server.close(() => {
-      mongoose.connection.close();
-      process.exit(0);
-    });
-  });
+  // Commented out to prevent interference during testing
+  // process.on('SIGINT', () => {
+  //   console.log('👋 Received SIGINT, shutting down gracefully');
+  //   server.close(() => {
+  //     mongoose.connection.close();
+  //     process.exit(0);
+  //   });
+  // });
 }
 
 // Export for Vercel serverless deployment

@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
       email: document.getElementById('email').value.trim(),
       marks: Number(document.getElementById('marks').value),
       stream: document.getElementById('stream').value,
-      course: document.getElementById('coursePref').value.trim()
+      course: document.getElementById('preferredCourse').value.trim()
     };
 
     try {
