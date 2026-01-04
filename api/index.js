@@ -333,16 +333,14 @@ app.get("/merit", async (req, res) => {
         }));
     });
 
-    console.log('Merit data:', {
+    console.log('Merit data being sent:', {
       Science: meritByStream.Science.length,
       Arts: meritByStream.Arts.length,
       Commerce: meritByStream.Commerce.length
     });
     
-    res.json({
-      success: true,
-      data: meritByStream
-    });
+    // Return direct format for consistency with server.js
+    res.json(meritByStream);
   } catch (error) {
     console.error("Error fetching merit list:", error);
     res.status(500).json({ 

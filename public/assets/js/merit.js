@@ -137,13 +137,32 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await response.json();
       console.log('📋 Merit data received:', data);
 
-      // Server returns merit data directly (not wrapped in success/data)
-      meritData = data;
-      console.log('✅ Merit data processed:', {
-        Science: meritData.Science?.length || 0,
-        Arts: meritData.Arts?.length || 0,
-        Commerce: meritData.Commerce?.length || 0
-      });
+      // Handle both API response formats
+      if (data.success && data.data) {
+        // API format: {success: true, data: meritByStream}
+        meritData = data.data;
+        console.log('✅ Merit data processed from API response wrapper:', {
+          Science: meritData.Science?.length || 0,
+          Arts: meritData.Arts?.length || 0,
+          Commerce: meritData.Commerce?.length || 0
+        });
+      } else if (data.Science || data.Arts || data.Commerce) {
+        // Direct format: meritByStream (from server.js)
+        meritData = data;
+        console.log('✅ Merit data processed directly from server:', {
+          Science: meritData.Science?.length || 0,
+          Arts: meritData.Arts?.length || 0,
+          Commerce: meritData.Commerce?.length || 0
+        });
+      } else {
+        // Fallback: try direct data format
+        meritData = data;
+        console.log('⚠️ Unknown merit data format, using as-is:', {
+          Science: meritData.Science?.length || 0,
+          Arts: meritData.Arts?.length || 0,
+          Commerce: meritData.Commerce?.length || 0
+        });
+      }
       
       renderAllStreams();
       showCurrentStream();
