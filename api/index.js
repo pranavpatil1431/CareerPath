@@ -22,8 +22,17 @@ app.use(express.static(path.join(__dirname, '../public')));
 // ✅ MongoDB Configuration
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/careerpath";
 
+// For testing merit list, force internal data usage
+const FORCE_INTERNAL_DATA = process.env.NODE_ENV === 'production' ? false : false; // Set to true to test with internal data
+
 // Database connection function
 const connectDB = async () => {
+  if (FORCE_INTERNAL_DATA) {
+    console.log("🔧 FORCE_INTERNAL_DATA enabled - using fallback data");
+    mongoConnected = false;
+    return;
+  }
+  
   try {
     await mongoose.connect(MONGO_URI);
     
@@ -292,12 +301,19 @@ app.get("/merit", async (req, res) => {
   try {
     let allStudents;
     
+    console.log('🏆 Merit list request received');
+    console.log('🔗 MongoDB connected:', mongoConnected);
+    
     if (mongoConnected && Student) {
+      console.log('📊 Fetching from MongoDB Atlas...');
       // Get all students from MongoDB
       allStudents = await Student.find().sort({ marks: -1 });
+      console.log(`📋 Found ${allStudents.length} students in MongoDB`);
     } else {
+      console.log('💾 Using internal fallback data...');
       // Use in-memory students
       allStudents = [...students];
+      console.log(`📋 Using ${allStudents.length} internal students`);
     }
 
     // Group students by stream and sort by marks
@@ -310,6 +326,8 @@ app.get("/merit", async (req, res) => {
     // Group students by their stream
     allStudents.forEach(student => {
       const stream = student.stream;
+      console.log(`👤 Processing: ${student.name} (${stream} - ${student.marks}%)`);
+      
       if (meritByStream.hasOwnProperty(stream)) {
         meritByStream[stream].push({
           _id: student._id,
@@ -318,6 +336,18 @@ app.get("/merit", async (req, res) => {
           marks: student.marks,
           preferredCourse: student.course,
           stream: stream,
+          createdAt: student.createdAt
+        });
+      } else {
+        console.log(`⚠️ Unknown stream found: "${stream}" for student: ${student.name}`);
+        // Add to Science as fallback
+        meritByStream.Science.push({
+          _id: student._id,
+          name: student.name,
+          email: student.email,
+          marks: student.marks,
+          preferredCourse: student.course,
+          stream: 'Science',
           createdAt: student.createdAt
         });
       }
@@ -333,19 +363,31 @@ app.get("/merit", async (req, res) => {
         }));
     });
 
-    console.log('Merit data being sent:', {
+    console.log('🎯 Merit data being sent:', {
       Science: meritByStream.Science.length,
       Arts: meritByStream.Arts.length,
-      Commerce: meritByStream.Commerce.length
+      Commerce: meritByStream.Commerce.length,
+      total: allStudents.length
     });
     
-    // Return direct format for consistency with server.js
+    // Log top student from each stream
+    if (meritByStream.Science.length > 0) {
+      console.log(`🥇 Top Science: ${meritByStream.Science[0].name} (${meritByStream.Science[0].marks}%)`);
+    }
+    if (meritByStream.Arts.length > 0) {
+      console.log(`🥇 Top Arts: ${meritByStream.Arts[0].name} (${meritByStream.Arts[0].marks}%)`);
+    }
+    if (meritByStream.Commerce.length > 0) {
+      console.log(`🥇 Top Commerce: ${meritByStream.Commerce[0].name} (${meritByStream.Commerce[0].marks}%)`);
+    }
+    
+    // Return direct format for frontend compatibility
     res.json(meritByStream);
   } catch (error) {
-    console.error("Error fetching merit list:", error);
+    console.error("❌ Error fetching merit list:", error);
     res.status(500).json({ 
-      success: false,
-      error: "Failed to fetch merit list" 
+      error: "Failed to fetch merit list",
+      message: error.message
     });
   }
 });
