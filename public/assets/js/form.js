@@ -93,6 +93,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const json = await res.json();
       
       if (json.ok) {
+        // Store user email for merit rank tracking
+        localStorage.setItem('userEmail', data.email);
+        localStorage.setItem('applicationId', json.id);
+        localStorage.setItem('applicationData', JSON.stringify(json.student));
+        
         // Enhanced success message with merit list link
         const successMessage = `
           🎉 Application submitted successfully! <br>

@@ -17,6 +17,7 @@
       display: flex;
       min-height: 100vh;
       margin: 0;
+      background: linear-gradient(135deg, #f8fafc 0%, #e7e9ec 100%);
     }
     
     .sidebar-nav {
@@ -30,6 +31,7 @@
       left: 0;
       top: 0;
       z-index: 1000;
+      box-shadow: 4px 0 20px rgba(0,0,0,0.1);
     }
     
     .brand-sidebar {
@@ -49,47 +51,450 @@
     
     .nav-item {
       background: rgba(255,255,255,0.1);
-      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 0.5rem;
       transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .nav-item.active {
+      background: rgba(255,255,255,0.2);
+      border-color: rgba(255,255,255,0.4);
+      box-shadow: 0 4px 15px rgba(255,255,255,0.1);
     }
     
     .nav-item:hover {
-      background: rgba(255,255,255,0.2);
-      transform: translateX(5px);
+      background: rgba(255,255,255,0.15);
+      transform: translateY(-2px);
     }
     
     .nav-item a {
       color: white;
       text-decoration: none;
       display: block;
-      padding: 0.8rem 1rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-    }
-    
-    .nav-item.active {
-      background: rgba(255,255,255,0.3);
-      border-left: 4px solid white;
-    }
-    
-    .nav-item.btn-link {
-      background: linear-gradient(135deg, #74b9ff, #0984e3);
-      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      font-weight: 500;
+      border-radius: 0.5rem;
+      transition: all 0.3s ease;
     }
     
     .main-content {
-      margin-left: 300px;
       flex: 1;
-      padding: 0;
+      margin-left: 300px;
+      padding: 2rem;
+      background: linear-gradient(135deg, #f8fafc 0%, #e7e9ec 100%);
+      min-height: 100vh;
     }
-    
-    .nav {
+
+    /* Enhanced Merit List Styles */
+    .merit-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .header-info h2 {
+      margin: 0;
+      font-size: 2.2rem;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
+
+    .stats-container {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+      background: white;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      min-width: 80px;
+    }
+
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #667eea;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-top: 0.25rem;
+    }
+
+    .search-filter-section {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 2.5rem 0.75rem 1rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .clear-btn {
+      position: absolute;
+      right: 0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #9ca3af;
+      cursor: pointer;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .clear-btn:hover {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .filter-options {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .filter-select {
+      padding: 0.75rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.5rem;
+      font-size: 0.9rem;
+      background: white;
+      cursor: pointer;
+    }
+
+    .stream-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      background: #f8fafc;
+      padding: 0.5rem;
+      border-radius: 0.75rem;
+      overflow-x: auto;
+    }
+
+    .stream-tab {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      background: transparent;
+      color: #6b7280;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .stream-tab.active {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .stream-tab:hover:not(.active) {
+      background: white;
+      color: #374151;
+    }
+
+    .tab-count {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.2rem 0.5rem;
+      border-radius: 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .stream-tab.active .tab-count {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .merit-table-container {
+      margin-top: 2rem;
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .table-header h3 {
+      margin: 0;
+      color: #374151;
+    }
+
+    .table-info {
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+
+    .merit-table-wrapper {
+      overflow-x: auto;
+      border-radius: 0.75rem;
+      background: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .merit-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .merit-table th {
+      background: linear-gradient(135deg, #f8fafc, #e5e7eb);
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      color: #374151;
+      border-bottom: 2px solid #e5e7eb;
+    }
+
+    .merit-table td {
+      padding: 1rem;
+      border-bottom: 1px solid #f3f4f6;
+      vertical-align: middle;
+    }
+
+    .merit-table tbody tr:hover {
+      background: #f8fafc;
+    }
+
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .rank-1 {
+      background: linear-gradient(135deg, #ffd700, #ffed4a);
+      color: #1a1a1a;
+    }
+
+    .rank-2 {
+      background: linear-gradient(135deg, #c0c0c0, #e2e8f0);
+      color: #1a1a1a;
+    }
+
+    .rank-3 {
+      background: linear-gradient(135deg, #cd7f32, #d69e2e);
+      color: white;
+    }
+
+    .rank-default {
+      background: linear-gradient(135deg, #6b7280, #9ca3af);
+      color: white;
+    }
+
+    .student-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .student-name {
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .student-email {
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    .marks-badge {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: linear-gradient(135deg, #10b981, #34d399);
+      color: white;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .marks-poor {
+      background: linear-gradient(135deg, #ef4444, #f87171);
+    }
+
+    .marks-average {
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    }
+
+    .marks-good {
+      background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    }
+
+    .marks-excellent {
+      background: linear-gradient(135deg, #10b981, #34d399);
+    }
+
+    .stream-badge {
+      display: inline-block;
+      padding: 0.3rem 0.7rem;
+      border-radius: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .stream-science {
+      background: linear-gradient(135deg, #3b82f6, #60a5fa);
+      color: white;
+    }
+
+    .stream-arts {
+      background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+      color: white;
+    }
+
+    .stream-commerce {
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
+      color: white;
+    }
+
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      color: #6b7280;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f4f6;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1rem;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: #6b7280;
+    }
+
+    .empty-state.hidden {
       display: none;
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .empty-state h3 {
+      margin: 0 0 0.5rem 0;
+      color: #374151;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .sidebar-nav {
+        width: 100%;
+        height: auto;
+        position: relative;
+        margin-bottom: 1rem;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 1rem;
+      }
+
+      .merit-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .stats-container {
+        justify-content: center;
+      }
+
+      .search-filter-section {
+        flex-direction: column;
+      }
+
+      .filter-options {
+        justify-content: center;
+      }
+
+      .stream-tabs {
+        justify-content: center;
+      }
+
+      .merit-table th,
+      .merit-table td {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .stream-col,
+      .date-col {
+        display: none;
+      }
+    }
+
+    /* Hide certain columns on small screens */
+    @media (max-width: 600px) {
+      .course-col {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Sidebar Navigation -->
   <nav class="sidebar-nav">
     <div class="brand-sidebar">CareerPath</div>
     <div class="nav-grid">
@@ -97,34 +502,34 @@
         <a href="index.html">🏠 Home</a>
       </div>
       <div class="nav-item">
-        <a href="admission.html">📝 Admission Process</a>
+        <a href="admission.html">🎓 Admissions</a>
       </div>
       <div class="nav-item">
         <a href="courses.html">📚 Courses</a>
       </div>
       <div class="nav-item">
-        <a href="syllabus-guidance.html">📖 Syllabus & Guidance</a>
+        <a href="colleges.html">🏛️ Colleges</a>
       </div>
       <div class="nav-item">
-        <a href="exams.html">🎯 Entrance Exams</a>
+        <a href="exams.html">📝 Exams</a>
       </div>
       <div class="nav-item">
-        <a href="colleges.html">🏫 Colleges</a>
+        <a href="scholarships.html">💰 Scholarships</a>
       </div>
       <div class="nav-item">
-        <a href="allotment.html">🎲 Allotment</a>
+        <a href="mentor.html">🎯 Mentorship</a>
       </div>
       <div class="nav-item">
-        <a href="ai-features.html">🤖 AI Tools</a>
+        <a href="career-comparison.html">⚖️ Compare</a>
       </div>
       <div class="nav-item">
-        <a href="scholarships.html">🎓 Scholarships</a>
+        <a href="ai-features.html">🤖 AI Features</a>
       </div>
       <div class="nav-item">
-        <a href="mentor.html">👨‍🏫 Mentor</a>
+        <a href="syllabus-guidance.html">📖 Syllabus</a>
       </div>
       <div class="nav-item">
-        <a href="career-comparison.html">⚖️ Career Compare</a>
+        <a href="allotment.html">📋 Allotment</a>
       </div>
       <div class="nav-item">
         <a href="important-dates.html">📅 Important Dates</a>
@@ -143,112 +548,151 @@
 
   <!-- Main Content -->
   <div class="main-content">
-  <main class="container main">
-    <div class="hero text-center mb-xl">
-      <h1>🏆 Merit List</h1>
-      <p>Live rankings based on academic performance. Results are updated in real-time as new applications are processed.</p>
-    </div>
+    <main class="container main">
+      <div class="hero text-center mb-xl">
+        <h1>🏆 Merit List</h1>
+        <p>Live rankings based on academic performance. Results are updated in real-time as new applications are processed.</p>
+      </div>
 
-    <div class="card mb-lg">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-lg);">
-        <div>
-          <h3>📊 Stream-wise Merit Rankings</h3>
-          <p style="margin: 0; color: var(--text-secondary);">Rankings organized by academic stream</p>
+      <!-- Merit List Header -->
+      <div class="card mb-lg">
+        <div class="merit-header">
+          <div class="header-info">
+            <h2>🏆 Merit List 2025</h2>
+            <p style="margin: 0.5rem 0 0 0; color: var(--text-secondary); font-size: 1rem;">Real-time rankings based on academic performance</p>
+          </div>
+          <div class="header-actions">
+            <div class="stats-container">
+              <div class="stat-item">
+                <span class="stat-number" id="totalStudents">0</span>
+                <span class="stat-label">Total Students</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" id="currentRank">--</span>
+                <span class="stat-label">Your Rank</span>
+              </div>
+            </div>
+            <button id="refreshList" class="btn btn-primary">
+              🔄 Refresh
+            </button>
+          </div>
         </div>
-        <button id="refreshList" class="btn btn-outline">
-          🔄 Refresh List
-        </button>
       </div>
-      
-      <!-- Stream Tabs -->
-      <div class="stream-tabs" style="margin-bottom: var(--space-lg);">
-        <button class="stream-tab active" data-stream="Science">🔬 Science</button>
-        <button class="stream-tab" data-stream="Arts">🎨 Arts</button>
-        <button class="stream-tab" data-stream="Commerce">💼 Commerce</button>
-      </div>
-      
-      <div id="loadingIndicator" class="text-center" style="padding: var(--space-xl);">
-        <div class="loading" style="margin: 0 auto var(--space-md);"></div>
-        <p>Loading merit lists...</p>
-      </div>
-      
-      <!-- Science Stream Table -->
-      <div id="scienceTable" class="stream-content active">
-        <div class="stream-header">
-          <h4>🔬 Science Stream Merit List</h4>
-          <p>Top performers in Science stream</p>
-        </div>
-        <table class="doc-table">
-          <thead>
-            <tr>
-              <th>🥇 Rank</th>
-              <th>👤 Name</th>
-              <th>📊 Marks</th>
-              <th>🎯 Preferred Course</th>
-            </tr>
-          </thead>
-          <tbody id="scienceBody"></tbody>
-        </table>
-      </div>
-      
-      <!-- Arts Stream Table -->
-      <div id="artsTable" class="stream-content">
-        <div class="stream-header">
-          <h4>🎨 Arts Stream Merit List</h4>
-          <p>Top performers in Arts stream</p>
-        </div>
-        <table class="doc-table">
-          <thead>
-            <tr>
-              <th>🥇 Rank</th>
-              <th>👤 Name</th>
-              <th>📊 Marks</th>
-              <th>🎯 Preferred Course</th>
-            </tr>
-          </thead>
-          <tbody id="artsBody"></tbody>
-        </table>
-      </div>
-      
-      <!-- Commerce Stream Table -->
-      <div id="commerceTable" class="stream-content">
-        <div class="stream-header">
-          <h4>� Commerce Stream Merit List</h4>
-          <p>Top performers in Commerce stream</p>
-        </div>
-        <table class="doc-table">
-          <thead>
-            <tr>
-              <th>🥇 Rank</th>
-              <th>👤 Name</th>
-              <th>📊 Marks</th>
-              <th>🎯 Preferred Course</th>
-            </tr>
-          </thead>
-          <tbody id="commerceBody"></tbody>
-        </table>
-      </div>
-      
-      <div id="emptyState" class="text-center hidden" style="padding: var(--space-2xl);">
-        <div style="font-size: 4rem; margin-bottom: var(--space-md);">📋</div>
-        <h3>No Applications Yet</h3>
-        <p>Be the first to apply and secure your spot on the merit list!</p>
-        <a href="form.html" class="btn mt-md">Apply Now</a>
-      </div>
-    </div>
 
-    <div class="card">
-      <h3>ℹ️ Important Information</h3>
-      <ul style="margin: var(--space-md) 0; padding-left: var(--space-lg); color: var(--text-secondary);">
-        <li><strong>Stream-wise Rankings:</strong> Each stream (Science, Arts, Commerce) has separate merit lists</li>
-        <li><strong>Real-time Updates:</strong> Merit lists are updated automatically when new applications are submitted</li>
-        <li><strong>Ranking Criteria:</strong> Rankings are based on marks obtained in qualifying examinations</li>
-        <li><strong>Tie-breaker Rule:</strong> In case of tie, applications submitted earlier will get preference</li>
-        <li><strong>Admission Process:</strong> Final admission is subject to document verification and seat availability</li>
-        <li><strong>Stream Selection:</strong> Use the tabs above to switch between different stream merit lists</li>
-      </ul>
-    </div>
-  </main>
+      <!-- Search and Filter Section -->
+      <div class="card mb-lg">
+        <div class="search-filter-section">
+          <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Search by name or email..." class="search-input">
+            <button id="clearSearch" class="clear-btn" title="Clear search">×</button>
+          </div>
+          <div class="filter-options">
+            <select id="streamFilter" class="filter-select">
+              <option value="all">All Streams</option>
+              <option value="Science">🔬 Science</option>
+              <option value="Arts">🎨 Arts</option>
+              <option value="Commerce">💼 Commerce</option>
+            </select>
+            <select id="sortOrder" class="filter-select">
+              <option value="rank">Sort by Rank</option>
+              <option value="marks-desc">Marks (High to Low)</option>
+              <option value="marks-asc">Marks (Low to High)</option>
+              <option value="name">Name (A to Z)</option>
+              <option value="recent">Recently Applied</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Merit List Content -->
+      <div class="card">
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="loading-container">
+          <div class="loading-spinner"></div>
+          <p>Loading merit lists...</p>
+        </div>
+
+        <!-- Stream Tabs -->
+        <div class="stream-tabs" id="streamTabs">
+          <button class="stream-tab active" data-stream="all">
+            <span class="tab-icon">📊</span>
+            <span class="tab-text">All Streams</span>
+            <span class="tab-count" id="allCount">0</span>
+          </button>
+          <button class="stream-tab" data-stream="Science">
+            <span class="tab-icon">🔬</span>
+            <span class="tab-text">Science</span>
+            <span class="tab-count" id="scienceCount">0</span>
+          </button>
+          <button class="stream-tab" data-stream="Arts">
+            <span class="tab-icon">🎨</span>
+            <span class="tab-text">Arts</span>
+            <span class="tab-count" id="artsCount">0</span>
+          </button>
+          <button class="stream-tab" data-stream="Commerce">
+            <span class="tab-icon">💼</span>
+            <span class="tab-text">Commerce</span>
+            <span class="tab-count" id="commerceCount">0</span>
+          </button>
+        </div>
+
+        <!-- Merit List Table -->
+        <div class="merit-table-container">
+          <div class="table-header">
+            <h3 id="currentStreamTitle">All Streams Merit List</h3>
+            <div class="table-info">
+              <span id="filteredCount">0</span> students found
+            </div>
+          </div>
+          
+          <div class="merit-table-wrapper">
+            <table class="merit-table" id="meritTable">
+              <thead>
+                <tr>
+                  <th class="rank-col">Rank</th>
+                  <th class="name-col">Student Details</th>
+                  <th class="marks-col">Performance</th>
+                  <th class="course-col">Preferred Course</th>
+                  <th class="stream-col">Stream</th>
+                  <th class="date-col">Applied</th>
+                </tr>
+              </thead>
+              <tbody id="meritTableBody">
+                <!-- Merit list will be populated here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state hidden">
+          <div class="empty-icon">📋</div>
+          <h3>No Applications Found</h3>
+          <p id="emptyMessage">No students have applied yet. Be the first to secure your spot!</p>
+          <a href="form.html" class="btn btn-primary">Apply Now</a>
+        </div>
+
+        <!-- No Search Results -->
+        <div id="noSearchResults" class="empty-state hidden">
+          <div class="empty-icon">🔍</div>
+          <h3>No Results Found</h3>
+          <p>Try adjusting your search criteria or filters.</p>
+          <button id="clearAllFilters" class="btn btn-outline">Clear All Filters</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>ℹ️ Important Information</h3>
+        <ul style="margin: var(--space-md) 0; padding-left: var(--space-lg); color: var(--text-secondary);">
+          <li><strong>Real-time Updates:</strong> Merit lists are updated automatically when new applications are submitted</li>
+          <li><strong>Search & Filter:</strong> Use the search bar to find specific students or filter by stream</li>
+          <li><strong>Ranking Criteria:</strong> Rankings are based on marks obtained in qualifying examinations</li>
+          <li><strong>Tie-breaker Rule:</strong> In case of tie, applications submitted earlier will get preference</li>
+          <li><strong>Stream Selection:</strong> Use the tabs to switch between different stream merit lists</li>
+          <li><strong>Mobile Friendly:</strong> Optimized for viewing on mobile devices and tablets</li>
+        </ul>
+      </div>
+    </main>
   </div>
 
   <footer class="footer">
@@ -258,6 +702,6 @@
     </div>
   </footer>
 
-  <script src="assets/js/merit.js"></script>
+  <script src="assets/js/merit-enhanced.js"></script>
 </body>
 </html>

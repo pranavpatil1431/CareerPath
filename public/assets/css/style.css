@@ -977,3 +977,529 @@ button:focus,
   font-weight: 600;
   font-size: 0.875rem;
 }
+
+/* Enhanced Merit List Styles */
+.merit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.header-info h2 {
+  margin: 0;
+  font-size: 2.2rem;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+.header-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  align-items: flex-end;
+}
+
+.stats-container {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-md);
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  min-width: 80px;
+  border: 1px solid var(--border-light);
+}
+
+.stat-number {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: var(--space-xs);
+  text-align: center;
+}
+
+.search-filter-section {
+  display: flex;
+  gap: var(--space-md);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  min-width: 250px;
+}
+
+.search-input {
+  width: 100%;
+  padding: var(--space-md) 2.5rem var(--space-md) var(--space-md);
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+}
+
+.clear-btn {
+  position: absolute;
+  right: var(--space-sm);
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.clear-btn:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.filter-options {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.filter-select {
+  padding: var(--space-md);
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  font-family: inherit;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.stream-tabs {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+  background: var(--bg-secondary);
+  padding: var(--space-sm);
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
+  border: 1px solid var(--border-light);
+}
+
+.stream-tab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  position: relative;
+  font-weight: 500;
+  font-family: inherit;
+}
+
+.stream-tab.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
+}
+
+.stream-tab:hover:not(.active) {
+  background: white;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.tab-count {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.2rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.stream-tab.active .tab-count {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.merit-table-container {
+  margin-top: var(--space-xl);
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 2px solid var(--border-light);
+}
+
+.table-header h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+}
+
+.table-info {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.merit-table-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  background: white;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-light);
+}
+
+.merit-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.merit-table th {
+  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+  padding: var(--space-lg);
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-light);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.merit-table td {
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: middle;
+}
+
+.merit-table tbody tr:hover {
+  background: var(--bg-secondary);
+  transition: background-color 0.2s ease;
+}
+
+.merit-table tbody tr:nth-child(even) {
+  background: rgba(248, 250, 252, 0.5);
+}
+
+.merit-table tbody tr:nth-child(even):hover {
+  background: var(--bg-secondary);
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.9rem;
+  min-width: 3.5rem;
+  justify-content: center;
+}
+
+.rank-1 {
+  background: linear-gradient(135deg, #ffd700, #ffed4a);
+  color: #1a1a1a;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+}
+
+.rank-2 {
+  background: linear-gradient(135deg, #c0c0c0, #e2e8f0);
+  color: #1a1a1a;
+  box-shadow: 0 4px 12px rgba(192, 192, 192, 0.3);
+}
+
+.rank-3 {
+  background: linear-gradient(135deg, #cd7f32, #d69e2e);
+  color: white;
+  box-shadow: 0 4px 12px rgba(205, 127, 50, 0.3);
+}
+
+.rank-default {
+  background: linear-gradient(135deg, var(--text-secondary), var(--text-muted));
+  color: white;
+}
+
+.student-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.student-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.student-email {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-family: 'Courier New', monospace;
+}
+
+.marks-badge {
+  display: inline-block;
+  padding: var(--space-sm) var(--space-md);
+  background: linear-gradient(135deg, var(--success), #34d399);
+  color: white;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 1.1rem;
+  min-width: 3rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.marks-poor {
+  background: linear-gradient(135deg, var(--danger), #f87171);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.marks-average {
+  background: linear-gradient(135deg, var(--warning), #fbbf24);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.marks-good {
+  background: linear-gradient(135deg, var(--info), #60a5fa);
+  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+}
+
+.marks-excellent {
+  background: linear-gradient(135deg, var(--success), #34d399);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.stream-badge {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stream-science {
+  background: linear-gradient(135deg, var(--info), #60a5fa);
+  color: white;
+}
+
+.stream-arts {
+  background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+  color: white;
+}
+
+.stream-commerce {
+  background: linear-gradient(135deg, var(--warning), #fbbf24);
+  color: white;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2xl);
+  color: var(--text-secondary);
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--border-light);
+  border-top: 4px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: var(--space-md);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-2xl);
+  color: var(--text-secondary);
+}
+
+.empty-state.hidden {
+  display: none;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: var(--space-md);
+}
+
+.empty-state h3 {
+  margin: 0 0 var(--space-sm) 0;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+}
+
+.empty-state p {
+  margin: 0 0 var(--space-lg) 0;
+  font-size: 1rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .merit-header {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .header-actions {
+    align-items: center;
+  }
+
+  .stats-container {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .search-filter-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box {
+    min-width: auto;
+  }
+
+  .filter-options {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .stream-tabs {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .table-header {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: var(--space-md);
+  }
+
+  .merit-table th,
+  .merit-table td {
+    padding: var(--space-sm);
+    font-size: 0.9rem;
+  }
+
+  .stream-col,
+  .date-col {
+    display: none;
+  }
+
+  .student-name {
+    font-size: 0.95rem;
+  }
+
+  .student-email {
+    font-size: 0.8rem;
+  }
+}
+
+/* Hide certain columns on very small screens */
+@media (max-width: 600px) {
+  .course-col {
+    display: none;
+  }
+
+  .merit-table th,
+  .merit-table td {
+    padding: var(--space-xs);
+    font-size: 0.85rem;
+  }
+
+  .tab-text {
+    display: none;
+  }
+
+  .stream-tab {
+    padding: var(--space-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-item {
+    padding: var(--space-sm);
+    min-width: 60px;
+  }
+
+  .stat-number {
+    font-size: 1.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+  }
+
+  .marks-badge {
+    font-size: 1rem;
+    padding: var(--space-xs) var(--space-sm);
+  }
+
+  .rank-badge {
+    font-size: 0.8rem;
+    padding: var(--space-xs) var(--space-sm);
+  }
+}

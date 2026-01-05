@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+</head>
+<body>
+    <h1>API Test</h1>
+    <button onclick="submitTest()">Submit Test Application</button>
+    <button onclick="checkMerit()">Check Merit List</button>
+    <div id="result"></div>
+
+    <script>
+        async function submitTest() {
+            const result = document.getElementById('result');
+            try {
+                const response = await fetch('/apply', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: 'Test Student ' + Date.now(),
+                        email: 'test' + Date.now() + '@example.com',
+                        marks: 85,
+                        stream: 'Science',
+                        course: 'Computer Science'
+                    })
+                });
+
+                const data = await response.json();
+                result.innerHTML = '<h3>Submit Result:</h3><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                result.innerHTML = '<h3>Error:</h3>' + error.message;
+            }
+        }
+
+        async function checkMerit() {
+            const result = document.getElementById('result');
+            try {
+                const response = await fetch('/merit');
+                const data = await response.json();
+                result.innerHTML = '<h3>Merit List:</h3><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                result.innerHTML = '<h3>Error:</h3>' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
