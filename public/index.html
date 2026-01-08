@@ -180,6 +180,66 @@
     <section style="margin: 4rem 0;">
       <h2 style="text-align: center; margin-bottom: 3rem; font-size: 2.5rem;">🚀 Complete Career Guidance Platform</h2>
       
+      <!-- Real-time Application Status -->
+      <div id="applicationStats" style="
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 20px;
+        margin: 30px 0;
+        text-align: center;
+        box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+      ">
+        <h3 style="margin: 0 0 20px 0; font-size: 2em;">🏆 Live Application Statistics</h3>
+        <div id="liveStatsContent" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;">
+          <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px;">
+            <div id="totalApplications" style="font-size: 3em; font-weight: bold;">-</div>
+            <div style="font-size: 1.1em;">Total Applications</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px;">
+            <div id="scienceApps" style="font-size: 3em; font-weight: bold;">-</div>
+            <div style="font-size: 1.1em;">🔬 Science</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px;">
+            <div id="commerceApps" style="font-size: 3em; font-weight: bold;">-</div>
+            <div style="font-size: 1.1em;">💼 Commerce</div>
+          </div>
+          <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px;">
+            <div id="artsApps" style="font-size: 3em; font-weight: bold;">-</div>
+            <div style="font-size: 1.1em;">🎨 Arts</div>
+          </div>
+        </div>
+        <div style="margin-top: 20px;">
+          <a href="merit.html" style="
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 10px;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin: 0 10px;
+            transition: all 0.3s;
+          ">🏆 View Complete Merit List</a>
+          <a href="form.html" style="
+            background: #ff6b6b;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 10px;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin: 0 10px;
+            transition: all 0.3s;
+          ">🚀 Apply Now</a>
+        </div>
+        <div style="margin-top: 15px; font-size: 0.9em; opacity: 0.8;">
+          📊 Updated in real-time • Last updated: <span id="lastUpdated">Loading...</span>
+        </div>
+      </div>
+      
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 3rem 0;">
         <!-- AI-Powered Tools -->
         <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 15px; text-align: center;">
@@ -314,5 +374,78 @@
       <div>Contact: careerpath@example.com</div>
     </div>
   </footer>
+
+  <!-- Real-time Statistics JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      console.log('🏠 Loading real-time application statistics...');
+      
+      try {
+        const response = await fetch('/merit', {
+          headers: { 'Accept': 'application/json' }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          console.log('📊 Statistics loaded:', data);
+          
+          // Update statistics
+          const totalApps = (data.Science?.length || 0) + (data.Commerce?.length || 0) + (data.Arts?.length || 0);
+          
+          document.getElementById('totalApplications').textContent = totalApps;
+          document.getElementById('scienceApps').textContent = data.Science?.length || 0;
+          document.getElementById('commerceApps').textContent = data.Commerce?.length || 0;
+          document.getElementById('artsApps').textContent = data.Arts?.length || 0;
+          document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString();
+          
+          // Add animation effect
+          const statElements = document.querySelectorAll('#liveStatsContent > div');
+          statElements.forEach((el, index) => {
+            setTimeout(() => {
+              el.style.animation = 'pulse 0.6s ease-in-out';
+            }, index * 200);
+          });
+          
+        } else {
+          console.log('📊 Statistics service unavailable');
+          document.getElementById('totalApplications').textContent = '📊';
+          document.getElementById('scienceApps').textContent = '🔬';
+          document.getElementById('commerceApps').textContent = '💼';
+          document.getElementById('artsApps').textContent = '🎨';
+          document.getElementById('lastUpdated').textContent = 'Service Loading...';
+        }
+      } catch (error) {
+        console.error('❌ Error loading statistics:', error);
+        document.getElementById('lastUpdated').textContent = 'Live Updates Coming Soon';
+      }
+      
+      // Auto-refresh every 30 seconds
+      setInterval(async () => {
+        try {
+          const response = await fetch('/merit');
+          if (response.ok) {
+            const data = await response.json();
+            const totalApps = (data.Science?.length || 0) + (data.Commerce?.length || 0) + (data.Arts?.length || 0);
+            
+            document.getElementById('totalApplications').textContent = totalApps;
+            document.getElementById('scienceApps').textContent = data.Science?.length || 0;
+            document.getElementById('commerceApps').textContent = data.Commerce?.length || 0;
+            document.getElementById('artsApps').textContent = data.Arts?.length || 0;
+            document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString();
+          }
+        } catch (error) {
+          console.log('🔄 Background update failed:', error);
+        }
+      }, 30000);
+    });
+  </script>
+  
+  <style>
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+  </style>
 </body>
 </html>

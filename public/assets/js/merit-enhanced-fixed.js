@@ -360,6 +360,59 @@ document.addEventListener('DOMContentLoaded', () => {
         topMarks,
         streamDistribution
       });
+      
+      // Add comprehensive results display
+      const resultsContainer = document.querySelector('.merit-container') || document.querySelector('.container');
+      if (resultsContainer && !document.querySelector('.comprehensive-stats-banner')) {
+        const statsHTML = `
+          <div class="comprehensive-stats-banner" style="
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: slideIn 0.5s ease-out;
+          ">
+            <h3 style="margin: 0 0 15px 0; font-size: 1.8em;">🏆 Complete Merit List Results</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 15px;">
+              <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px;">
+                <div style="font-size: 2.5em; font-weight: bold; margin-bottom: 5px;">${total}</div>
+                <div style="font-size: 1.1em;">Total Applications</div>
+              </div>
+              <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px;">
+                <div style="font-size: 2.5em; font-weight: bold; margin-bottom: 5px;">${streamDistribution.Science || 0}</div>
+                <div style="font-size: 1.1em;">🔬 Science</div>
+              </div>
+              <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px;">
+                <div style="font-size: 2.5em; font-weight: bold; margin-bottom: 5px;">${streamDistribution.Commerce || 0}</div>
+                <div style="font-size: 1.1em;">💼 Commerce</div>
+              </div>
+              <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px;">
+                <div style="font-size: 2.5em; font-weight: bold; margin-bottom: 5px;">${streamDistribution.Arts || 0}</div>
+                <div style="font-size: 1.1em;">🎨 Arts</div>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+              <div style="background: rgba(255,255,255,0.15); padding: 15px; border-radius: 10px;">
+                📈 <strong>Average Merit: ${avgMarks}%</strong>
+              </div>
+              <div style="background: rgba(255,255,255,0.15); padding: 15px; border-radius: 10px;">
+                🥇 <strong>Top Score: ${topMarks}%</strong>
+              </div>
+            </div>
+          </div>
+          <style>
+            @keyframes slideIn {
+              from { opacity: 0; transform: translateY(-20px); }
+              to { opacity: 1; transform: translateY(0); }
+            }
+          </style>
+        `;
+        
+        resultsContainer.insertAdjacentHTML('afterbegin', statsHTML);
+      }
     }
     
     // Show user's rank if they have applied
@@ -371,6 +424,9 @@ document.addEventListener('DOMContentLoaded', () => {
         currentRank.parentElement.style.background = 'linear-gradient(135deg, #10b981, #34d399)';
         currentRank.parentElement.style.color = 'white';
         console.log(`👤 User found! Rank: ${userStudent.overallRank}`);
+        
+        // Show personalized message
+        showNotification(`🎉 Congratulations! Your current rank is #${userStudent.overallRank} out of ${total} students!`, 'success', 10000);
       } else {
         currentRank.textContent = '--';
       }

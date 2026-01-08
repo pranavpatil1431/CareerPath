@@ -154,6 +154,14 @@ mongoose.connect(mongoURI, mongoOptions)
       default: '',
       trim: true
     },
+    subjects: {
+      type: [String],
+      default: []
+    },
+    submittedAt: {
+      type: Date,
+      default: Date.now
+    },
     applicationId: {
       type: String,
       unique: true,
@@ -164,7 +172,10 @@ mongoose.connect(mongoURI, mongoOptions)
       enum: ['pending', 'approved', 'rejected'],
       default: 'pending'
     }
-  }, { timestamps: true });
+  }, { 
+    timestamps: true,
+    strict: false  // Allow additional fields for compatibility
+  });
 
   // Add indexes for better performance
   studentSchema.index({ email: 1 });
@@ -433,9 +444,16 @@ app.get("/merit", async (req, res) => {
     if (mongoConnected && Student) {
       console.log('📊 Fetching comprehensive data from MongoDB...');
       try {
-        // Get all students from MongoDB, only pending applications
-        allStudents = await Student.find({ status: 'pending' }).sort({ marks: -1, createdAt: 1 });
+        // Get ALL students from MongoDB (not filtering by status for populated data)
+        allStudents = await Student.find({}).sort({ marks: -1, createdAt: 1 });
         console.log(`📋 Found ${allStudents.length} students in MongoDB for complete results`);
+        
+        // If no students found, try without any filters
+        if (allStudents.length === 0) {
+          console.log('🔍 No students found with status filter, trying all students...');
+          allStudents = await Student.find().sort({ marks: -1 });
+          console.log(`📋 Found ${allStudents.length} total students in MongoDB`);
+        }
       } catch (mongoError) {
         console.error('❌ MongoDB query error:', mongoError);
         // Fall back to memory storage
