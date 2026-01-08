@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Merit API Test</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #f5f5f5; }
+        .container { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        pre { background: #f8f9fa; padding: 15px; border-radius: 6px; overflow-x: auto; }
+        .btn { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .btn:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Merit API Debug Test</h1>
+        <button class="btn" onclick="testMeritAPI()">Test /merit Endpoint</button>
+        <button class="btn" onclick="testDebugAPI()">Test /debug/students Endpoint</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        async function testMeritAPI() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<p>⏳ Testing /merit endpoint...</p>';
+            
+            try {
+                const response = await fetch('/merit');
+                const data = await response.json();
+                
+                results.innerHTML = `
+                    <div class="container">
+                        <h3>📊 /merit Endpoint Response:</h3>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        
+                        <h4>📋 Analysis:</h4>
+                        <ul>
+                            <li>Total Students: ${data.stats ? data.stats.totalStudents : 'Unknown'}</li>
+                            <li>Science Students: ${Array.isArray(data.Science) ? data.Science.length : typeof data.Science}</li>
+                            <li>Arts Students: ${Array.isArray(data.Arts) ? data.Arts.length : typeof data.Arts}</li>
+                            <li>Commerce Students: ${Array.isArray(data.Commerce) ? data.Commerce.length : typeof data.Commerce}</li>
+                        </ul>
+                        
+                        ${data.Science && Array.isArray(data.Science) && data.Science.length > 0 ? `
+                            <h4>🔬 Science Students Details:</h4>
+                            <pre>${JSON.stringify(data.Science, null, 2)}</pre>
+                        ` : ''}
+                    </div>
+                `;
+            } catch (error) {
+                results.innerHTML = `<div class="container"><h3>❌ Error:</h3><pre>${error.message}</pre></div>`;
+            }
+        }
+
+        async function testDebugAPI() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<p>⏳ Testing /debug/students endpoint...</p>';
+            
+            try {
+                const response = await fetch('/debug/students');
+                const data = await response.json();
+                
+                results.innerHTML = `
+                    <div class="container">
+                        <h3>🔍 /debug/students Endpoint Response:</h3>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        
+                        <h4>📋 Database Summary:</h4>
+                        <ul>
+                            <li>Total Students in DB: ${data.totalStudents}</li>
+                            <li>MongoDB Connected: ${data.mongoConnected}</li>
+                            <li>Student Records: ${data.students ? data.students.length : 0}</li>
+                        </ul>
+                    </div>
+                `;
+            } catch (error) {
+                results.innerHTML = `<div class="container"><h3>❌ Error:</h3><pre>${error.message}</pre></div>`;
+            }
+        }
+    </script>
+</body>
+</html>

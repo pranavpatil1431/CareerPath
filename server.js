@@ -16,6 +16,13 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+// Add request logging for debugging
+app.use((req, res, next) => {
+  console.log(`🔍 ${new Date().toISOString()} - ${req.method} ${req.url}`);
+  console.log(`🔍 Headers:`, req.headers);
+  next();
+});
+
 // ✅ Serve static files from public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -80,15 +87,40 @@ let students = [
 let Student = null;
 let mongoConnected = false;
 
-// ✅ MongoDB Connection with fallback
-const mongoURI = process.env.MONGO_URI || "mongodb://localhost:27017/careerpath";
+// ✅ Enhanced MongoDB Connection for hosting environments
+const mongoURI = process.env.MONGO_URI || 
+                process.env.MONGODB_URI || 
+                process.env.DATABASE_URL || 
+                "mongodb://localhost:27017/careerpath";
 
-console.log("🔌 Attempting to connect to MongoDB...");
-mongoose.connect(mongoURI)
+// Connection options for hosting platforms
+const mongoOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 10000, // 10 seconds
+  socketTimeoutMS: 45000, // 45 seconds
+  family: 4, // Use IPv4, skip IPv6
+  maxPoolSize: 10,
+  retryWrites: true,
+  w: 'majority'
+};
+
+console.log("🔌 Attempting to connect to MongoDB for hosting...");
+console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
+console.log(`📍 MongoDB URI configured: ${mongoURI ? 'Yes' : 'No'}`);
+
+mongoose.connect(mongoURI, mongoOptions)
 .then(() => {
-  console.log("✅ MongoDB Connected Successfully");
+  console.log("✅ MongoDB Connected Successfully in hosting environment");
   console.log(`📍 Connected to: ${mongoURI.replace(/\/\/.*:.*@/, '//***:***@')}`); // Hide password in logs
   mongoConnected = true;
+  
+  // Test the connection
+  mongoose.connection.db.admin().ping().then(() => {
+    console.log("🏓 MongoDB ping successful - connection is healthy");
+  }).catch(pingErr => {
+    console.log("⚠️ MongoDB ping failed but connection established:", pingErr.message);
+  });
   
   // ✅ Enhanced Student Schema
   const studentSchema = new mongoose.Schema({
@@ -143,9 +175,47 @@ mongoose.connect(mongoURI)
   Student = mongoose.model("Student", studentSchema);
 })
 .catch(err => {
-  console.error("❌ MongoDB Connection Error:", err.message);
-  console.log("💡 Using in-memory storage as fallback");
+  console.error("❌ MongoDB Connection Error in hosting:", err.message);
+  console.error("🔍 Error details:", {
+    name: err.name,
+    code: err.code,
+    codeName: err.codeName,
+    reason: err.reason?.message || 'Unknown'
+  });
+  
+  // Check for common hosting issues
+  if (err.message.includes('IP whitelist') || err.message.includes('not whitelisted')) {
+    console.log("🚨 IP Whitelist Issue: Add your hosting platform's IP to MongoDB Atlas whitelist");
+    console.log("💡 For Vercel: Add 0.0.0.0/0 to allow all IPs or check Vercel's IP ranges");
+  }
+  
+  if (err.message.includes('authentication failed')) {
+    console.log("🔐 Authentication Issue: Check your MongoDB credentials in environment variables");
+  }
+  
+  if (err.message.includes('ENOTFOUND') || err.message.includes('getaddrinfo')) {
+    console.log("🌐 Network Issue: Check your MongoDB connection string and DNS resolution");
+  }
+  
+  console.log("💡 Using in-memory storage as fallback for hosting environment");
+  console.log("⚠️ Note: In-memory data will reset on server restart in hosting");
   mongoConnected = false;
+});
+
+// Handle connection events for hosting
+mongoose.connection.on('error', (err) => {
+  console.error('❌ MongoDB connection error in hosting:', err);
+  mongoConnected = false;
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('⚠️ MongoDB disconnected in hosting environment');
+  mongoConnected = false;
+});
+
+mongoose.connection.on('reconnected', () => {
+  console.log('✅ MongoDB reconnected in hosting environment');
+  mongoConnected = true;
 });
 
 // ✅ Routes
@@ -155,6 +225,54 @@ app.get("/", (req, res) => {
 
 app.get("/api", (req, res) => {
   res.send("Career Path API running with MongoDB!");
+});
+
+// 🔍 Database inspection endpoint
+app.get("/debug/students", async (req, res) => {
+  try {
+    console.log('🔍 Debug endpoint accessed');
+    
+    let allStudents = [];
+    
+    if (mongoConnected && Student) {
+      try {
+        allStudents = await Student.find({}).exec();
+        console.log(`🔍 Found ${allStudents.length} students in MongoDB`);
+      } catch (dbError) {
+        console.log('🔍 MongoDB error, using memory storage');
+        allStudents = students;
+      }
+    } else {
+      console.log('🔍 Using memory storage');
+      allStudents = students;
+    }
+
+    const debugData = {
+      totalStudents: allStudents.length,
+      mongoConnected: mongoConnected,
+      students: allStudents.map(s => ({
+        _id: s._id,
+        name: s.name,
+        email: s.email,
+        marks: s.marks,
+        stream: s.stream,
+        course: s.course,
+        applicationId: s.applicationId,
+        createdAt: s.createdAt
+      })),
+      timestamp: new Date().toISOString()
+    };
+
+    console.log('🔍 Debug data being sent:', {
+      count: debugData.totalStudents,
+      mongoStatus: debugData.mongoConnected
+    });
+
+    res.json(debugData);
+  } catch (error) {
+    console.error('🔍 Debug endpoint error:', error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.post("/apply", async (req, res) => {
@@ -309,39 +427,60 @@ app.get("/merit", async (req, res) => {
   try {
     let allStudents;
     
-    console.log('🏆 Merit list request received');
+    console.log('🏆 Merit list request received - generating comprehensive results');
     console.log('🔗 MongoDB connected:', mongoConnected);
     
     if (mongoConnected && Student) {
-      console.log('📊 Fetching from MongoDB...');
+      console.log('📊 Fetching comprehensive data from MongoDB...');
       try {
         // Get all students from MongoDB, only pending applications
         allStudents = await Student.find({ status: 'pending' }).sort({ marks: -1, createdAt: 1 });
-        console.log(`📋 Found ${allStudents.length} students in MongoDB`);
+        console.log(`📋 Found ${allStudents.length} students in MongoDB for complete results`);
       } catch (mongoError) {
         console.error('❌ MongoDB query error:', mongoError);
         // Fall back to memory storage
         allStudents = students.filter(s => !s.status || s.status === 'pending');
-        console.log(`💾 Using ${allStudents.length} memory students due to error`);
+        console.log(`💾 Using ${allStudents.length} memory students due to MongoDB error`);
       }
     } else {
-      console.log('💾 Using memory storage...');
+      console.log('💾 Using memory storage for comprehensive results...');
       // Use in-memory students, filter only pending applications
       allStudents = students.filter(s => !s.status || s.status === 'pending');
-      console.log(`📋 Using ${allStudents.length} memory students`);
+      console.log(`📋 Using ${allStudents.length} memory students for complete results`);
     }
 
-    // Group students by stream and sort by marks
+    // Group students by stream and sort comprehensively
     const meritByStream = {
       Science: [],
       Arts: [],
       Commerce: []
     };
 
-    // Group students by their stream
+    // Track comprehensive statistics
+    let totalMarks = 0;
+    let maxMarks = 0;
+    let minMarks = 100;
+    const markRanges = {
+      excellent: 0, // 90+
+      good: 0,      // 75-89
+      average: 0,   // 60-74
+      below: 0      // <60
+    };
+
+    // Group students by their stream with comprehensive processing
     allStudents.forEach(student => {
       const stream = student.stream || 'Science';
-      console.log(`👤 Processing: ${student.name} (${stream} - ${student.marks}%)`);
+      console.log(`👤 Processing for complete results: ${student.name} (${stream} - ${student.marks}%)`);
+      
+      // Track statistics
+      totalMarks += student.marks;
+      maxMarks = Math.max(maxMarks, student.marks);
+      minMarks = Math.min(minMarks, student.marks);
+      
+      if (student.marks >= 90) markRanges.excellent++;
+      else if (student.marks >= 75) markRanges.good++;
+      else if (student.marks >= 60) markRanges.average++;
+      else markRanges.below++;
       
       if (meritByStream.hasOwnProperty(stream)) {
         const studentObj = student.toObject ? student.toObject() : student;
@@ -356,7 +495,7 @@ app.get("/merit", async (req, res) => {
           createdAt: studentObj.createdAt
         });
       } else {
-        console.log(`⚠️ Unknown stream found: "${stream}" for student: ${student.name}`);
+        console.log(`⚠️ Unknown stream found: "${stream}" for student: ${student.name} - adding to Science`);
         // Add to Science as fallback
         const studentObj = student.toObject ? student.toObject() : student;
         meritByStream.Science.push({
@@ -365,14 +504,14 @@ app.get("/merit", async (req, res) => {
           email: studentObj.email,
           marks: studentObj.marks,
           preferredCourse: studentObj.course,
-          stream: 'Science',
+          stream: 'Science', // Fallback stream
           applicationId: studentObj.applicationId,
           createdAt: studentObj.createdAt
         });
       }
     });
 
-    // Sort each stream by marks (highest first), then by application date for tie-breaking
+    // Sort each stream comprehensively by marks (highest first), then by application date for tie-breaking
     Object.keys(meritByStream).forEach(stream => {
       meritByStream[stream] = meritByStream[stream]
         .sort((a, b) => {
@@ -386,37 +525,53 @@ app.get("/merit", async (req, res) => {
           ...student,
           rank: index + 1
         }));
+      
+      console.log(`🎯 ${stream} stream sorted with ${meritByStream[stream].length} students`);
     });
 
-    // Add statistics
-    const stats = {
-      totalStudents: allStudents.length,
+    // Calculate comprehensive statistics
+    const totalStudents = allStudents.length;
+    const averageMarks = totalStudents > 0 ? (totalMarks / totalStudents).toFixed(2) : 0;
+    
+    const comprehensiveStats = {
+      totalStudents,
+      averageMarks: parseFloat(averageMarks),
+      maxMarks: totalStudents > 0 ? maxMarks : 0,
+      minMarks: totalStudents > 0 ? minMarks : 0,
       streamCounts: {
         Science: meritByStream.Science.length,
         Arts: meritByStream.Arts.length,
         Commerce: meritByStream.Commerce.length
       },
-      lastUpdated: new Date().toISOString()
+      markDistribution: markRanges,
+      lastUpdated: new Date().toISOString(),
+      dataSource: mongoConnected ? 'mongodb' : 'memory'
     };
 
-    console.log('🎯 Merit data being sent:', {
+    console.log('🎯 Comprehensive merit data being sent:', {
       Science: meritByStream.Science.length,
       Arts: meritByStream.Arts.length,
       Commerce: meritByStream.Commerce.length,
-      totalStudents: stats.totalStudents
+      totalStudents: comprehensiveStats.totalStudents,
+      averageMarks: comprehensiveStats.averageMarks
     });
 
-    res.json({
+    // Return comprehensive results
+    const response = {
       ...meritByStream,
-      stats: stats,
+      stats: comprehensiveStats,
       timestamp: new Date().toISOString(),
-      source: mongoConnected ? 'mongodb' : 'memory'
-    });
+      success: true,
+      message: 'Complete merit list data retrieved successfully'
+    };
+
+    res.json(response);
   } catch (error) {
-    console.error("❌ Error fetching merit list:", error);
+    console.error("❌ Error fetching comprehensive merit list:", error);
     res.status(500).json({ 
-      error: "Failed to fetch merit list",
-      timestamp: new Date().toISOString()
+      error: "Failed to fetch complete merit list",
+      timestamp: new Date().toISOString(),
+      success: false
     });
   }
 });

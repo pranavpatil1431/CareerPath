@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quick Test & Fix</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .container { background: white; padding: 20px; border-radius: 8px; margin: 10px 0; }
+        .btn { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .success { background: #28a745; }
+        .danger { background: #dc3545; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 4px; }
+        .status { margin: 10px 0; padding: 10px; border-radius: 4px; }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Quick Fix & Test System</h1>
+        <p>Let's test the complete flow step by step:</p>
+        
+        <button class="btn" onclick="testServerConnection()">1. Test Server Connection</button>
+        <button class="btn" onclick="submitTestStudent()">2. Submit Test Student</button>
+        <button class="btn" onclick="testMeritAPI()">3. Test Merit API</button>
+        <button class="btn success" onclick="openMeritList()">4. Open Merit List</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        async function testServerConnection() {
+            showStatus('⏳ Testing server connection...', 'info');
+            try {
+                const response = await fetch('/api');
+                const text = await response.text();
+                showStatus(`✅ Server connected: ${text}`, 'success');
+            } catch (error) {
+                showStatus(`❌ Server connection failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function submitTestStudent() {
+            showStatus('⏳ Submitting test student...', 'info');
+            try {
+                const testData = {
+                    name: 'Quick Test Student',
+                    email: 'quicktest' + Date.now() + '@example.com',
+                    marks: 95,
+                    stream: 'Science',
+                    course: 'Computer Science'
+                };
+
+                const response = await fetch('/apply', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(testData)
+                });
+
+                const result = await response.json();
+                if (result.ok) {
+                    showStatus(`✅ Student submitted successfully! ID: ${result.id}`, 'success');
+                } else {
+                    showStatus(`❌ Submission failed: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                showStatus(`❌ Submission error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testMeritAPI() {
+            showStatus('⏳ Testing merit API...', 'info');
+            try {
+                const response = await fetch('/merit');
+                const data = await response.json();
+                
+                const results = document.getElementById('results');
+                results.innerHTML = `
+                    <div class="container">
+                        <h3>📊 Merit API Response:</h3>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        <div class="status success">
+                            <strong>Analysis:</strong><br>
+                            • Science Students: ${Array.isArray(data.Science) ? data.Science.length + ' students' : 'Count: ' + data.Science}<br>
+                            • Arts Students: ${Array.isArray(data.Arts) ? data.Arts.length + ' students' : 'Count: ' + data.Arts}<br>
+                            • Commerce Students: ${Array.isArray(data.Commerce) ? data.Commerce.length + ' students' : 'Count: ' + data.Commerce}<br>
+                            • Data Type: ${Array.isArray(data.Science) ? 'Arrays (Correct)' : 'Counts (Issue Found!)'}
+                        </div>
+                    </div>
+                `;
+
+                if (!Array.isArray(data.Science)) {
+                    showStatus('⚠️ Issue found: API returning counts instead of student arrays!', 'error');
+                } else {
+                    showStatus('✅ Merit API working correctly!', 'success');
+                }
+            } catch (error) {
+                showStatus(`❌ Merit API error: ${error.message}`, 'error');
+            }
+        }
+
+        function openMeritList() {
+            window.open('/merit.html', '_blank');
+            showStatus('🏆 Merit list opened in new tab', 'success');
+        }
+
+        function showStatus(message, type) {
+            const results = document.getElementById('results');
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status ${type}`;
+            statusDiv.innerHTML = message;
+            results.appendChild(statusDiv);
+            
+            // Auto scroll to bottom
+            results.scrollTop = results.scrollHeight;
+        }
+    </script>
+</body>
+</html>

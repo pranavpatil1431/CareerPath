@@ -69,12 +69,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function loadMeritData() {
-    console.log('🔄 Loading merit data...');
+    console.log('� Loading merit data...');
     showLoading(true);
 
     try {
       const baseURL = window.location.origin;
       const response = await fetch(`${baseURL}/merit`);
+      console.log('🌐 Response status:', response.status, response.statusText);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -83,8 +84,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await response.json();
       console.log('📊 Merit data received:', data);
 
+      // Check if we received valid data
+      if (!data || typeof data !== 'object') {
+        throw new Error('Invalid data format received from server');
+      }
+
       // Process the data to create a unified list with rankings
       allStudentsData = processStreamData(data);
+      console.log('✅ Processed students:', allStudentsData.length);
       
       updateStatistics();
       updateStreamCounts(data);
@@ -92,26 +99,48 @@ document.addEventListener('DOMContentLoaded', () => {
       
     } catch (error) {
       console.error('❌ Error loading merit data:', error);
-      showError('Failed to load merit data. Please try again.');
+      console.error('❌ Error details:', {
+        name: error.name,
+        message: error.message,
+        stack: error.stack
+      });
+      showError(`Failed to load merit data: ${error.message}. Please try again.`);
     } finally {
       showLoading(false);
     }
   }
 
   function processStreamData(data) {
+    console.log('🔧 Processing stream data:', data);
     let allStudents = [];
 
-    // Combine all streams
-    Object.entries(data).forEach(([stream, students]) => {
-      students.forEach((student, index) => {
-        allStudents.push({
-          ...student,
-          stream: stream,
-          streamRank: index + 1,
-          overallRank: 0 // Will be calculated after combining all
+    // Handle different response formats
+    if (!data) {
+      console.log('❌ No data received');
+      return [];
+    }
+
+    // Check if data has stream arrays
+    const streams = ['Science', 'Arts', 'Commerce'];
+    streams.forEach(stream => {
+      const streamData = data[stream];
+      console.log(`📊 ${stream} data:`, streamData, 'Type:', typeof streamData);
+      
+      if (Array.isArray(streamData)) {
+        streamData.forEach((student, index) => {
+          allStudents.push({
+            ...student,
+            stream: stream,
+            streamRank: index + 1,
+            overallRank: 0 // Will be calculated after combining all
+          });
         });
-      });
+      } else if (typeof streamData === 'number') {
+        console.log(`⚠️ ${stream} returned count (${streamData}) instead of array`);
+      }
     });
+
+    console.log('👥 Total students processed:', allStudents.length);
 
     // Sort by marks for overall ranking
     allStudents.sort((a, b) => {

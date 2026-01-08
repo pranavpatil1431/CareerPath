@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Application Submission</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f0f2f5; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; margin: 10px 5px; }
+        .btn:hover { transform: translateY(-2px); }
+        #result { margin-top: 20px; padding: 15px; border-radius: 6px; white-space: pre-wrap; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Application Submission</h1>
+        <p>This page will test the complete form submission and merit list flow:</p>
+        
+        <button class="btn" onclick="submitTestApplication()">📝 Submit Test Application</button>
+        <button class="btn" onclick="checkMeritList()">🏆 Check Merit List</button>
+        <button class="btn" onclick="submitMultipleApps()">📚 Submit Multiple Test Apps</button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function submitTestApplication() {
+            const result = document.getElementById('result');
+            result.innerHTML = '⏳ Submitting test application...';
+            
+            try {
+                const testData = {
+                    name: 'Test Student ' + Math.floor(Math.random() * 1000),
+                    email: 'student' + Date.now() + '@test.com',
+                    marks: Math.floor(Math.random() * 30) + 70, // Random marks between 70-100
+                    stream: ['Science', 'Arts', 'Commerce'][Math.floor(Math.random() * 3)],
+                    course: ['Computer Science', 'Engineering', 'Medicine', 'Business'][Math.floor(Math.random() * 4)]
+                };
+
+                console.log('Submitting:', testData);
+                
+                const response = await fetch('/apply', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(testData)
+                });
+
+                const data = await response.json();
+                
+                if (data.ok) {
+                    result.className = 'success';
+                    result.innerHTML = `✅ Application Submitted Successfully!
+
+🎓 Student Details:
+• Name: ${data.student.name}
+• Email: ${data.student.email}
+• Marks: ${data.student.marks}%
+• Stream: ${data.student.stream}
+• Course: ${data.student.course}
+• Application ID: ${data.id}
+
+📊 Now check the merit list to see the new entry!`;
+                } else {
+                    result.className = 'error';
+                    result.innerHTML = `❌ Submission Failed: ${data.error}`;
+                }
+            } catch (error) {
+                result.className = 'error';
+                result.innerHTML = `❌ Network Error: ${error.message}`;
+            }
+        }
+
+        async function checkMeritList() {
+            const result = document.getElementById('result');
+            result.innerHTML = '⏳ Fetching merit list...';
+            
+            try {
+                const response = await fetch('/merit');
+                const data = await response.json();
+                
+                result.className = 'success';
+                result.innerHTML = `📊 Merit List Data:
+
+📈 Statistics:
+• Total Students: ${data.totalStudents || 0}
+• Science Stream: ${data.Science?.length || 0}
+• Arts Stream: ${data.Arts?.length || 0}
+• Commerce Stream: ${data.Commerce?.length || 0}
+
+${data.Science?.length > 0 ? `
+🔬 Science Students:
+${data.Science.map((s, i) => `${i+1}. ${s.name} - ${s.marks}% (${s.applicationId})`).join('\n')}` : ''}
+
+${data.Arts?.length > 0 ? `
+🎨 Arts Students:
+${data.Arts.map((s, i) => `${i+1}. ${s.name} - ${s.marks}% (${s.applicationId})`).join('\n')}` : ''}
+
+${data.Commerce?.length > 0 ? `
+💼 Commerce Students:
+${data.Commerce.map((s, i) => `${i+1}. ${s.name} - ${s.marks}% (${s.applicationId})`).join('\n')}` : ''}`;
+                
+            } catch (error) {
+                result.className = 'error';
+                result.innerHTML = `❌ Error fetching merit list: ${error.message}`;
+            }
+        }
+
+        async function submitMultipleApps() {
+            const result = document.getElementById('result');
+            result.innerHTML = '⏳ Submitting multiple test applications...';
+            
+            const students = [
+                { name: 'Raj Sharma', email: 'raj@test.com', marks: 95, stream: 'Science', course: 'Engineering' },
+                { name: 'Priya Patel', email: 'priya@test.com', marks: 92, stream: 'Science', course: 'Medicine' },
+                { name: 'Amit Kumar', email: 'amit@test.com', marks: 88, stream: 'Commerce', course: 'Business' },
+                { name: 'Sneha Gupta', email: 'sneha@test.com', marks: 90, stream: 'Arts', course: 'Literature' },
+                { name: 'Rohit Singh', email: 'rohit@test.com', marks: 87, stream: 'Science', course: 'Computer Science' }
+            ];
+
+            let successCount = 0;
+            let errors = [];
+
+            for (const student of students) {
+                try {
+                    const response = await fetch('/apply', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({...student, email: student.email + Date.now()}) // Make emails unique
+                    });
+                    
+                    const data = await response.json();
+                    if (data.ok) successCount++;
+                    else errors.push(`${student.name}: ${data.error}`);
+                    
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Small delay
+                } catch (error) {
+                    errors.push(`${student.name}: ${error.message}`);
+                }
+            }
+
+            result.className = successCount > 0 ? 'success' : 'error';
+            result.innerHTML = `📊 Bulk Submission Results:
+
+✅ Successfully submitted: ${successCount}/${students.length} applications
+
+${errors.length > 0 ? `❌ Errors:\n${errors.join('\n')}` : '🎉 All applications submitted successfully!'}
+
+🔄 Now refresh the merit list to see all entries!`;
+        }
+    </script>
+</body>
+</html>

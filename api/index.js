@@ -19,8 +19,28 @@ app.use(bodyParser.json());
 // ✅ Serve static files from public directory
 app.use(express.static(path.join(__dirname, '../public')));
 
-// ✅ MongoDB Configuration
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/careerpath";
+// ✅ Enhanced MongoDB Configuration for hosting environments
+const MONGO_URI = process.env.MONGO_URI || 
+                 process.env.MONGODB_URI || 
+                 process.env.DATABASE_URL || 
+                 "mongodb://localhost:27017/careerpath";
+
+console.log("🌐 Hosting Environment Setup:");
+console.log(`- NODE_ENV: ${process.env.NODE_ENV || 'development'}`);
+console.log(`- MongoDB URI configured: ${MONGO_URI ? 'Yes' : 'No'}`);
+console.log(`- Platform: ${process.env.VERCEL ? 'Vercel' : process.env.NETLIFY ? 'Netlify' : 'Other'}`);
+
+// Enhanced connection options for hosting
+const mongoOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 15000, // 15 seconds for hosting
+  socketTimeoutMS: 45000,
+  family: 4,
+  maxPoolSize: 10,
+  retryWrites: true,
+  w: 'majority'
+};
 
 // For testing merit list, force internal data usage
 const FORCE_INTERNAL_DATA = process.env.NODE_ENV === 'production' ? false : false; // Set to true to test with internal data
@@ -34,12 +54,14 @@ const connectDB = async () => {
   }
   
   try {
-    await mongoose.connect(MONGO_URI);
+    console.log("🔌 Connecting to MongoDB in hosting environment...");
+    
+    await mongoose.connect(MONGO_URI, mongoOptions);
     
     // Wait for connection to be fully established
     await mongoose.connection.asPromise();
     
-    console.log("✅ Connected to MongoDB Atlas");
+    console.log("✅ Connected to MongoDB in hosting environment");
     
     // Check connection details
     if (mongoose.connection?.name) {
@@ -49,6 +71,14 @@ const connectDB = async () => {
     if (mongoose.connection.db) {
       console.log(`🎯 Database: ${mongoose.connection.db.databaseName}`);
       console.log(`🌍 Host: ${mongoose.connection.host}`);
+      
+      // Test the connection with a ping for hosting
+      try {
+        await mongoose.connection.db.admin().ping();
+        console.log("🏓 MongoDB ping successful in hosting");
+      } catch (pingError) {
+        console.log("⚠️ MongoDB ping failed but connection exists:", pingError.message);
+      }
     } else {
       console.log("⚠️ Connection established but database info not available yet");
     }
