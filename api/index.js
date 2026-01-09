@@ -29,9 +29,11 @@ const MONGO_URI = process.env.MONGO_URI ||
                  process.env.DATABASE_URL ||
                  "mongodb+srv://patilteju0409_db_user:Pranavteju%401431@cluster0.ahuv2zd.mongodb.net/careerpath?retryWrites=true&w=majority";
 
-console.log("🌐 Vercel Environment Setup:");
+console.log("🌐 Vercel Environment Setup - Deploy #3 Jan 9 2025:");
 console.log(`- NODE_ENV: ${process.env.NODE_ENV || 'development'}`);
 console.log(`- MongoDB URI configured: ${MONGO_URI ? 'Yes' : 'No'}`);
+console.log("🔴 DEPLOYMENT VERSION: 3.0.0");
+console.log("🔴 FORCE CLEAN DEPLOY WITHOUT FALLBACK DATA");
 
 // Connect to MongoDB
 mongoose.connect(MONGO_URI)
@@ -65,12 +67,13 @@ app.post("/apply", async (req, res) => {
   }
 });
 
-// MERIT LIST - Updated for Vercel deployment
+// MERIT LIST - Clean Version 3.0 - PRODUCTION READY
 app.get("/merit", async (req, res) => {
   try {
-    console.log("📊 Merit list requested on Vercel - Version 2.0");
+    console.log("📊 Merit list requested - Version 3.0.0 CLEAN");
     const students = await Student.find().sort({ marks: -1 });
-    console.log(`📋 Found ${students.length} students on Vercel`);
+    console.log(`📋 Found ${students.length} students from MongoDB`);
+    console.log("🚀 Returning DIRECT student array - NO FALLBACK DATA");
     res.json(students);
   } catch (err) {
     console.error("❌ Error fetching merit list:", err);
