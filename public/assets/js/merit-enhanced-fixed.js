@@ -124,13 +124,20 @@ document.addEventListener('DOMContentLoaded', () => {
         // Sort by marks if needed
         studentsArray.sort((a, b) => (b.marks || 0) - (a.marks || 0));
       } else {
-        throw new Error('Invalid data format received from server');
+        console.warn('⚠️ Unexpected data format, trying to handle gracefully:', data);
+        // Last resort - create empty array to show empty state instead of error
+        studentsArray = [];
       }
 
       console.log('📊 Total students extracted:', studentsArray.length);
 
       if (studentsArray.length === 0) {
-        throw new Error('No student data found');
+        console.log('📊 No students found - showing empty state');
+        allStudentsData = [];
+        showEmpty(true);
+        showLoading(false);
+        updateStreamCounts();
+        return;
       }
 
       // Simple rank assignment like user's example
@@ -159,11 +166,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       // Show notification
-      if (allStudentsData.length > 0) {
-        showNotification(`🎉 Merit list loaded with ${allStudentsData.length} students!`, 'success');
-      } else {
-        showNotification('📋 No applications found. Be the first to apply!', 'info');
-      }
+      showNotification(`🎉 Merit list loaded with ${allStudentsData.length} students!`, 'success');
+      
+      // Hide loading and empty states
+      showLoading(false);
+      showEmpty(false);
       
       updateCompleteStatistics();
       updateStreamCounts();
