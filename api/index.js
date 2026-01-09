@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 const MONGO_URI = process.env.MONGO_URI || 
                  process.env.MONGODB_URI || 
                  process.env.DATABASE_URL ||
-                 "mongodb+srv://patilteju0409_db_user:Pranavteju%401431@cluster0.ahuv2zd.mongodb.net/careerpath";
+                 "mongodb+srv://patilteju0409_db_user:Pranavteju%401431@cluster0.ahuv2zd.mongodb.net/careerpath?retryWrites=true&w=majority";
 
 console.log("🌐 Vercel Environment Setup:");
 console.log(`- NODE_ENV: ${process.env.NODE_ENV || 'development'}`);
