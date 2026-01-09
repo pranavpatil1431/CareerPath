@@ -15,7 +15,7 @@ mongoose.set("bufferCommands", false);
 async function connectDB() {
   try {
     await mongoose.connect(process.env.MONGO_URI || 
-      "mongodb+srv://patilteju0409_db_user:Pranavteju%401431@cluster0.ahuv2zd.mongodb.net/careerpath?retryWrites=true&w=majority", {
+      "mongodb+srv://patilteju0409_db_user:Pranavteju%401431@cluster0.ahuv2zd.mongodb.net/careerpath?retryWrites=true&w=majority&appName=Cluster0", {
       serverSelectionTimeoutMS: 30000
     });
     console.log("✅ MongoDB connected on Vercel");
