@@ -18,7 +18,7 @@ async function connectDB() {
       "mongodb+srv://patilteju0409_db_user:Pranavteju%401431@cluster0.ahuv2zd.mongodb.net/careerpath?retryWrites=true&w=majority&appName=Cluster0", {
       serverSelectionTimeoutMS: 30000
     });
-    console.log("✅ MongoDB connected on Vercel");
+    console.log("✅ MongoDB connected on Vercel - IP WHITELIST FIXED");
   } catch (err) {
     console.error("❌ MongoDB connection failed:", err.message);
   }
