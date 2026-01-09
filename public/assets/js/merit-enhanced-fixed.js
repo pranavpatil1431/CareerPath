@@ -109,15 +109,22 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (data && typeof data === 'object') {
         // Old complex format - grouped by streams
         console.log('📊 Processing complex object format with streams');
+        console.log('📊 Data keys:', Object.keys(data));
+        console.log('📊 Science array:', data.Science);
+        console.log('📊 Arts array:', data.Arts);
+        console.log('📊 Commerce array:', data.Commerce);
         
         // Extract students from stream groups
         if (data.Science && Array.isArray(data.Science)) {
+          console.log('📊 Adding Science students:', data.Science.length);
           studentsArray.push(...data.Science);
         }
         if (data.Arts && Array.isArray(data.Arts)) {
+          console.log('📊 Adding Arts students:', data.Arts.length);
           studentsArray.push(...data.Arts);
         }
         if (data.Commerce && Array.isArray(data.Commerce)) {
+          console.log('📊 Adding Commerce students:', data.Commerce.length);
           studentsArray.push(...data.Commerce);
         }
         
