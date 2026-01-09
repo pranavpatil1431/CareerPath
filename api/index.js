@@ -65,10 +65,10 @@ app.post("/apply", async (req, res) => {
   }
 });
 
-// MERIT LIST
+// MERIT LIST - Updated for Vercel deployment
 app.get("/merit", async (req, res) => {
   try {
-    console.log("📊 Merit list requested on Vercel");
+    console.log("📊 Merit list requested on Vercel - Version 2.0");
     const students = await Student.find().sort({ marks: -1 });
     console.log(`📋 Found ${students.length} students on Vercel`);
     res.json(students);
