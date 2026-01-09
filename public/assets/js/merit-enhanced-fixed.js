@@ -98,14 +98,43 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
       console.log('📊 Merit data received:', data);
       console.log('📊 Data type:', typeof data, 'Is Array:', Array.isArray(data));
-      console.log('📊 Data length:', data ? data.length : 'undefined');
 
-      if (!Array.isArray(data)) {
-        throw new Error('Expected array of students, got: ' + typeof data);
+      let studentsArray = [];
+
+      // Handle both old complex format and new simple array format
+      if (Array.isArray(data)) {
+        // New simple format - array of students
+        console.log('📊 Processing simple array format, length:', data.length);
+        studentsArray = data;
+      } else if (data && typeof data === 'object') {
+        // Old complex format - grouped by streams
+        console.log('📊 Processing complex object format with streams');
+        
+        // Extract students from stream groups
+        if (data.Science && Array.isArray(data.Science)) {
+          studentsArray.push(...data.Science);
+        }
+        if (data.Arts && Array.isArray(data.Arts)) {
+          studentsArray.push(...data.Arts);
+        }
+        if (data.Commerce && Array.isArray(data.Commerce)) {
+          studentsArray.push(...data.Commerce);
+        }
+        
+        // Sort by marks if needed
+        studentsArray.sort((a, b) => (b.marks || 0) - (a.marks || 0));
+      } else {
+        throw new Error('Invalid data format received from server');
+      }
+
+      console.log('📊 Total students extracted:', studentsArray.length);
+
+      if (studentsArray.length === 0) {
+        throw new Error('No student data found');
       }
 
       // Simple rank assignment like user's example
-      allStudentsData = data.map((s, i) => ({
+      allStudentsData = studentsArray.map((s, i) => ({
         _id: s._id || `student_${i}`,
         name: s.name || 'Unknown Student',
         email: s.email || '',
@@ -121,6 +150,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       console.log('✅ Merit data processed:', allStudentsData.length);
       console.log('👥 First student:', allStudentsData[0]);
+      
+      // Store stats from complex format if available
+      if (data && data.stats) {
+        statsData = data.stats;
+      } else {
+        statsData = null;
+      }
       
       // Show notification
       if (allStudentsData.length > 0) {
