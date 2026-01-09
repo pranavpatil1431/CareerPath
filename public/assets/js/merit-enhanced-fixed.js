@@ -80,148 +80,85 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function loadMeritData() {
-    console.log('📊 Loading complete merit data for hosting environment...');
+    console.log('📊 Loading merit data...');
     showLoading(true);
 
     try {
-      // Enhanced URL detection for hosting environments
-      const baseURL = window.location.origin;
-      const isLocalhost = baseURL.includes('localhost') || baseURL.includes('127.0.0.1');
+      console.log('🔗 Attempting to fetch from /merit endpoint...');
       
-      console.log('🌐 Environment detection:', {
-        baseURL,
-        isLocalhost,
-        userAgent: navigator.userAgent
-      });
+      // Simple fetch from /merit endpoint
+      const res = await fetch("/merit");
       
-      // For localhost, use simple endpoint
-      const urls = isLocalhost ? 
-        ['/merit', `${baseURL}/merit`] : 
-        [`${baseURL}/api/merit`, `${baseURL}/merit`];
+      console.log('📡 Response received:', res.status, res.statusText);
       
-      let response = null;
-      let lastError = null;
-      
-      for (const url of urls) {
-        try {
-          console.log(`📡 Attempting to connect to: ${url}`);
-          const testResponse = await fetch(url, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-              'Cache-Control': 'no-cache'
-            },
-            // Add timeout for hosting environments
-            signal: AbortSignal.timeout(10000)
-          });
-          
-          console.log(`📊 Response status for ${url}: ${testResponse.status}`);
-          
-          if (testResponse.ok) {
-            response = testResponse;
-            console.log(`✅ Successfully connected to: ${url}`);
-            break;
-          } else {
-            const errorText = await testResponse.text();
-            console.log(`❌ HTTP ${testResponse.status} for: ${url}`, errorText.substring(0, 200));
-          }
-        } catch (err) {
-          console.log(`❌ Failed to connect to ${url}:`, err.message);
-          lastError = err;
-        }
-      }
-      
-      if (!response || !response.ok) {
-        throw new Error(`Failed to connect to merit API in hosting environment. Last error: ${lastError?.message}`);
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
       }
 
-      const data = await response.json();
-      console.log('📊 Complete merit data received from hosting:', data);
+      const data = await res.json();
+      console.log('📊 Merit data received:', data);
+      console.log('📊 Data type:', typeof data, 'Is Array:', Array.isArray(data));
+      console.log('📊 Data length:', data ? data.length : 'undefined');
 
-      // Check if we received valid data
-      if (!data) {
-        throw new Error('No data received from server');
-      }
-      
-      if (typeof data !== 'object') {
-        throw new Error(`Invalid data format: expected object, got ${typeof data}`);
+      if (!Array.isArray(data)) {
+        throw new Error('Expected array of students, got: ' + typeof data);
       }
 
-      // Check for server errors
-      if (data.success === false) {
-        throw new Error(data.error || 'Server returned error response');
-      }
+      // Simple rank assignment like user's example
+      allStudentsData = data.map((s, i) => ({
+        _id: s._id || `student_${i}`,
+        name: s.name || 'Unknown Student',
+        email: s.email || '',
+        marks: s.marks || 0,
+        stream: s.stream || 'Science',
+        preferredCourse: s.preferredCourse || s.course || 'Not specified',
+        applicationId: s.applicationId || `APP${Date.now()}_${i}`,
+        overallRank: i + 1,
+        streamRank: i + 1,
+        createdAt: s.createdAt || s.submittedAt || new Date(),
+        subjects: s.subjects || []
+      }));
 
-      // Store stats data
-      statsData = data.stats || null;
+      console.log('✅ Merit data processed:', allStudentsData.length);
+      console.log('👥 First student:', allStudentsData[0]);
       
-      console.log('🔍 Data structure analysis:', {
-        hasScience: !!data.Science,
-        hasArts: !!data.Arts,
-        hasCommerce: !!data.Commerce,
-        scienceCount: Array.isArray(data.Science) ? data.Science.length : typeof data.Science,
-        artsCount: Array.isArray(data.Arts) ? data.Arts.length : typeof data.Arts,
-        commerceCount: Array.isArray(data.Commerce) ? data.Commerce.length : typeof data.Commerce,
-        hasStats: !!data.stats,
-        totalKeys: Object.keys(data).length
-      });
-
-      // Process the data to create a unified list with complete rankings
-      allStudentsData = processCompleteStreamData(data);
-      console.log('✅ Complete students data processed for hosting:', allStudentsData.length);
-      
-      // Show comprehensive results notification
+      // Show notification
       if (allStudentsData.length > 0) {
-        const env = isLocalhost ? 'Local' : 'Hosting';
-        showNotification(`🎉 Complete merit list loaded from ${env} with ${allStudentsData.length} students!`, 'success');
+        showNotification(`🎉 Merit list loaded with ${allStudentsData.length} students!`, 'success');
       } else {
         showNotification('📋 No applications found. Be the first to apply!', 'info');
       }
       
       updateCompleteStatistics();
-      updateStreamCounts(data);
+      updateStreamCounts();
+      
+      // Make sure to apply filters and render the table
+      console.log('🎯 About to call applyFilters...');
+      applyFilters();
+      
+      // SIMPLE FALLBACK - Direct table rendering for testing
+      setTimeout(() => {
+        const tableBody = document.getElementById('meritTableBody');
+        if (tableBody && allStudentsData.length > 0) {
+          console.log('🔧 FALLBACK: Directly rendering table...');
+          tableBody.innerHTML = allStudentsData.slice(0, 10).map((student, i) => `
+            <tr>
+              <td>${i + 1}</td>
+              <td>${student.name}</td>
+              <td>${student.email}</td>
+              <td>${student.marks}%</td>
+              <td>${student.stream}</td>
+              <td>${student.preferredCourse || 'N/A'}</td>
+            </tr>
+          `).join('');
+          console.log('✅ FALLBACK: Table rendered with', allStudentsData.length, 'students');
+        }
+      }, 1000);
       
     } catch (error) {
-      console.error('❌ Error loading complete merit data:', error);
-      console.error('❌ Error details:', {
-        name: error.name,
-        message: error.message,
-        stack: error.stack
-      });
-      
-      // Try a simplified approach for localhost
-      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        console.log('🔄 Trying simplified localhost approach...');
-        try {
-          const simpleResponse = await fetch('/merit', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
-          });
-          
-          if (simpleResponse.ok) {
-            const simpleData = await simpleResponse.json();
-            console.log('✅ Got data with simplified approach:', simpleData);
-            
-            allStudentsData = processCompleteStreamData(simpleData);
-            updateCompleteStatistics();
-            updateStreamCounts(simpleData);
-            
-            if (allStudentsData.length > 0) {
-              showNotification(`✅ Merit list loaded with ${allStudentsData.length} students!`, 'success');
-            } else {
-              showNotification('📋 No applications found. Submit the first application!', 'info');
-            }
-            
-            showLoading(false);
-            return;
-          }
-        } catch (simpleError) {
-          console.log('❌ Simplified approach also failed:', simpleError.message);
-        }
-      }
-      
-      showError(`Failed to load complete merit data: ${error.message}. Please check if server is running and try refreshing the page.`);
+      console.error('❌ Error loading merit data:', error);
+      console.error('❌ Error stack:', error.stack);
+      showError(`Failed to load merit data: ${error.message}`);
       
       // Show empty state if no data
       if (allStudentsData.length === 0) {
@@ -435,12 +372,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function updateStreamCounts(data) {
+  function updateStreamCounts() {
     if (allCount) allCount.textContent = allStudentsData.length;
     
-    const scienceStudents = data.Science?.length || 0;
-    const artsStudents = data.Arts?.length || 0;
-    const commerceStudents = data.Commerce?.length || 0;
+    const scienceStudents = allStudentsData.filter(s => s.stream === 'Science').length;
+    const artsStudents = allStudentsData.filter(s => s.stream === 'Arts').length;
+    const commerceStudents = allStudentsData.filter(s => s.stream === 'Commerce').length;
     
     if (scienceCount) scienceCount.textContent = scienceStudents;
     if (artsCount) artsCount.textContent = artsStudents;
@@ -480,12 +417,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Apply search filter
     if (currentSearchTerm) {
       const term = currentSearchTerm.toLowerCase();
-      filtered = filtered.filter(student => 
-        student.name.toLowerCase().includes(term) ||
-        student.email.toLowerCase().includes(term) ||
-        student.preferredCourse.toLowerCase().includes(term) ||
-        student.applicationId.toLowerCase().includes(term)
-      );
+      filtered = filtered.filter(student => {
+        // Add null checks to prevent undefined errors
+        const name = (student.name || '').toLowerCase();
+        const email = (student.email || '').toLowerCase();
+        const course = (student.preferredCourse || student.course || '').toLowerCase();
+        const appId = (student.applicationId || '').toLowerCase();
+        
+        return name.includes(term) ||
+               email.includes(term) ||
+               course.includes(term) ||
+               appId.includes(term);
+      });
     }
 
     // Apply sorting
@@ -519,8 +462,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderTable(students) {
+    console.log('🎨 renderTable called with', students.length, 'students');
+    console.log('📊 meritTableBody element:', meritTableBody);
+    
     if (!meritTableBody) {
       console.error('❌ Merit table body not found');
+      console.log('🔍 Searching for merit table body...');
+      const tableBody = document.getElementById('meritTableBody');
+      console.log('🔍 Found by ID search:', tableBody);
       return;
     }
 
@@ -646,6 +595,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function escapeHtml(unsafe) {
+    if (!unsafe || typeof unsafe !== 'string') {
+      return '';
+    }
     return unsafe
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")

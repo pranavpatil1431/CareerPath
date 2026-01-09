@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Merit List Test</title>
+</head>
+<body>
+    <h1>Merit List Test</h1>
+    <div id="output"></div>
+    <script>
+        async function testMerit() {
+            try {
+                console.log('Testing merit API...');
+                const response = await fetch('/merit');
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('Data received:', data);
+                console.log('Data length:', data.length);
+                
+                const output = document.getElementById('output');
+                output.innerHTML = `
+                    <h2>Success! Found ${data.length} students</h2>
+                    <h3>Top 5 Students:</h3>
+                    <ol>
+                        ${data.slice(0, 5).map(s => 
+                            `<li>${s.name} - ${s.marks}% (${s.stream})</li>`
+                        ).join('')}
+                    </ol>
+                `;
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('output').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+        
+        // Test when page loads
+        testMerit();
+    </script>
+</body>
+</html>

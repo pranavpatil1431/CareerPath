@@ -184,12 +184,14 @@ document.addEventListener('DOMContentLoaded', () => {
     showLoadingOverlay();
 
     // Collect form data
+    const applicationId = `APP${Date.now()}`;
     const formData = {
+      applicationId,
       name: document.getElementById('fullName').value.trim(),
       email: document.getElementById('email').value.trim().toLowerCase(),
       marks: Number(document.getElementById('marks').value),
       stream: document.getElementById('stream').value,
-      course: document.getElementById('preferredCourse').value.trim()
+      preferredCourse: document.getElementById('preferredCourse').value.trim()
     };
 
     console.log('📋 Form data prepared:', formData);

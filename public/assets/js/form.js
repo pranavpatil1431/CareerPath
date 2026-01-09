@@ -75,12 +75,14 @@ document.addEventListener('DOMContentLoaded', () => {
     submitText.classList.add('hidden');
     submitLoader.classList.remove('hidden');
 
+    const applicationId = `APP${Date.now()}`;
     const data = {
+      applicationId,
       name: document.getElementById('fullName').value.trim(),
       email: document.getElementById('email').value.trim(),
       marks: Number(document.getElementById('marks').value),
       stream: document.getElementById('stream').value,
-      course: document.getElementById('preferredCourse').value.trim()
+      preferredCourse: document.getElementById('preferredCourse').value.trim()
     };
 
     try {
@@ -92,11 +94,11 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const json = await res.json();
       
-      if (json.ok) {
+      if (json.success) {
         // Store user email for merit rank tracking
         localStorage.setItem('userEmail', data.email);
-        localStorage.setItem('applicationId', json.id);
-        localStorage.setItem('applicationData', JSON.stringify(json.student));
+        localStorage.setItem('applicationId', applicationId);
+        localStorage.setItem('applicationData', JSON.stringify(data));
         
         // Enhanced success message with merit list link
         const successMessage = `
