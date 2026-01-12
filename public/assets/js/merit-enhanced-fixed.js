@@ -84,18 +84,46 @@ document.addEventListener('DOMContentLoaded', () => {
     showLoading(true);
 
     try {
-      console.log('🔗 Attempting to fetch from /merit endpoint...');
+      console.log('🔗 Loading merit data for deployment environment...');
       
-      // Simple fetch from /merit endpoint
-      const res = await fetch("/merit");
+      // Multiple endpoint fallbacks for different deployment environments
+      const endpoints = [
+        '/api/merit',           // Vercel/Production API
+        '/merit',               // Local development fallback
+        `${window.location.origin}/api/merit`, // Full URL fallback
+      ];
       
-      console.log('📡 Response received:', res.status, res.statusText);
+      let response = null;
+      let lastError = null;
       
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+      for (const endpoint of endpoints) {
+        try {
+          console.log(`🔗 Trying endpoint: ${endpoint}`);
+          response = await fetch(endpoint, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Cache-Control': 'no-cache'
+            }
+          });
+          
+          if (response.ok) {
+            console.log(`✅ Success with endpoint: ${endpoint}`);
+            break;
+          } else {
+            console.warn(`⚠️ Failed with ${endpoint}: ${response.status}`);
+          }
+        } catch (error) {
+          console.warn(`⚠️ Error with ${endpoint}:`, error.message);
+          lastError = error;
+        }
+      }
+      
+      if (!response || !response.ok) {
+        throw lastError || new Error('All API endpoints failed');
       }
 
-      const data = await res.json();
+      const data = await response.json();
       console.log('📊 Merit data received:', data);
       console.log('📊 Data type:', typeof data, 'Is Array:', Array.isArray(data));
 

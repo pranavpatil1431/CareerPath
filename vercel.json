@@ -1,19 +1,30 @@
 {
   "version": 2,
   "name": "careerpath-full",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/node",
-      "config": {
-        "maxLambdaSize": "50mb"
-      }
-    }
-  ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "/api/(.*)",
       "dest": "/api/index.js"
+    },
+    {
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot))",
+      "dest": "/public/$1"
+    },
+    {
+      "src": "/merit",
+      "dest": "/public/merit.html"
+    },
+    {
+      "src": "/form",
+      "dest": "/public/form.html"
+    },
+    {
+      "src": "/admin",
+      "dest": "/public/admin.html"
+    },
+    {
+      "src": "/",
+      "dest": "/public/index.html"
     }
   ],
   "env": {

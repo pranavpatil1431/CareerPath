@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       const baseURL = window.location.origin;
-      const response = await fetch(`${baseURL}/merit`);
+      const response = await fetch(`${baseURL}/api/merit`);
       console.log('🌐 Response status:', response.status, response.statusText);
       
       if (!response.ok) {

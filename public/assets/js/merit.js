@@ -94,10 +94,10 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('🌐 Base URL:', baseURL);
       
       const urls = [
-        `${baseURL}/merit`,
-        `${baseURL}/api/merit`,
-        '/merit',
-        '/api/merit'
+        '/api/merit',
+        `/api/merit`,
+        `${window.location.origin}/api/merit`,
+        '/merit'
       ];
       
       let response = null;
