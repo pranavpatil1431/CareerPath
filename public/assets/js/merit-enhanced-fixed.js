@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (studentsArray.length === 0) {
         console.log('📊 No students found - showing empty state');
         allStudentsData = [];
-        showEmpty(true);
+        showEmptyState();
         showLoading(false);
         updateStreamCounts();
         return;
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Hide loading and empty states
       showLoading(false);
-      showEmpty(false);
+      hideEmptyStates();
       
       updateCompleteStatistics();
       updateStreamCounts();
