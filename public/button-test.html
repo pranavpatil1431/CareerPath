@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Button Test - CareerPath</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.2s ease;
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            color: white;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 CareerPath Button Test</h1>
+    
+    <div class="test-section">
+        <h2>Button Visibility Test</h2>
+        <p>These buttons should be visible and clickable:</p>
+        
+        <button id="testExport" class="btn btn-success" onclick="testExport()">
+            📈 Test Export Excel
+        </button>
+        
+        <button id="testRefresh" class="btn btn-primary" onclick="testRefresh()">
+            🔄 Test Refresh
+        </button>
+    </div>
+    
+    <div class="test-section">
+        <h2>API Test</h2>
+        <button onclick="testAPI()" class="btn btn-primary">🔗 Test Merit API</button>
+        <button onclick="testExportAPI()" class="btn btn-success">📊 Test Export API</button>
+        
+        <div id="apiResults" style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 5px; display: none;">
+            <h4>API Results:</h4>
+            <pre id="apiOutput"></pre>
+        </div>
+    </div>
+
+    <script>
+        function testExport() {
+            alert('✅ Export button is working! This would download the Excel file.');
+            console.log('Export button clicked');
+        }
+        
+        function testRefresh() {
+            alert('✅ Refresh button is working! This would reload the data.');
+            console.log('Refresh button clicked');
+        }
+        
+        async function testAPI() {
+            const results = document.getElementById('apiResults');
+            const output = document.getElementById('apiOutput');
+            
+            try {
+                results.style.display = 'block';
+                output.textContent = 'Testing /api/merit endpoint...';
+                
+                const response = await fetch('/api/merit');
+                const data = await response.json();
+                
+                output.textContent = `✅ API Working!\nStatus: ${response.status}\nData: ${JSON.stringify(data, null, 2)}`;
+            } catch (error) {
+                output.textContent = `❌ API Error: ${error.message}`;
+            }
+        }
+        
+        async function testExportAPI() {
+            const results = document.getElementById('apiResults');
+            const output = document.getElementById('apiOutput');
+            
+            try {
+                results.style.display = 'block';
+                output.textContent = 'Testing export endpoint...';
+                
+                // Test if export endpoint exists
+                const testUrl = '/api/export/excel';
+                window.open(testUrl, '_blank');
+                
+                output.textContent = '✅ Export URL opened! Check if download started.';
+            } catch (error) {
+                output.textContent = `❌ Export Error: ${error.message}`;
+            }
+        }
+        
+        // Test on page load
+        window.onload = function() {
+            console.log('🧪 Button Test Page Loaded');
+            console.log('Export button:', document.getElementById('testExport'));
+            console.log('Refresh button:', document.getElementById('testRefresh'));
+        };
+    </script>
+</body>
+</html>
