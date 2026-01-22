@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Excel Export</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📈 Excel Export Test</h1>
+        <p>Click the button below to test the Excel export functionality</p>
+        
+        <button onclick="testExcelExport()">📊 Download Students Excel File</button>
+        
+        <div id="status"></div>
+    </div>
+
+    <script>
+        function testExcelExport() {
+            const statusDiv = document.getElementById('status');
+            
+            try {
+                statusDiv.innerHTML = '<div class="status">⏳ Preparing Excel file...</div>';
+                
+                // Open the Excel export endpoint
+                const url = '/api/export/excel';
+                window.open(url, '_blank');
+                
+                setTimeout(() => {
+                    statusDiv.innerHTML = '<div class="status success">✅ Excel file should start downloading!</div>';
+                }, 1000);
+                
+            } catch (err) {
+                console.error('Excel export error:', err);
+                statusDiv.innerHTML = '<div class="status error">❌ Error downloading Excel file. Check console for details.</div>';
+            }
+        }
+    </script>
+</body>
+</html>

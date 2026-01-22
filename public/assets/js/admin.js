@@ -239,6 +239,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Download Excel button
+  document.getElementById('downloadExcel').addEventListener('click', () => {
+    try {
+      window.open(`/api/export/excel`, '_blank');
+    } catch (err) {
+      console.error('Excel download error:', err);
+      alert('Error downloading Excel file. Please try again.');
+    }
+  });
+
   // Auto-refresh every 60 seconds when panel is visible
   setInterval(() => {
     if (!adminPanel.classList.contains('hidden') && !document.hidden) {

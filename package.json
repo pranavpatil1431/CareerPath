@@ -9,16 +9,19 @@
     "dev": "nodemon server.js",
     "build": "echo 'Build complete - Ready for deployment'",
     "vercel-build": "echo 'Vercel build complete'",
+    "render-build": "npm install",
     "test": "node test-api.js",
     "test-db": "node populate-data.js",
     "deploy": "vercel --prod",
     "deploy-preview": "vercel",
     "populate": "node populate-data.js",
     "local": "npm start",
-    "postinstall": "echo 'Dependencies installed successfully'"
+    "postinstall": "echo 'Dependencies installed successfully'",
+    "health-check": "curl -f http://localhost:5000/health || exit 1"
   },
   "engines": {
-    "node": "24.x"
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   },
   "keywords": [
     "nodejs",
@@ -39,6 +42,7 @@
     "express": "^4.21.2",
     "mongoose": "^8.19.2",
     "mysql2": "^3.3.2",
-    "node-fetch": "^2.7.0"
+    "node-fetch": "^2.7.0",
+    "xlsx": "^0.18.5"
   }
 }

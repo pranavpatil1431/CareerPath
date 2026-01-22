@@ -16,37 +16,90 @@ async function addSampleData() {
   await students.deleteMany({});
   console.log('🗑️ Cleared existing data');
   
-  // Add comprehensive sample data
-  const sampleStudents = [
-    // Science Stream Students - High Performers
-    { name: 'Divya Shah', email: 'divya@example.com', stream: 'Science', marks: 96, subjects: ['Physics', 'Chemistry', 'Mathematics'], submittedAt: new Date() },
-    { name: 'Raj Sharma', email: 'raj@example.com', stream: 'Science', marks: 95, subjects: ['Physics', 'Chemistry', 'Mathematics'], submittedAt: new Date() },
-    { name: 'Priya Patel', email: 'priya@example.com', stream: 'Science', marks: 92, subjects: ['Physics', 'Chemistry', 'Biology'], submittedAt: new Date() },
-    { name: 'Arjun Kumar', email: 'arjun@example.com', stream: 'Science', marks: 89, subjects: ['Physics', 'Chemistry', 'Mathematics'], submittedAt: new Date() },
-    { name: 'Sneha Singh', email: 'sneha@example.com', stream: 'Science', marks: 87, subjects: ['Physics', 'Chemistry', 'Biology'], submittedAt: new Date() },
-    { name: 'Vikram Joshi', email: 'vikram@example.com', stream: 'Science', marks: 84, subjects: ['Physics', 'Mathematics', 'Computer Science'], submittedAt: new Date() },
-    
-    // Commerce Stream Students
-    { name: 'Harsh Agarwal', email: 'harsh@example.com', stream: 'Commerce', marks: 93, subjects: ['Accounting', 'Economics', 'Business Studies'], submittedAt: new Date() },
-    { name: 'Anita Desai', email: 'anita@example.com', stream: 'Commerce', marks: 91, subjects: ['Accounting', 'Economics', 'Business Studies'], submittedAt: new Date() },
-    { name: 'Rohit Gupta', email: 'rohit@example.com', stream: 'Commerce', marks: 88, subjects: ['Accounting', 'Economics', 'Mathematics'], submittedAt: new Date() },
-    { name: 'Kavya Nair', email: 'kavya@example.com', stream: 'Commerce', marks: 85, subjects: ['Accounting', 'Business Studies', 'English'], submittedAt: new Date() },
-    { name: 'Amit Rao', email: 'amit@example.com', stream: 'Commerce', marks: 82, subjects: ['Economics', 'Business Studies', 'Statistics'], submittedAt: new Date() },
-    
-    // Arts Stream Students
-    { name: 'Isha Reddy', email: 'isha@example.com', stream: 'Arts', marks: 88, subjects: ['History', 'Political Science', 'Psychology'], submittedAt: new Date() },
-    { name: 'Meera Iyer', email: 'meera@example.com', stream: 'Arts', marks: 86, subjects: ['History', 'Political Science', 'English Literature'], submittedAt: new Date() },
-    { name: 'Karan Sharma', email: 'karan@example.com', stream: 'Arts', marks: 83, subjects: ['Psychology', 'Sociology', 'English Literature'], submittedAt: new Date() },
-    { name: 'Pooja Mishra', email: 'pooja@example.com', stream: 'Arts', marks: 80, subjects: ['History', 'Geography', 'Political Science'], submittedAt: new Date() },
-    { name: 'Rahul Verma', email: 'rahul@example.com', stream: 'Arts', marks: 78, subjects: ['Philosophy', 'Psychology', 'English Literature'], submittedAt: new Date() },
-
-    // Additional students to make it comprehensive
-    { name: 'Nisha Gupta', email: 'nisha@example.com', stream: 'Science', marks: 90, subjects: ['Physics', 'Chemistry', 'Biology'], submittedAt: new Date() },
-    { name: 'Manish Singh', email: 'manish@example.com', stream: 'Commerce', marks: 86, subjects: ['Accounting', 'Economics', 'Statistics'], submittedAt: new Date() },
-    { name: 'Ritu Bansal', email: 'ritu@example.com', stream: 'Arts', marks: 81, subjects: ['Sociology', 'Psychology', 'English Literature'], submittedAt: new Date() },
-    { name: 'Deepak Kumar', email: 'deepak@example.com', stream: 'Science', marks: 88, subjects: ['Physics', 'Mathematics', 'Computer Science'], submittedAt: new Date() },
-    { name: 'Sonal Jain', email: 'sonal@example.com', stream: 'Commerce', marks: 84, subjects: ['Business Studies', 'Economics', 'English'], submittedAt: new Date() }
+  // Generate 100 test students for comprehensive testing
+  const firstNames = [
+    'Aarav', 'Vivaan', 'Aditya', 'Vihaan', 'Arjun', 'Sai', 'Reyansh', 'Ayaan', 'Krishna', 'Ishaan',
+    'Shaurya', 'Atharv', 'Advik', 'Pranav', 'Vivek', 'Muhammed', 'Saksham', 'Ritvik', 'Rudra', 'Arnav',
+    'Anaya', 'Fatima', 'Aadhya', 'Zara', 'Anvi', 'Avni', 'Angel', 'Pari', 'Kavya', 'Kiara',
+    'Myra', 'Anika', 'Saanvi', 'Priya', 'Khushi', 'Alisha', 'Shanaya', 'Palak', 'Anushka', 'Riya',
+    'Rajesh', 'Suresh', 'Ramesh', 'Mahesh', 'Prakash', 'Ashish', 'Deepak', 'Rakesh', 'Sanjay', 'Vijay'
   ];
+  
+  const lastNames = [
+    'Sharma', 'Verma', 'Singh', 'Kumar', 'Gupta', 'Agarwal', 'Joshi', 'Bansal', 'Mittal', 'Sinha',
+    'Patel', 'Shah', 'Mehta', 'Desai', 'Modi', 'Jain', 'Thakkar', 'Pandya', 'Parekh', 'Gandhi',
+    'Reddy', 'Rao', 'Krishna', 'Prasad', 'Chandra', 'Ravi', 'Sai', 'Venkat', 'Pradeep', 'Sunil',
+    'Khan', 'Ahmed', 'Ali', 'Hassan', 'Hussain', 'Malik', 'Sheikh', 'Ansari', 'Qureshi', 'Siddiqui',
+    'Nair', 'Menon', 'Pillai', 'Krishnan', 'Unni', 'Thampi', 'Warrier', 'Panicker', 'Kamath', 'Bhat'
+  ];
+
+  const streams = ['Science', 'Commerce', 'Arts'];
+  const courses = {
+    'Science': ['B.Tech Computer Science', 'B.Tech Mechanical', 'B.Tech Civil', 'B.Tech Electrical', 'MBBS', 'BDS', 'B.Pharmacy', 'B.Sc'],
+    'Commerce': ['B.Com', 'BBA', 'B.Com Honours', 'Economics Honours', 'Chartered Accountancy', 'Company Secretary'],
+    'Arts': ['BA', 'B.A. English', 'B.A. History', 'B.A. Psychology', 'B.A. Political Science', 'Journalism', 'Mass Communication']
+  };
+  
+  const cities = ['Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai', 'Kolkata', 'Pune', 'Ahmedabad', 'Jaipur', 'Lucknow'];
+  const states = ['Maharashtra', 'Delhi', 'Karnataka', 'Telangana', 'Tamil Nadu', 'West Bengal', 'Maharashtra', 'Gujarat', 'Rajasthan', 'Uttar Pradesh'];
+
+  function generateRandomStudent(index) {
+    const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+    const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+    const name = `${firstName} ${lastName}`;
+    const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${index}@example.com`;
+    
+    const stream = streams[Math.floor(Math.random() * streams.length)];
+    const streamCourses = courses[stream];
+    const preferredCourse = streamCourses[Math.floor(Math.random() * streamCourses.length)];
+    const alternativeCourse = streamCourses[Math.floor(Math.random() * streamCourses.length)];
+    
+    let marksRange;
+    if (stream === 'Science') {
+      marksRange = [65, 98]; // Science students typically have good marks
+    } else if (stream === 'Commerce') {
+      marksRange = [60, 95]; // Commerce students
+    } else {
+      marksRange = [55, 92]; // Arts students
+    }
+    
+    const marks = Math.floor(Math.random() * (marksRange[1] - marksRange[0] + 1)) + marksRange[0];
+    
+    // Generate random date of birth (18-20 years old)
+    const today = new Date();
+    const birthYear = today.getFullYear() - 18 - Math.floor(Math.random() * 3);
+    const birthMonth = Math.floor(Math.random() * 12);
+    const birthDay = Math.floor(Math.random() * 28) + 1;
+    const dateOfBirth = new Date(birthYear, birthMonth, birthDay);
+    
+    // Generate phone number
+    const phone = `+91 ${Math.floor(Math.random() * 9000000000) + 1000000000}`;
+    
+    // Generate address
+    const cityIndex = Math.floor(Math.random() * cities.length);
+    const address = `${Math.floor(Math.random() * 999) + 1}, ${lastName} Street, ${cities[cityIndex]}, ${states[cityIndex]} - ${Math.floor(Math.random() * 900000) + 100000}`;
+    
+    return {
+      applicationId: `APP${String(index).padStart(3, '0')}`,
+      name,
+      email,
+      phone,
+      dateOfBirth,
+      marks,
+      stream,
+      preferredCourse,
+      alternativeCourse,
+      address,
+      createdAt: new Date(Date.now() - Math.random() * 7776000000) // Random date within last 90 days
+    };
+  }
+
+  const sampleStudents = [];
+  
+  // Generate 100 students
+  for (let i = 1; i <= 100; i++) {
+    sampleStudents.push(generateRandomStudent(i));
+  }
   
   const result = await students.insertMany(sampleStudents);
   console.log(`📊 Inserted ${result.insertedCount} student records`);

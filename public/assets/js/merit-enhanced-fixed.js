@@ -64,6 +64,18 @@ document.addEventListener('DOMContentLoaded', () => {
       refreshBtn.disabled = false;
     });
 
+    // Excel export button
+    const exportExcelBtn = document.getElementById('exportExcel');
+    exportExcelBtn?.addEventListener('click', () => {
+      try {
+        const url = `${window.location.origin}/api/export/excel`;
+        window.open(url, '_blank');
+      } catch (err) {
+        console.error('Excel export error:', err);
+        alert('Error downloading Excel file. Please try again.');
+      }
+    });
+
     // Search functionality
     searchInput?.addEventListener('input', debounce(handleSearch, 300));
     clearSearchBtn?.addEventListener('click', clearSearch);

@@ -380,63 +380,83 @@
     document.addEventListener('DOMContentLoaded', async () => {
       console.log('🏠 Loading real-time application statistics...');
       
-      try {
-        const response = await fetch('/merit', {
-          headers: { 'Accept': 'application/json' }
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          console.log('📊 Statistics loaded:', data);
+      async function loadStatistics() {
+        try {
+          // Try multiple endpoints for compatibility
+          let response, data;
           
-          // Update statistics
-          const totalApps = (data.Science?.length || 0) + (data.Commerce?.length || 0) + (data.Arts?.length || 0);
+          // First try the API endpoint
+          try {
+            response = await fetch('/api/merit', {
+              headers: { 'Accept': 'application/json' },
+              timeout: 10000
+            });
+            
+            if (response.ok) {
+              const result = await response.json();
+              // Handle new API format with success wrapper
+              data = result.success ? result.data : result;
+            }
+          } catch (apiError) {
+            console.log('API endpoint failed, trying fallback...');
+            // Fallback to legacy endpoint
+            response = await fetch('/merit', {
+              headers: { 'Accept': 'application/json' },
+              timeout: 10000
+            });
+            
+            if (response.ok) {
+              data = await response.json();
+            }
+          }
           
-          document.getElementById('totalApplications').textContent = totalApps;
-          document.getElementById('scienceApps').textContent = data.Science?.length || 0;
-          document.getElementById('commerceApps').textContent = data.Commerce?.length || 0;
-          document.getElementById('artsApps').textContent = data.Arts?.length || 0;
-          document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString();
+          if (data && Array.isArray(data)) {
+            console.log('📊 Statistics loaded:', data.length, 'students');
+            
+            // Calculate statistics by stream
+            const streamStats = {
+              Science: data.filter(student => student.stream && student.stream.toLowerCase().includes('science')).length,
+              Commerce: data.filter(student => student.stream && student.stream.toLowerCase().includes('commerce')).length,
+              Arts: data.filter(student => student.stream && student.stream.toLowerCase().includes('arts')).length
+            };
+            
+            const totalApps = data.length;
+            
+            // Update UI elements
+            document.getElementById('totalApplications').textContent = totalApps;
+            document.getElementById('scienceApps').textContent = streamStats.Science;
+            document.getElementById('commerceApps').textContent = streamStats.Commerce;
+            document.getElementById('artsApps').textContent = streamStats.Arts;
+            document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString();
+            
+            // Add animation effect
+            const statElements = document.querySelectorAll('#liveStatsContent > div');
+            statElements.forEach((el, index) => {
+              setTimeout(() => {
+                el.style.animation = 'pulse 0.6s ease-in-out';
+              }, index * 200);
+            });
+            
+          } else {
+            throw new Error('Invalid data format received');
+          }
           
-          // Add animation effect
-          const statElements = document.querySelectorAll('#liveStatsContent > div');
-          statElements.forEach((el, index) => {
-            setTimeout(() => {
-              el.style.animation = 'pulse 0.6s ease-in-out';
-            }, index * 200);
-          });
-          
-        } else {
-          console.log('📊 Statistics service unavailable');
+        } catch (error) {
+          console.error('❌ Error loading statistics:', error);
+          // Set fallback values
           document.getElementById('totalApplications').textContent = '📊';
           document.getElementById('scienceApps').textContent = '🔬';
           document.getElementById('commerceApps').textContent = '💼';
           document.getElementById('artsApps').textContent = '🎨';
           document.getElementById('lastUpdated').textContent = 'Service Loading...';
         }
-      } catch (error) {
-        console.error('❌ Error loading statistics:', error);
-        document.getElementById('lastUpdated').textContent = 'Live Updates Coming Soon';
       }
       
+      // Initial load
+      await loadStatistics();
+      
       // Auto-refresh every 30 seconds
-      setInterval(async () => {
-        try {
-          const response = await fetch('/merit');
-          if (response.ok) {
-            const data = await response.json();
-            const totalApps = (data.Science?.length || 0) + (data.Commerce?.length || 0) + (data.Arts?.length || 0);
-            
-            document.getElementById('totalApplications').textContent = totalApps;
-            document.getElementById('scienceApps').textContent = data.Science?.length || 0;
-            document.getElementById('commerceApps').textContent = data.Commerce?.length || 0;
-            document.getElementById('artsApps').textContent = data.Arts?.length || 0;
-            document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString();
-          }
-        } catch (error) {
-          console.log('🔄 Background update failed:', error);
-        }
-      }, 30000);
+      setInterval(loadStatistics, 30000);
     });
   </script>
   
