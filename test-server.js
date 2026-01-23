@@ -1,8 +1,8 @@
-const axios = require('axios');
+import fetch from 'node-fetch';
 
 // Test script for debugging server issues
 async function testServer() {
-  const baseURL = process.env.SERVER_URL || 'http://localhost:5000';
+  const baseURL = process.env.SERVER_URL || 'https://careerpath-2.onrender.com';
   
   console.log('🔍 Testing server endpoints...');
   console.log('Base URL:', baseURL);
@@ -10,25 +10,43 @@ async function testServer() {
   try {
     // Test health check
     console.log('\n1. Testing health check...');
-    const health = await axios.get(`${baseURL}/health`, { timeout: 10000 });
-    console.log('✅ Health check:', health.data);
-    
-    // Test root endpoint
-    console.log('\n2. Testing root endpoint...');
-    const root = await axios.get(`${baseURL}/`, { timeout: 10000 });
-    console.log('✅ Root endpoint status:', root.status);
+    const healthResponse = await fetch(`${baseURL}/health`, { 
+      method: 'GET',
+      headers: { 'Accept': 'application/json' }
+    });
+    const health = await healthResponse.json();
+    console.log('✅ Health check:', health);
     
     // Test merit API
-    console.log('\n3. Testing merit API...');
-    const merit = await axios.get(`${baseURL}/api/merit`, { timeout: 15000 });
-    console.log('✅ Merit API:', merit.data);
+    console.log('\n2. Testing merit API...');
+    const meritResponse = await fetch(`${baseURL}/api/merit`, { 
+      method: 'GET',
+      headers: { 'Accept': 'application/json' }
+    });
+    const merit = await meritResponse.json();
+    console.log('✅ Merit API response:', merit);
+    console.log('📊 Total students found:', merit.data?.length || 0);
+    
+    if (merit.data && merit.data.length > 0) {
+      console.log('👨‍🎓 Sample student data:');
+      merit.data.slice(0, 3).forEach((student, index) => {
+        console.log(`${index + 1}. ${student.name} - ${student.marks} marks - ${student.stream}`);
+      });
+    }
+    
+    // Test legacy merit endpoint
+    console.log('\n3. Testing legacy merit endpoint...');
+    const legacyResponse = await fetch(`${baseURL}/merit`, { 
+      method: 'GET',
+      headers: { 'Accept': 'application/json' }
+    });
+    const legacy = await legacyResponse.json();
+    console.log('✅ Legacy merit response length:', legacy?.length || 0);
     
   } catch (error) {
     console.error('❌ Test failed:', {
       message: error.message,
-      code: error.code,
-      status: error.response?.status,
-      data: error.response?.data
+      stack: error.stack
     });
   }
 }

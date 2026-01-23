@@ -140,40 +140,10 @@ app.get("/api/merit", async (req, res) => {
 
     const students = await Student.find().sort({ marks: -1 }).maxTimeMS(10000);
     
-    // If no students found, provide sample data for demo
+    // Return empty array if no students found - no sample data
     if (students.length === 0) {
-      const sampleData = [
-        {
-          applicationId: "APP001",
-          name: "Sample Student 1",
-          email: "student1@example.com",
-          marks: 95,
-          stream: "Science",
-          preferredCourse: "Engineering",
-          createdAt: new Date()
-        },
-        {
-          applicationId: "APP002", 
-          name: "Sample Student 2",
-          email: "student2@example.com",
-          marks: 88,
-          stream: "Commerce",
-          preferredCourse: "Business",
-          createdAt: new Date()
-        },
-        {
-          applicationId: "APP003",
-          name: "Sample Student 3", 
-          email: "student3@example.com",
-          marks: 82,
-          stream: "Arts",
-          preferredCourse: "Literature",
-          createdAt: new Date()
-        }
-      ];
-      
-      console.log(`📋 No data found, returning sample data (${sampleData.length} students)`);
-      return res.json({ success: true, data: sampleData, count: sampleData.length, demo: true });
+      console.log('📋 No students found, returning empty data');
+      return res.json({ success: true, data: [], count: 0 });
     }
     
     console.log(`📋 Found ${students.length} students`);
@@ -234,37 +204,23 @@ app.get("/merit", async (req, res) => {
   try {
     // Check database connection
     if (mongoose.connection.readyState !== 1) {
-      // Return sample data if database is not connected
-      const sampleData = [
-        { applicationId: "APP001", name: "Sample Student 1", marks: 95, stream: "Science", preferredCourse: "Engineering", createdAt: new Date() },
-        { applicationId: "APP002", name: "Sample Student 2", marks: 88, stream: "Commerce", preferredCourse: "Business", createdAt: new Date() },
-        { applicationId: "APP003", name: "Sample Student 3", marks: 82, stream: "Arts", preferredCourse: "Literature", createdAt: new Date() }
-      ];
-      return res.json(sampleData);
+      // Return error if database is not connected
+      return res.status(503).json({ error: "Database not connected" });
     }
 
     const students = await Student.find().sort({ marks: -1 }).maxTimeMS(10000);
     
-    // If no students, return sample data for demonstration
+    // Return empty array if no students found - no sample data
     if (students.length === 0) {
-      const sampleData = [
-        { applicationId: "APP001", name: "Sample Student 1", marks: 95, stream: "Science", preferredCourse: "Engineering", createdAt: new Date() },
-        { applicationId: "APP002", name: "Sample Student 2", marks: 88, stream: "Commerce", preferredCourse: "Business", createdAt: new Date() },
-        { applicationId: "APP003", name: "Sample Student 3", marks: 82, stream: "Arts", preferredCourse: "Literature", createdAt: new Date() }
-      ];
-      return res.json(sampleData);
+      console.log('📋 Legacy endpoint: No students found, returning empty array');
+      return res.json([]);
     }
     
     res.json(students);
   } catch (err) {
     console.error("❌ Legacy merit error:", err.message);
-    // Return sample data as fallback
-    const sampleData = [
-      { applicationId: "APP001", name: "Sample Student 1", marks: 95, stream: "Science", preferredCourse: "Engineering", createdAt: new Date() },
-      { applicationId: "APP002", name: "Sample Student 2", marks: 88, stream: "Commerce", preferredCourse: "Business", createdAt: new Date() },
-      { applicationId: "APP003", name: "Sample Student 3", marks: 82, stream: "Arts", preferredCourse: "Literature", createdAt: new Date() }
-    ];
-    res.json(sampleData);
+    // Return error instead of sample data
+    res.status(500).json({ error: "Failed to fetch merit list" });
   }
 });
 
@@ -275,6 +231,64 @@ app.get("/api/export/excel", async (req, res) => {
     
     // Get all students sorted by marks (highest first)
     const students = await Student.find().sort({ marks: -1 });
+    
+    console.log(`📊 Found ${students.length} students to export`);
+    
+    // If no students, return an empty Excel with headers only
+    if (students.length === 0) {
+      console.log("📋 No students found - creating empty Excel file");
+      
+      // Create empty export with just headers
+      const emptyData = [{
+        "Rank": "No data available",
+        "Application ID": "",
+        "Name": "",
+        "Email": "",
+        "Phone": "",
+        "Date of Birth": "",
+        "Marks": "",
+        "Stream": "",
+        "Preferred Course": "",
+        "Alternative Course": "",
+        "Address": "",
+        "Application Date": ""
+      }];
+      
+      const workbook = XLSX.utils.book_new();
+      const worksheet = XLSX.utils.json_to_sheet(emptyData);
+      
+      // Auto-resize columns
+      const cols = [
+        { width: 20 },  // Rank
+        { width: 15 },  // Application ID
+        { width: 25 },  // Name
+        { width: 30 },  // Email
+        { width: 15 },  // Phone
+        { width: 12 },  // Date of Birth
+        { width: 8 },   // Marks
+        { width: 15 },  // Stream
+        { width: 30 },  // Preferred Course
+        { width: 30 },  // Alternative Course
+        { width: 40 },  // Address
+        { width: 15 }   // Application Date
+      ];
+      worksheet['!cols'] = cols;
+      
+      XLSX.utils.book_append_sheet(workbook, worksheet, "No Students Found");
+      
+      const excelBuffer = XLSX.write(workbook, {
+        type: 'buffer',
+        bookType: 'xlsx'
+      });
+      
+      const fileName = `CareerPath_Empty_${new Date().toISOString().split('T')[0]}.xlsx`;
+      res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      
+      console.log(`✅ Empty Excel file generated: ${fileName}`);
+      res.send(excelBuffer);
+      return;
+    }
     
     // Prepare data for Excel export
     const exportData = students.map((student, index) => ({

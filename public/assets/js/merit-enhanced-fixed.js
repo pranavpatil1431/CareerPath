@@ -141,18 +141,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
       let studentsArray = [];
 
-      // Handle both old complex format and new simple array format
-      if (Array.isArray(data)) {
-        // New simple format - array of students
-        console.log('📊 Processing simple array format, length:', data.length);
+      // Handle both new API format {success: true, data: []} and legacy array format
+      if (data && data.success === true && Array.isArray(data.data)) {
+        // New API format with success wrapper
+        console.log('📊 Processing new API format, student count:', data.data.length);
+        studentsArray = data.data;
+      } else if (Array.isArray(data)) {
+        // Legacy format - direct array of students
+        console.log('📊 Processing legacy array format, length:', data.length);
         studentsArray = data;
       } else if (data && typeof data === 'object') {
-        // Old complex format - grouped by streams
-        console.log('📊 Processing complex object format with streams');
+        // Old complex format - grouped by streams (legacy support)
+        console.log('📊 Processing legacy object format with streams');
         console.log('📊 Data keys:', Object.keys(data));
-        console.log('📊 Science array:', data.Science);
-        console.log('📊 Arts array:', data.Arts);
-        console.log('📊 Commerce array:', data.Commerce);
         
         // Extract students from stream groups
         if (data.Science && Array.isArray(data.Science)) {
@@ -171,8 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Sort by marks if needed
         studentsArray.sort((a, b) => (b.marks || 0) - (a.marks || 0));
       } else {
-        console.warn('⚠️ Unexpected data format, trying to handle gracefully:', data);
-        // Last resort - create empty array to show empty state instead of error
+        console.log('⚠️ No valid data found or unexpected format:', data);
         studentsArray = [];
       }
 
@@ -202,9 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
         subjects: s.subjects || []
       }));
 
-      console.log('✅ Merit data processed:', allStudentsData.length);
-      console.log('👥 First student:', allStudentsData[0]);
-      
       // Store stats from complex format if available
       if (data && data.stats) {
         statsData = data.stats;
@@ -212,8 +209,15 @@ document.addEventListener('DOMContentLoaded', () => {
         statsData = null;
       }
       
-      // Show notification
-      showNotification(`🎉 Merit list loaded with ${allStudentsData.length} students!`, 'success');
+      // Show appropriate notification
+      if (allStudentsData.length === 0) {
+        showNotification('📋 No student applications found in the merit list.', 'info');
+        console.log('ℹ️ No students to display - showing empty state');
+      } else {
+        showNotification(`🎉 Merit list loaded with ${allStudentsData.length} students!`, 'success');
+        console.log('✅ Merit data processed:', allStudentsData.length);
+        console.log('👥 First student:', allStudentsData[0]);
+      }
       
       // Hide loading and empty states
       showLoading(false);
@@ -225,25 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
       // Make sure to apply filters and render the table
       console.log('🎯 About to call applyFilters...');
       applyFilters();
-      
-      // SIMPLE FALLBACK - Direct table rendering for testing
-      setTimeout(() => {
-        const tableBody = document.getElementById('meritTableBody');
-        if (tableBody && allStudentsData.length > 0) {
-          console.log('🔧 FALLBACK: Directly rendering table...');
-          tableBody.innerHTML = allStudentsData.slice(0, 10).map((student, i) => `
-            <tr>
-              <td>${i + 1}</td>
-              <td>${student.name}</td>
-              <td>${student.email}</td>
-              <td>${student.marks}%</td>
-              <td>${student.stream}</td>
-              <td>${student.preferredCourse || 'N/A'}</td>
-            </tr>
-          `).join('');
-          console.log('✅ FALLBACK: Table rendered with', allStudentsData.length, 'students');
-        }
-      }, 1000);
       
     } catch (error) {
       console.error('❌ Error loading merit data:', error);
@@ -566,9 +551,14 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(`🎨 Rendering ${students.length} students in table`);
     
     if (students.length === 0) {
-      meritTableBody.innerHTML = '<tr><td colspan="6" class="text-center py-8">No students found matching your criteria.</td></tr>';
-      return;
+      // Clear table and don't show it
+      meritTableBody.innerHTML = '';
+      return; // Let applyFilters handle showing the appropriate empty state
     }
+    
+    // Ensure table is visible when we have data
+    const meritTable = document.querySelector('table');
+    if (meritTable) meritTable.style.display = '';
 
     const tableRows = students.map((student, index) => {
       const displayRank = currentStream === 'all' ? student.overallRank : student.streamRank;
@@ -772,8 +762,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function showEmptyState() {
+    const tableContainer = document.querySelector('.table-container, .table-wrapper, [class*="table"]');
+    const meritTable = document.querySelector('table');
+    
     if (emptyState) emptyState.classList.remove('hidden');
     if (noSearchResults) noSearchResults.classList.add('hidden');
+    
+    // Hide table when showing empty state
+    if (meritTable) meritTable.style.display = 'none';
+    if (tableContainer) tableContainer.style.display = 'none';
   }
 
   function showNoSearchResults() {
@@ -782,8 +779,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function hideEmptyStates() {
+    const tableContainer = document.querySelector('.table-container, .table-wrapper, [class*="table"]');
+    const meritTable = document.querySelector('table');
+    
     if (emptyState) emptyState.classList.add('hidden');
     if (noSearchResults) noSearchResults.classList.add('hidden');
+    
+    // Show table when hiding empty states
+    if (meritTable) meritTable.style.display = '';
+    if (tableContainer) tableContainer.style.display = '';
   }
 
   function showError(message) {
