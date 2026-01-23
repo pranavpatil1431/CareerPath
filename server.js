@@ -350,13 +350,13 @@ app.get("/api/export/excel", async (req, res) => {
   }
 });
 
-// Catch-all route for undefined routes
+const PORT = process.env.PORT || 5000;
+
+// Catch-all route for undefined routes (MUST be last)
 app.get('*', (req, res) => {
   console.log('❓ Unknown route:', req.url);
   res.status(404).sendFile(path.join(__dirname, 'public', 'index.html'));
 });
-
-const PORT = process.env.PORT || 5000;
 
 // Error handling middleware
 app.use((err, req, res, next) => {
