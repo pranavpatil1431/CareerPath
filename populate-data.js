@@ -70,7 +70,8 @@ async function addSampleData() {
     const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
     const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
     const name = `${firstName} ${lastName}`;
-    const email = `${firstName.toLowerCase()}${lastName.toLowerCase()}${Math.floor(Math.random() * 9999) + 1000}@gmail.com`;
+    const randomNumber = Math.floor(Math.random() * 9000) + 1000; // Random 4-digit number (1000-9999)
+    const email = `${firstName.toLowerCase()}${lastName.toLowerCase()}${randomNumber}@gmail.com`;
     
     let preferredCourse, stream, marksRange;
     
