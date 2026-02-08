@@ -87,6 +87,85 @@
       min-height: 100vh;
     }
 
+    /* Course Statistics Styles */
+    .course-stats-section {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+    }
+
+    .course-stats-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .stat-percentage {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-course {
+      font-size: 0.875rem;
+      opacity: 0.9;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-count {
+      font-size: 0.75rem;
+      opacity: 0.8;
+    }
+
+    /* Mobile responsive adjustments for stats */
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+      }
+      
+      .stat-card {
+        padding: 0.75rem;
+      }
+      
+      .stat-percentage {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     /* Enhanced Merit List Styles */
     .merit-header {
       display: flex;
@@ -95,6 +174,63 @@
       flex-wrap: wrap;
       gap: 1rem;
       margin-bottom: 2rem;
+    }
+
+    /* Course Statistics Styles */
+    .course-stats-section {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+    }
+
+    .course-stats-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .stat-percentage {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-course {
+      font-size: 0.875rem;
+      opacity: 0.9;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-count {
+      font-size: 0.75rem;
+      opacity: 0.8;
     }
 
     .header-info h2 {
@@ -645,6 +781,16 @@
       <div class="hero text-center mb-xl">
         <h1>🏆 Merit List</h1>
         <p>Live rankings based on academic performance. Results are updated in real-time as new applications are processed.</p>
+      </div>
+
+      <!-- Course Selection Statistics -->
+      <div id="courseStatsSection" class="course-stats-section" style="display: none;">
+        <div class="course-stats-title">
+          📊 Course Selection Statistics
+        </div>
+        <div id="courseStatsGrid" class="stats-grid">
+          <!-- Course statistics will be populated here -->
+        </div>
       </div>
 
       <!-- Merit List Header -->

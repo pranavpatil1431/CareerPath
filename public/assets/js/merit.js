@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const loadingIndicator = document.getElementById('loadingIndicator');
   const emptyState = document.getElementById('emptyState');
   const refreshBtn = document.getElementById('refreshList');
+  const courseStatsSection = document.getElementById('courseStatsSection');
+  const courseStatsGrid = document.getElementById('courseStatsGrid');
   
   // Stream elements
   const streamTabs = document.querySelectorAll('.stream-tab');
@@ -75,6 +77,30 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     return badges[rank] || `<span style="display: inline-block; padding: 0.25rem 0.5rem; background: #6b7280; color: white; border-radius: 0.375rem; font-weight: 600; font-size: 0.875rem;">${rank}th</span>`;
+  }
+
+  // Function to render course statistics
+  function renderCourseStatistics(courseStats) {
+    console.log('📊 Rendering course statistics:', courseStats);
+    
+    if (!courseStats || courseStats.length === 0) {
+      if (courseStatsSection) {
+        courseStatsSection.classList.add('hidden');
+      }
+      return;
+    }
+
+    if (courseStatsSection && courseStatsGrid) {
+      courseStatsSection.classList.remove('hidden');
+      
+      courseStatsGrid.innerHTML = courseStats.map(stat => `
+        <div class="stat-card">
+          <div class="stat-percentage">${stat.percentage}%</div>
+          <div class="stat-course">${stat.course}</div>
+          <div class="stat-count">${stat.count} student${stat.count !== 1 ? 's' : ''}</div>
+        </div>
+      `).join('');
+    }
   }
 
   async function loadMeritList() {

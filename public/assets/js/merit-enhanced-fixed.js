@@ -91,6 +91,48 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Function to display course selection statistics
+  function displayCourseStatistics(courseStats) {
+    console.log('📊 Displaying course statistics:', courseStats);
+    
+    // Find or create course statistics section
+    let statsSection = document.getElementById('courseStatsSection');
+    
+    if (!statsSection) {
+      // Create the statistics section if it doesn't exist
+      statsSection = document.createElement('div');
+      statsSection.id = 'courseStatsSection';
+      statsSection.className = 'course-stats-section';
+      
+      const mainContent = document.querySelector('.main-content');
+      const meritHeader = document.querySelector('.merit-header');
+      
+      if (mainContent && meritHeader) {
+        mainContent.insertBefore(statsSection, meritHeader.nextSibling);
+      }
+    }
+    
+    if (courseStats && courseStats.length > 0) {
+      statsSection.style.display = 'block';
+      statsSection.innerHTML = `
+        <div class="course-stats-title">
+          📊 Course Selection Statistics
+        </div>
+        <div class="stats-grid">
+          ${courseStats.map(stat => `
+            <div class="stat-card">
+              <div class="stat-percentage">${stat.percentage}%</div>
+              <div class="stat-course">${stat.course}</div>
+              <div class="stat-count">${stat.count} student${stat.count !== 1 ? 's' : ''}</div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    } else {
+      statsSection.style.display = 'none';
+    }
+  }
+
   async function loadMeritData() {
     console.log('📊 Loading merit data...');
     showLoading(true);
@@ -146,6 +188,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // New API format with success wrapper
         console.log('📊 Processing new API format, student count:', data.data.length);
         studentsArray = data.data;
+        
+        // Extract course statistics if available
+        if (data.courseStats) {
+          console.log('📊 Course statistics received:', data.courseStats);
+          displayCourseStatistics(data.courseStats);
+        }
       } else if (Array.isArray(data)) {
         // Legacy format - direct array of students
         console.log('📊 Processing legacy array format, length:', data.length);

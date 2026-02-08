@@ -143,11 +143,32 @@ app.get("/api/merit", async (req, res) => {
     // Return empty array if no students found - no sample data
     if (students.length === 0) {
       console.log('📋 No students found, returning empty data');
-      return res.json({ success: true, data: [], count: 0 });
+      return res.json({ success: true, data: [], count: 0, courseStats: [] });
     }
     
+    // Calculate course selection statistics
+    const courseStats = {};
+    students.forEach(student => {
+      if (student.preferredCourse) {
+        courseStats[student.preferredCourse] = (courseStats[student.preferredCourse] || 0) + 1;
+      }
+    });
+    
+    // Convert to percentage and format for frontend
+    const courseStatsArray = Object.entries(courseStats).map(([course, count]) => ({
+      course,
+      count,
+      percentage: ((count / students.length) * 100).toFixed(1)
+    })).sort((a, b) => b.count - a.count);
+    
     console.log(`📋 Found ${students.length} students`);
-    res.json({ success: true, data: students, count: students.length });
+    console.log('📊 Course statistics:', courseStatsArray);
+    res.json({ 
+      success: true, 
+      data: students, 
+      count: students.length,
+      courseStats: courseStatsArray
+    });
   } catch (err) {
     console.error("❌ Merit error:", err.message);
     res.status(500).json({ 
