@@ -146,20 +146,36 @@ app.get("/api/merit", async (req, res) => {
       return res.json({ success: true, data: [], count: 0, courseStats: [] });
     }
     
-    // Calculate course selection statistics
-    const courseStats = {};
+    // Calculate course selection statistics with grouped categories
+    const courseCategories = {
+      'Engineering': 0,
+      'Medical': 0, 
+      'Pharmacy': 0,
+      'Other': 0
+    };
+    
     students.forEach(student => {
       if (student.preferredCourse) {
-        courseStats[student.preferredCourse] = (courseStats[student.preferredCourse] || 0) + 1;
+        const course = student.preferredCourse.toLowerCase();
+        
+        if (course.includes('b.tech') || course.includes('engineering')) {
+          courseCategories['Engineering']++;
+        } else if (course.includes('mbbs') || course.includes('bds') || course.includes('medical')) {
+          courseCategories['Medical']++;
+        } else if (course.includes('pharmacy') || course.includes('b.pharmacy')) {
+          courseCategories['Pharmacy']++;
+        } else {
+          courseCategories['Other']++;
+        }
       }
     });
     
     // Convert to percentage and format for frontend
-    const courseStatsArray = Object.entries(courseStats).map(([course, count]) => ({
-      course,
+    const courseStatsArray = Object.entries(courseCategories).map(([category, count]) => ({
+      course: category,
       count,
       percentage: ((count / students.length) * 100).toFixed(1)
-    })).sort((a, b) => b.count - a.count);
+    })).filter(stat => stat.count > 0).sort((a, b) => b.count - a.count);
     
     console.log(`📋 Found ${students.length} students`);
     console.log('📊 Course statistics:', courseStatsArray);
