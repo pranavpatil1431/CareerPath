@@ -158,11 +158,11 @@ app.get("/api/merit", async (req, res) => {
       if (student.preferredCourse) {
         const course = student.preferredCourse.toLowerCase();
         
-        if (course.includes('b.tech') || course.includes('engineering')) {
+        if (course.includes('b.tech') || course.includes('engineering') || course.includes('automobile') || course.includes('chemical') || course.includes('aerospace') || course.includes('electronics') || course.includes('information technology')) {
           courseCategories['Engineering']++;
-        } else if (course.includes('mbbs') || course.includes('bds') || course.includes('medical')) {
+        } else if (course.includes('mbbs') || course.includes('bds') || course.includes('medical') || course.includes('bams') || course.includes('bhms') || course.includes('nursing') || course.includes('bpt') || course.includes('bmlt') || course.includes('optometry') || course.includes('radiology')) {
           courseCategories['Medical']++;
-        } else if (course.includes('pharmacy') || course.includes('b.pharmacy')) {
+        } else if (course.includes('pharmacy') || course.includes('pharm.d') || course.includes('pharmaceutical')) {
           courseCategories['Pharmacy']++;
         } else {
           courseCategories['Other']++;
